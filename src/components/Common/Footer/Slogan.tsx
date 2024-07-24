@@ -21,6 +21,7 @@ const SloganText = styled.span`
     ${tw`
         text-[white]
         text-bold-36
+        font-bold
     `}
 `;
 

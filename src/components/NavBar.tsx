@@ -86,6 +86,7 @@ const MenuContainer = styled.div`
 const MenuItem = styled.div`
     ${tw`
         text-bold-20
+        font-bold
         text-center
         text-fontColor1
         w-[85px]
@@ -96,6 +97,7 @@ const MenuItem = styled.div`
 const AuthItem = styled.div`
     ${tw`
         text-medium-20
+        font-medium
         text-center
         text-fontColor2
     `}

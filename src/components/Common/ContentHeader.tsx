@@ -47,12 +47,14 @@ const TextContainer = styled.div`
 const Title = styled.span`
     ${tw`
         text-bold-36
+        font-bold
         text-fontColor1
     `}
 `;
 const Desc = styled.span`
     ${tw`
         text-medium-20
+        font-medium
         text-fontColor3
     `}
 `;

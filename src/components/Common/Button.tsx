@@ -16,6 +16,7 @@ const ButtonContainer = styled.button`
         bg-subColor
         rounded-[37px]
         text-bold-24
+        font-bold
         text-[white]
     `}
 `;

@@ -54,6 +54,7 @@ const MentoringContainer = styled.div`
 const Title = styled.span`
     ${tw`
         text-bold-36
+        font-bold
         text-fontColor1
     `}
 `;
@@ -61,6 +62,7 @@ const Title = styled.span`
 const Desc = styled.span`
     ${tw`
         text-bold-20
+        font-bold
         text-fontColor1
     `}
 `;

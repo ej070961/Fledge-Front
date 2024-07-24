@@ -37,6 +37,7 @@ const MenuItems = styled.div`
 const MenuTitle = styled.span`
     ${tw`
         text-bold-20
+        font-bold
         text-[white]
     `}
 `;
