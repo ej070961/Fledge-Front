@@ -59,8 +59,10 @@ const SocialContainer = styled.div`
 `;
 
 const SocialButton = styled.div`
-    position: absolute;
-    top: 30px;
+    ${tw`
+        absolute
+        top-[30px]
+    `}
 `;
 
 const Container = styled.div`
