@@ -3,7 +3,10 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import Banner from "../components/Main/Banner";
 import TagLine from "../components/Main/TagLine";
-import ContentHeader from "../components/Main/ContentHeader";
+import ContentHeader from "../components/Common/ContentHeader";
+import Medal from "../assets/images/medal.png";
+import MentoringSection from "../components/Main/MentoringSection";
+import DonationSection from "../components/Main/DonationSection";
 
 function Main() {
     return (
@@ -12,34 +15,36 @@ function Main() {
             <TagLine />
             <Banner />
             <ContentsContainer>
-                <Contents>
-                    <ContentHeader
-                        title="후원하기"
-                        desc="자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해 청년들의 지속 가능한 자립을 응원해주세요."
-                    />
-                </Contents>
+                <DonationSection />
                 <Contents>
                     <ContentHeader
                         title="챌린지"
-                        desc="자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해 청년들의 지속 가능한 자립을 응원해주세요."
+                        desc="스스로 자립능력을 키워나갈 수 있는 기회! 지금 바로 도전하고, 성장하는 자신을 만나보세요!"
                     />
+                    <MedalImage src={Medal} alt="medal" />
                 </Contents>
-                <Contents>
-                    <ContentHeader
-                        title="멘토링"
-                        desc="자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해 청년들의 지속 가능한 자립을 응원해주세요."
-                    />
-                </Contents>
+                <MentoringSection />
                 <Contents>
                     <ContentHeader
                         title="정보공유"
-                        desc="자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해 청년들의 지속 가능한 자립을 응원해주세요."
+                        desc="똑똑하게 자립 준비하기! 도움되는 정보를 한 눈에 확인해보세요."
                     />
                 </Contents>
             </ContentsContainer>
         </MainContainer>
     );
 }
+
+const MedalImage = styled.img`
+    ${tw`
+        w-[336px]
+        h-[427px]
+        absolute
+        z-[-1]
+        top-[-200px]
+        right-[40px]
+    `}
+`;
 
 const MainContainer = styled.div`
     ${tw`
@@ -66,6 +71,7 @@ const Contents = styled.div`
         flex
         flex-col
         w-full
+        relative
     `}
 `;
 
