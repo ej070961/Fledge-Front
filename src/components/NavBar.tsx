@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/images/fledge.svg";
-import { ReactComponent as KakaoSignUp } from "../assets/images/kakao_sign_up.svg";
-import { ReactComponent as KaKaoSignIn } from "../assets/images/kakao_sign_in.svg";
 import tw from "twin.macro";
 import { useState } from "react";
+import LoginContainer from "./Common/NavBar/LoginContainer";
+import UserContainer from "./Common/NavBar/UserContainer";
+import Profile from "../assets/images/profile.png";
+
 const NavBar = () => {
-    const [isSignUpHovered, setIsSignUpHovered] = useState(false);
-    const [isSignInHovered, setIsSignInHovered] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
     return (
         <Container>
             <MenuContainer>
@@ -17,53 +18,16 @@ const NavBar = () => {
                 <MenuItem>정보공유</MenuItem>
                 <MenuItem>소개</MenuItem>
             </MenuContainer>
-            <MenuContainer>
-                <SocialContainer
-                    onMouseEnter={() => setIsSignUpHovered(true)}
-                    onMouseLeave={() => setIsSignUpHovered(false)}
-                >
-                    <AuthItem>회원가입</AuthItem>
-                    {isSignUpHovered && (
-                        <SocialButton>
-                            <KakaoSignUp />
-                        </SocialButton>
-                    )}
-                </SocialContainer>
-                <SocialContainer
-                    onMouseEnter={() => setIsSignInHovered(true)}
-                    onMouseLeave={() => setIsSignInHovered(false)}
-                >
-                    <AuthItem>로그인</AuthItem>
-                    {isSignInHovered && (
-                        <SocialButton>
-                            <KaKaoSignIn />
-                        </SocialButton>
-                    )}
-                </SocialContainer>
-            </MenuContainer>
+            {isLogin ? (
+                <UserContainer nickname="카트값줘체리" profile={Profile} />
+            ) : (
+                <LoginContainer />
+            )}
         </Container>
     );
 };
 
 export default NavBar;
-
-const SocialContainer = styled.div`
-    ${tw`
-        flex
-        flex-col
-        items-center
-        w-[85px]
-        cursor-pointer
-        relative
-    `}
-`;
-
-const SocialButton = styled.div`
-    ${tw`
-        absolute
-        top-[30px]
-    `}
-`;
 
 const Container = styled.div`
     ${tw`
@@ -91,14 +55,5 @@ const MenuItem = styled.div`
         text-fontColor1
         w-[85px]
         cursor-pointer
-    `}
-`;
-
-const AuthItem = styled.div`
-    ${tw`
-        text-medium-20
-        font-medium
-        text-center
-        text-fontColor2
     `}
 `;
