@@ -18,9 +18,9 @@ module.exports = {
             },
             fontSize: {
                 // Bold
-                "bold-20": ["20px", "1.5"],
-                "bold-24": ["24px", "1.5"],
-                "bold-36": ["36px", "1.5"],
+                "bold-20": ["20px", "1.2"],
+                "bold-24": ["24px", "1.2"],
+                "bold-36": ["36px", "1.2"],
                 "bold-48": ["48px", "1.2"],
                 "bold-96": ["96px", "1.2"],
                 // Medium

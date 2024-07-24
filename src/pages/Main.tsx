@@ -7,6 +7,7 @@ import ContentHeader from "../components/Common/ContentHeader";
 import Medal from "../assets/images/medal.png";
 import MentoringSection from "../components/Main/MentoringSection";
 import DonationSection from "../components/Main/DonationSection";
+import Footer from "../components/Common/Footer";
 
 function Main() {
     return (
@@ -31,6 +32,7 @@ function Main() {
                     />
                 </Contents>
             </ContentsContainer>
+            <Footer />
         </MainContainer>
     );
 }
