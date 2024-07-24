@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import BannerImg from "../assets/images/banner.png";
+import BannerImg from "../../assets/images/banner.png";
+import UnderArrow from "../../assets/images/under-arrow.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -27,6 +28,7 @@ const Banner = () => {
                     <SwiperImg src={img} alt="banner" />
                 </SwiperSlide>
             ))}
+            <Arrow src={UnderArrow} alt="under-arrow" />
         </SwiperContainer>
     );
 };
@@ -38,7 +40,6 @@ const SwiperContainer = styled(Swiper)`
         w-full
         h-[665px]
         mt-[35px]
-        relative
     `}
     .swiper-pagination {
         ${tw`
@@ -71,5 +72,16 @@ const SwiperImg = styled.img`
         w-full
         h-full
         object-cover
+    `}
+`;
+
+const Arrow = styled.img`
+    ${tw`
+        absolute
+        bottom-[47px]
+        left-1/2
+        translate-x-[-50%]
+        z-10
+        cursor-pointer
     `}
 `;
