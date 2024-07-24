@@ -40,7 +40,7 @@ const TextContainer = styled.div`
     ${tw`
         flex
         flex-col
-        gap-[3px]
+        gap-[10px]
     `}
 `;
 

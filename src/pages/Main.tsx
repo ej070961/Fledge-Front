@@ -57,6 +57,7 @@ const MainContainer = styled.div`
         flex-col
         items-center
         font-sans
+        bg-background
     `}
 `;
 

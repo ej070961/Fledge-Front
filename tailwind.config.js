@@ -18,6 +18,7 @@ module.exports = {
             },
             fontSize: {
                 // Bold
+                "bold-10": ["10px", "1.2"],
                 "bold-20": ["20px", "1.2"],
                 "bold-24": ["24px", "1.2"],
                 "bold-36": ["36px", "1.2"],
