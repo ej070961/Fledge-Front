@@ -3,11 +3,13 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import Banner from "../components/Main/Banner";
 import TagLine from "../components/Main/TagLine";
-import ContentHeader from "../components/Common/ContentHeader";
-import Medal from "../assets/images/medal.png";
 import MentoringSection from "../components/Main/MentoringSection";
 import DonationSection from "../components/Main/DonationSection";
 import Footer from "../components/Common/Footer";
+import ChallengeSection from "../components/Main/ChallengeSection";
+import InformationSection from "../components/Main/InformationSection";
+import Button from "../components/Common/Button";
+import Bird from "../assets/images/bird.png";
 
 function Main() {
     return (
@@ -17,34 +19,35 @@ function Main() {
             <Banner />
             <ContentsContainer>
                 <DonationSection />
-                <Contents>
-                    <ContentHeader
-                        title="챌린지"
-                        desc="스스로 자립능력을 키워나갈 수 있는 기회! 지금 바로 도전하고, 성장하는 자신을 만나보세요!"
-                    />
-                    <MedalImage src={Medal} alt="medal" />
-                </Contents>
+                <ChallengeSection />
                 <MentoringSection />
-                <Contents>
-                    <ContentHeader
-                        title="정보공유"
-                        desc="똑똑하게 자립 준비하기! 도움되는 정보를 한 눈에 확인해보세요."
-                    />
-                </Contents>
+                <InformationSection />
+                <FledgeContainer>
+                    <Title>fledge 플리지에게 흥미가 생기셨나요?</Title>
+                    <Button title="fledge가 뭐에요?" />
+                    <img src={Bird} alt="bird" />
+                </FledgeContainer>
             </ContentsContainer>
             <Footer />
         </MainContainer>
     );
 }
 
-const MedalImage = styled.img`
+const FledgeContainer = styled.div`
     ${tw`
-        w-[336px]
-        h-[427px]
-        absolute
-        z-[-1]
-        top-[-200px]
-        right-[40px]
+        flex
+        flex-col
+        items-center
+        gap-[41px]
+        mb-[184px]
+    `}
+`;
+
+const Title = styled.span`
+    ${tw`
+        text-bold-64
+        font-bold
+        text-fontColor1
     `}
 `;
 
@@ -65,15 +68,6 @@ const ContentsContainer = styled.div`
         w-[1280px]
         mt-[142px]
         gap-[288px]
-    `}
-`;
-
-const Contents = styled.div`
-    ${tw`
-        flex
-        flex-col
-        w-full
-        relative
     `}
 `;
 
