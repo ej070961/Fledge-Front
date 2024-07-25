@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg";
-import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg";
 import BannerItem from "./BannerItem";
+import LeftArrowIcon from "../../assets/icons/left-arrow";
+import RightArrowIcon from "../../assets/icons/right-arrow";
 
 function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,7 +41,7 @@ function Slider() {
   return (
     <Wrapper>
       <Button onClick={handlePrevClick} disabled={currentIndex === 0}>
-        <ArrowLeft />
+        <LeftArrowIcon width={25} height={51} />
       </Button>
       <SliderContainer>
         <ItemBox
@@ -63,7 +63,7 @@ function Slider() {
         onClick={handleNextClick}
         disabled={currentIndex >= (totalPages - 1) * itemsToShow}
       >
-        <ArrowRight />
+        <RightArrowIcon width={25} height={51} />
       </Button>
     </Wrapper>
   );
