@@ -6,7 +6,7 @@ interface UserContainerProps {
     profile?: string;
 }
 
-const UserContainer = ({ nickname, profile }: UserContainerProps) => {
+const User = ({ nickname, profile }: UserContainerProps) => {
     return (
         <Container>
             <div>
@@ -18,7 +18,7 @@ const UserContainer = ({ nickname, profile }: UserContainerProps) => {
     );
 };
 
-export default UserContainer;
+export default User;
 
 const Container = styled.div`
     ${tw`
