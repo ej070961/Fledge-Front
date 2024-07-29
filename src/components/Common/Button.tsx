@@ -2,11 +2,12 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 interface ButtonProps {
+    bg?: string;
     title: string;
     onClick?: () => void;
 }
 
-const Button = ({ title, onClick }: ButtonProps) => {
+const Button = ({ title, onClick, bg }: ButtonProps) => {
     return <ButtonContainer onClick={onClick}>{title}</ButtonContainer>;
 };
 
