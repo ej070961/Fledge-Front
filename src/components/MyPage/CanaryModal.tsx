@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import { ButtonSmall as Button } from "../../components/Common/Button";
+import Button from "../../components/Common/Button";
 
 const CanaryModal = () => {
     return (
@@ -15,7 +15,7 @@ const CanaryModal = () => {
                             </span>
                             <div className="background">보호종료확인서.hwp</div>
                         </div>
-                        <Button title="저장" type={2} />
+                        <Button title="저장" mainColor small />
                     </div>
                     <div className="sub-section">
                         <div className="w-[303.19px]">
@@ -50,10 +50,10 @@ const CanaryModal = () => {
                             <span className="sub-text">우편번호</span>
                             <div className="background">00000</div>
                         </div>
-                        <Button title="우편번호 검색" type={2} />
+                        <Button title="우편번호 검색" mainColor small />
                     </div>
                 </div>
-                <Button title="제출하기" />
+                <Button title="제출하기" small />
             </Canary>
         </CanaryWrapper>
     );

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 import Arrow from "../../assets/images/under-arrow-small.png";
-import { ButtonSmall as Button } from "../../components/Common/Button";
+import Button from "../../components/Common/Button";
 
 const UserBasicInfo = () => {
     const [name, setName] = useState("홍길동");
@@ -20,7 +20,7 @@ const UserBasicInfo = () => {
         <Container>
             <div className="user-info-header">
                 <div className="user-info-title">회원 기본 정보</div>
-                <Button title="정보 수정" />
+                <Button title="정보 수정" small />
             </div>
             <InfoInput>
                 <div className="input">
@@ -58,7 +58,7 @@ const UserBasicInfo = () => {
                         멘토링을 신청할 수 있어요.
                     </span>
                 </div>
-                <div className="canary-validation">자립준비청년 인증하기</div>
+                <Button title="자립준비청년 인증하기" small mainColor />
             </div>
         </Container>
     );
@@ -91,7 +91,7 @@ const Container = styled.div`
 
     .canary {
         ${tw`
-            mt-[36px] flex flex-col gap-[22px]
+            mt-[36px] flex flex-col gap-[22px] items-start
         `}
         .canary-header {
             ${tw`
@@ -102,12 +102,6 @@ const Container = styled.div`
                 text-medium-15 font-medium text-fontColor2
             `}
             }
-        }
-        .canary-validation {
-            ${tw`
-            p-[16px 19px] bg-mainColor  w-[227px] text-center rounded-full
-            text-bold-20 font-bold text-[white] cursor-pointer
-        `}
         }
     }
 `;

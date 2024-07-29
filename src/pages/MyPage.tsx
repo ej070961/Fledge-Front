@@ -9,7 +9,7 @@ import { useState } from "react";
 import CanaryModal from "../components/MyPage/CanaryModal";
 
 function MyPage() {
-    const [isCanary, setIsCanary] = useState(false);
+    const [isCanary, setIsCanary] = useState(true);
 
     return (
         <Wrapper>
@@ -23,7 +23,7 @@ function MyPage() {
             {/* 회원 개인 정보*/}
             <Footer />
             {/* 자청년 인증 모달 */}
-            {isCanary && <CanaryModal />}
+            {/* {isCanary && <CanaryModal />} */}
         </Wrapper>
     );
 }
