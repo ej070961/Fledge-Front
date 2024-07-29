@@ -10,8 +10,26 @@ import ChallengeSection from "../components/Main/ChallengeSection";
 import InformationSection from "../components/Main/InformationSection";
 import Button from "../components/Common/Button";
 import Bird from "../assets/images/bird.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Main() {
+    // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const query = new URLSearchParams(location.search);
+        const accessToken = query.get("accessToken");
+
+        if (accessToken) {
+            localStorage.setItem("accessToken", accessToken);
+            navigate("/");
+        }
+
+        console.log(accessToken);
+    }, [location, navigate]);
+
     return (
         <MainContainer>
             <NavBar />
