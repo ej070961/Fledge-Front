@@ -14,45 +14,45 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function Main() {
-    // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
-    const location = useLocation();
-    const navigate = useNavigate();
+  // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const query = new URLSearchParams(location.search);
-        const accessToken = query.get("accessToken");
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const accessToken = query.get("accessToken");
 
-        if (accessToken) {
-            localStorage.setItem("accessToken", accessToken);
-            navigate("/");
-        }
+    if (accessToken) {
+      localStorage.setItem("accessToken", accessToken);
+      navigate("/");
+    }
 
-        console.log(accessToken);
-    }, [location, navigate]);
+    console.log(accessToken);
+  }, [location, navigate]);
 
-    return (
-        <MainContainer>
-            <NavBar />
-            <TagLine />
-            <Banner />
-            <ContentsContainer>
-                <DonationSection />
-                <ChallengeSection />
-                <MentoringSection />
-                <InformationSection />
-                <FledgeContainer>
-                    <Title>fledge 플리지에게 흥미가 생기셨나요?</Title>
-                    <Button title="fledge가 뭐에요?" />
-                    <img src={Bird} alt="bird" />
-                </FledgeContainer>
-            </ContentsContainer>
-            <Footer />
-        </MainContainer>
-    );
+  return (
+    <MainContainer>
+      <NavBar />
+      <TagLine />
+      <Banner />
+      <ContentsContainer>
+        <DonationSection />
+        <ChallengeSection />
+        <MentoringSection />
+        <InformationSection />
+        <FledgeContainer>
+          <Title>fledge 플리지에게 흥미가 생기셨나요?</Title>
+          <Button title="fledge가 뭐에요?" />
+          <img src={Bird} alt="bird" />
+        </FledgeContainer>
+      </ContentsContainer>
+      <Footer />
+    </MainContainer>
+  );
 }
 
 const FledgeContainer = styled.div`
-    ${tw`
+  ${tw`
         flex
         flex-col
         items-center
@@ -62,7 +62,7 @@ const FledgeContainer = styled.div`
 `;
 
 const Title = styled.span`
-    ${tw`
+  ${tw`
         text-bold-64
         font-bold
         text-fontColor1
@@ -70,7 +70,7 @@ const Title = styled.span`
 `;
 
 const MainContainer = styled.div`
-    ${tw`
+  ${tw`
         flex
         flex-col
         items-center
@@ -80,11 +80,11 @@ const MainContainer = styled.div`
 `;
 
 const ContentsContainer = styled.div`
-    ${tw`
+  ${tw`
         flex
         flex-col
         items-center
-        w-[1280px]
+
         mt-[142px]
         gap-[288px]
     `}
