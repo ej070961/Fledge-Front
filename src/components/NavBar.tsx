@@ -22,7 +22,7 @@ const NavBar = () => {
                 <MenuItem>소개</MenuItem>
             </MenuContainer>
             {isLogin ? (
-                <User nickname="카트값줘체리" profile={Profile} />
+                <User nickname="카드값줘체리" profile={Profile} />
             ) : (
                 <LoginButton />
             )}
