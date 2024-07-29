@@ -6,24 +6,18 @@ import NavBar from "../components/NavBar";
 import AllPostSection from "../components/Sponsor/AllPostSection";
 import styled from "styled-components";
 import tw from "twin.macro";
+import PageHeader from "../components/Common/PageHeader";
 function Sponsor() {
   return (
     <Wrapper>
       <NavBar />
 
       {/* 헤더 */}
-      <Header>
-        <div className="text-wrapper">
-          <span className="title-text">후원하기</span>
-          <span className="description-text">
-            자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해
-            청년들의 지속 가능한 자립을 응원해주세요.
-          </span>
-        </div>
-        <div className="image-background">
-          <img src={Sponsorship} alt="후원이미지" />
-        </div>
-      </Header>
+      <PageHeader
+        title="후원하기"
+        desc="자립준비청년에게는 아직 선배들의 도움이 필요합니다. 작은 보탬을 통해 청년들의 지속 가능한 자립을 응원해주세요."
+        imgSrc={Sponsorship}
+      />
 
       {/* 기한 임박 후원글 목록 */}
       <ContentWrapper>
