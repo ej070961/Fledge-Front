@@ -11,15 +11,78 @@ import RightArrowIcon from "../../assets/icons/right-arrow";
 function AllPostSection() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const DummyData = [
-    { remained: 4, detail: "핸드폰 수리비가 부족해요.", progressNum: 80 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 2, detail: "핸드폰 수리비가 부족해요.", progressNum: 10 },
-    { remained: 1, detail: "핸드폰 수리비가 부족해요.", progressNum: 40 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 2, detail: "핸드폰 수리비가 부족해요.", progressNum: 10 },
-    { remained: 1, detail: "핸드폰 수리비가 부족해요.", progressNum: 40 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
+    {
+      remained: 4,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 80,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
   ];
 
   const totalPages = 3;
@@ -48,6 +111,7 @@ function AllPostSection() {
                 remained={data.remained}
                 progressNum={data.progressNum}
                 detail={data.detail}
+                price={data.price}
               />
             ))}
           </ItemBox>

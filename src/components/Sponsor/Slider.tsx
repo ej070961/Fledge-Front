@@ -9,18 +9,78 @@ function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const DummyData = [
-    { remained: 4, detail: "핸드폰 수리비가 부족해요.", progressNum: 80 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 2, detail: "핸드폰 수리비가 부족해요.", progressNum: 10 },
-    { remained: 1, detail: "핸드폰 수리비가 부족해요.", progressNum: 40 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 2, detail: "핸드폰 수리비가 부족해요.", progressNum: 10 },
-    { remained: 1, detail: "핸드폰 수리비가 부족해요.", progressNum: 40 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
-    { remained: 2, detail: "핸드폰 수리비가 부족해요.", progressNum: 10 },
-    { remained: 1, detail: "핸드폰 수리비가 부족해요.", progressNum: 40 },
-    { remained: 3, detail: "핸드폰 수리비가 부족해요.", progressNum: 50 },
+    {
+      remained: 4,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 80,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
+    {
+      remained: 2,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 10,
+      price: "100000원",
+    },
+    {
+      remained: 1,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 40,
+      price: "100000원",
+    },
+    {
+      remained: 3,
+      detail: "핸드폰 수리비가 부족해요.",
+      progressNum: 50,
+      price: "100000원",
+    },
   ];
 
   const bannerCount = DummyData.length; // 배너의 총 개수
@@ -55,6 +115,7 @@ function Slider() {
               remained={data.remained}
               progressNum={data.progressNum}
               detail={data.detail}
+              price={data.price}
             />
           ))}
         </ItemBox>
