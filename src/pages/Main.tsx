@@ -1,17 +1,16 @@
-import NavBar from "../components/NavBar";
 import styled from "styled-components";
 import tw from "twin.macro";
 import Banner from "../components/Main/Banner";
 import TagLine from "../components/Main/TagLine";
 import MentoringSection from "../components/Main/MentoringSection";
 import DonationSection from "../components/Main/DonationSection";
-import Footer from "../components/Common/Footer";
 import ChallengeSection from "../components/Main/ChallengeSection";
 import InformationSection from "../components/Main/InformationSection";
 import Button from "../components/Common/Button";
 import Bird from "../assets/images/bird.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import DefaultLayout from "../components/Common/DefaultLayout";
 
 function Main() {
   // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
@@ -31,8 +30,7 @@ function Main() {
   }, [location, navigate]);
 
   return (
-    <MainContainer>
-      <NavBar />
+    <DefaultLayout>
       <TagLine />
       <Banner />
       <ContentsContainer>
@@ -46,8 +44,7 @@ function Main() {
           <img src={Bird} alt="bird" />
         </FledgeContainer>
       </ContentsContainer>
-      <Footer />
-    </MainContainer>
+    </DefaultLayout>
   );
 }
 
@@ -66,16 +63,6 @@ const Title = styled.span`
         text-bold-64
         font-bold
         text-fontColor1
-    `}
-`;
-
-const MainContainer = styled.div`
-  ${tw`
-        flex
-        flex-col
-        items-center
-        font-sans
-        bg-background
     `}
 `;
 
