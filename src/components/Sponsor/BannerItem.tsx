@@ -6,18 +6,19 @@ type SponsorItemProps = {
   remained: number;
   detail: string;
   progressNum: number;
+  price: string;
 };
 function BannerItem(data: SponsorItemProps) {
   return (
     <Card>
       <Image imageUrl={PostImg} />
       <Background />
-      <Content remained={1}>
+      <Content remained={data.remained}>
         <span className="d-day-text">D-{data.remained}</span>
         <span className="title-text">{data.detail}</span>
         <div className="progress-wrapper">
-          <span className="progress-text">진행률</span>
-          <span className="progress-text">{data.progressNum}%</span>
+          <span className="progress-text">진행률 {data.progressNum}%</span>
+          <span className="progress-text">{data.price}</span>
         </div>
         <ProgressBar progress={data.progressNum} />
       </Content>
@@ -74,7 +75,7 @@ const Content = styled.div<{ remained: number }>`
   }
 
   .progress-wrapper {
-    ${tw`flex flex-row justify-between mt-1.5`}
+    ${tw`flex flex-row justify-between mt-3`}
     .progress-text {
       ${tw`text-medium-15 font-sans font-medium text-white`}
     }
