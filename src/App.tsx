@@ -4,6 +4,7 @@ import Main from "./pages/Main";
 import Sponsor from "./pages/Sponsor";
 import Mentor from "./pages/Mentor";
 import MyPage from "./pages/MyPage";
+import SponsorRegister from "./pages/SponsorRegister";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/sponsor" element={<Sponsor />} />
         <Route path="/mentor-intro" element={<Mentor />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/sponsor-register" element={<SponsorRegister />} />
       </Routes>
     </BrowserRouter>
   );
