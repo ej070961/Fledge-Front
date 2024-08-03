@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import Button from "../Common/Button";
+import { useFormContext } from "react-hook-form";
 
 function AddressSection() {
+  const { register } = useFormContext();
   return (
     <>
       <Title>배송지 입력</Title>
@@ -17,7 +19,10 @@ function AddressSection() {
         </InputBox>
         <InputBox className="w-[200.45px]">
           <label>상세주소</label>
-          <input className="background" />
+          <input
+            className="background"
+            {...register("detailAddress", { required: true })}
+          />
         </InputBox>
         <InputBox className="w-[102px]">
           <label>우편번호</label>
@@ -29,12 +34,20 @@ function AddressSection() {
       </AddressFormContainer>
       <AddressFormContainer className="w-[650px]">
         <InputBox className="w-[300px]">
-          <label>수령자</label>
-          <input type="text" className="background" />
+          <label>*수령자</label>
+          <input
+            type="text"
+            className="background"
+            {...register("recipentName", { required: true })}
+          />
         </InputBox>
         <InputBox>
-          <label>연락처</label>
-          <input type="text" className="background" />
+          <label>*연락처</label>
+          <input
+            type="text"
+            className="background"
+            {...register("phone", { required: true })}
+          />
         </InputBox>
       </AddressFormContainer>
     </>

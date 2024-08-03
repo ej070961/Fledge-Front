@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import tw from "twin.macro";
 import Dropdown from "./Dropdown";
-import { categories } from "../../types/sponsor-category";
+import { categories } from "../../@types/sponsor-category";
 
 const ContentSection = () => {
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
+  const selectedCategory = watch("category");
 
+  useEffect(() => {
+    if (
+      selectedCategory === "EDUCATION" ||
+      selectedCategory === "MEDICAL" ||
+      selectedCategory === "LEGAL_AID"
+    ) {
+      setValue("itemUrl", "판매사이트 없음");
+    }
+  }, [selectedCategory, setValue]);
   return (
     <>
       <Title>후원 게시물 본문</Title>
@@ -19,7 +29,7 @@ const ContentSection = () => {
       <div className="flex flex-row items-center w-full">
         <InputBox className="w-1/3">
           <label>*후원 물품 이름</label>
-          <input type="text" {...register("itemName", { required: true })} />
+          <input type="text" {...register("item", { required: true })} />
         </InputBox>
         <InputBox className="w-1/3">
           <label>*후원 물품 금액</label>
@@ -38,7 +48,7 @@ const ContentSection = () => {
       </div>
       <InputBox className="w-1/3">
         <label>*후원 물품 판매사이트</label>
-        <input type="url" {...register("itemUrl", { required: true })} />
+        <input type="text" {...register("itemUrl", { required: true })} />
       </InputBox>
     </>
   );

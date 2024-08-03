@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import tw from "twin.macro";
 import AddIcon from "../../assets/icons/add-icon";
+import DeleteIcon from "../../assets/icons/delete-icon";
 
 const ImageUploadSection = () => {
   const { setValue, getValues } = useFormContext();
@@ -17,6 +18,14 @@ const ImageUploadSection = () => {
         return newImages;
       });
     }
+  };
+
+  const handleImageDelete = (index: number) => {
+    setImages((prevImages) => {
+      const updatedImages = prevImages.filter((_, i) => i !== index);
+      setValue("images", updatedImages);
+      return updatedImages;
+    });
   };
   return (
     <Container>
@@ -45,6 +54,9 @@ const ImageUploadSection = () => {
               alt={`Uploaded ${index}`}
               className="uploaded-image"
             />
+            <DeleteIconWrapper onClick={() => handleImageDelete(index)}>
+              <DeleteIcon />
+            </DeleteIconWrapper>
           </ImageWrapper>
         ))}
         {/* 이미지 업로드 영역 */}{" "}
@@ -94,10 +106,14 @@ const ImageContainer = styled.div`
   ${tw`flex flex-row items-center w-full h-[415px]`}
 `;
 const ImageWrapper = styled.div`
-  ${tw`mr-6`}
+  ${tw`relative mr-6`}
   .uploaded-image {
-    ${tw`w-[301px] h-[405px] [border-radius: 16px] object-cover`}
+    ${tw`w-[301px] h-[405px] rounded-[16px] object-cover`}
   }
+`;
+
+const DeleteIconWrapper = styled.div`
+  ${tw`absolute top-1/2 left-[133px] cursor-pointer z-10`}
 `;
 const AddButton = styled.div`
   ${tw`flex flex-col items-center justify-center w-[301px] h-[405px] [border-radius: 16px] bg-white`}
