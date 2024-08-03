@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import { categories } from "../../types/sponsor-category";
+import { categories } from "../../@types/sponsor-category";
 
 function Filter() {
   // 체크박스 상태를 저장할 타입 정의

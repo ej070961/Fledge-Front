@@ -9,18 +9,28 @@ import ImageUploadSection from "../components/SponsorRegister/ImageUploadSection
 import AddressSection from "../components/SponsorRegister/AddressSection";
 import SubContentSection from "../components/SponsorRegister/SubContentSection";
 import AccountSection from "../components/SponsorRegister/AccountSection";
+import { postAccountItem } from "../apis/sponsor";
+import { useNavigate } from "react-router-dom";
+
 function SponsorRegister() {
   //mode를 onChange로 설정하여 폼 상태가 변경될때마다 유효성 검사 실행
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
-      title: "", // 다른 필드에 대해서도 동일하게 초기화
-      itemName: "",
-      price: "",
+      title: "",
+      item: "",
+      price: 0,
       category: "",
       itemUrl: "",
-      way: "1회 인증",
+      promise: "ONCE",
+      recipientName: "",
+      phone: "",
+      bank: "001",
+      account: "",
+      endDate: "",
+      reason: "",
       images: [],
+
       // 추가 필드들
     },
   });
@@ -28,14 +38,51 @@ function SponsorRegister() {
   //isValid: 폼의 유효성을 나타내는 상태
   const {
     watch,
+    getValues,
     formState: { isValid },
   } = methods;
 
   console.log(isValid);
 
+  const navigate = useNavigate();
+
   //서버 api 요청 코드 추가 예정
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async () => {
+    const {
+      title,
+      item,
+      price,
+      category,
+      itemUrl,
+      endDate,
+      reason,
+      promise,
+      images,
+    } = getValues();
+
+    if (
+      selectedCategory === "EDUCATION" ||
+      selectedCategory === "MEDICAL" ||
+      selectedCategory === "LEGAL_AID"
+    ) {
+      const { bank, account } = getValues();
+      const res = await postAccountItem({
+        title: title,
+        reason: reason,
+        item: item,
+        price: price,
+        supportCategory: category,
+        purchaseUrl: itemUrl,
+        expirationDate: endDate,
+        promise: promise,
+        bank: bank,
+        account: account,
+        images: images,
+      });
+      if (res.success) {
+        navigate("/sponsor");
+      }
+    }
   };
 
   const selectedCategory = watch("category");
@@ -49,9 +96,9 @@ function SponsorRegister() {
           <ImageUploadSection />
           <SubContentSection />
 
-          {selectedCategory === "education" ||
-          selectedCategory === "medical" ||
-          selectedCategory === "legal" ? (
+          {selectedCategory === "EDUCATION" ||
+          selectedCategory === "MEDICAL" ||
+          selectedCategory === "LEGAL_AID" ? (
             <AccountSection />
           ) : (
             <AddressSection />

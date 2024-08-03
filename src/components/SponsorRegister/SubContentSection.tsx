@@ -3,24 +3,28 @@ import DateSelector from "./DateSelector";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { useFormContext } from "react-hook-form";
+import { ways } from "../../@types/sponsor-category";
 function SubContentSection() {
-  const { watch, register, setValue, getValues } = useFormContext();
+  const { watch, register, setValue } = useFormContext();
 
   //현재날짜와 후원 마감 날짜와의 차이를 계산하기 위한 state
   const [daysDifference, setDaysDifference] = useState(0);
-  const selectedWay = watch("way");
+  const selectedWay = watch("promise");
 
   // watch를 사용하여 endDate 필드의 변경을 감지
   const endDate = watch("endDate");
-
-  const ways = ["1회 인증", "4주 간 매 주 인증", "3개월 간 매 달 인증"];
 
   useEffect(() => {
     if (endDate) {
       const selectedDate = new Date(endDate);
       const today = new Date();
+
+      // 시간 부분을 제거하여 순수한 날짜만 비교하도록 설정
+      selectedDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
       const difference = Math.ceil(
-        (selectedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) - 1
+        (selectedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) + 1
       );
       setDaysDifference(difference);
     }
@@ -39,7 +43,7 @@ function SubContentSection() {
         <span className="content">동안 후원 게시물을 게시해요</span>
       </div>
       <label>*세부 내용</label>
-      <textarea {...register("description", { required: true })} />
+      <textarea {...register("reason", { required: true })} />
       {/* 후원인증방식 선택 */}
       <div className="flex flex-row items-center w-full mt-9">
         <label>*후원자와의 약속</label>
@@ -52,10 +56,10 @@ function SubContentSection() {
           <WayBtn
             type="button"
             key={index}
-            active={way === selectedWay}
-            onClick={() => setValue("way", way)}
+            active={way.id === selectedWay}
+            onClick={() => setValue("promise", way.id)}
           >
-            {way}
+            {way.label}
           </WayBtn>
         ))}
       </div>
