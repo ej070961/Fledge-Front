@@ -12,6 +12,7 @@ module.exports = {
       fontColor2: "#B3B0AC",
       fontColor3: "#AE7D43",
       white: "#FFFFFF",
+      red: "#F84141",
     },
     extend: {
       fontFamily: {

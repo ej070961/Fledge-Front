@@ -7,9 +7,11 @@ import SortOption from "./SortOption";
 import BannerItem from "./BannerItem";
 import LeftArrowIcon from "../../assets/icons/left-arrow";
 import RightArrowIcon from "../../assets/icons/right-arrow";
+import { useNavigate } from "react-router-dom";
 
 function AllPostSection() {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const navigate = useNavigate();
   const DummyData = [
     {
       remained: 4,
@@ -93,7 +95,13 @@ function AllPostSection() {
         {/* 검색창 */}
         <Search />
         {/* 게시물 등록 버튼 */}
-        <AddButton>후원 게시물 등록</AddButton>
+        <AddButton
+          onClick={() => {
+            navigate("/sponsor-register");
+          }}
+        >
+          후원 게시물 등록
+        </AddButton>
       </div>
 
       <div className="flex flex-row justify-between w-full mt-14">
