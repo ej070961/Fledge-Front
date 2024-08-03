@@ -6,7 +6,7 @@ import Footer from "../components/Common/Footer";
 import ProfileHeader from "../components/MyPage/Header";
 import UserBasicInfo from "../components/MyPage/UserBasicInfo";
 import { useState } from "react";
-import CanaryModal from "../components/MyPage/CanaryModal";
+import BadgeBoard from "../components/MyPage/BadgeBoard";
 
 function MyPage() {
     const [isCanary, setIsCanary] = useState(true);
@@ -14,14 +14,25 @@ function MyPage() {
     return (
         <Wrapper>
             <NavBar />
+
             {/* 프로필 상단 */}
             <ProfileHeader />
+
             {/* 챌린지 달성 뱃지 */}
+            <BadgeBoard />
+
             {/* 후원 인증 히스토리 */}
+
             {/* 회원 기본 정보 */}
             <UserBasicInfo />
+
+            {/* 자립준비청년 인증 */}
+            {/* <CanaryAuth /> */}
+
             {/* 회원 개인 정보*/}
+
             <Footer />
+
             {/* 자청년 인증 모달 */}
             {/* {isCanary && <CanaryModal />} */}
         </Wrapper>

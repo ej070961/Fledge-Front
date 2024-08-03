@@ -49,17 +49,6 @@ const UserBasicInfo = () => {
                     </div>
                 </div>
             </InfoInput>
-            {/* 자립준비청년 인증 */}
-            <div className="canary">
-                <div className="canary-header">
-                    <span className="sub-title">자립준비청년 인증</span>
-                    <span className="canary-desc">
-                        자립준비청년 인증을 진행해야 후원 게시물을 작성하고,
-                        멘토링을 신청할 수 있어요.
-                    </span>
-                </div>
-                <Button title="자립준비청년 인증하기" small mainColor />
-            </div>
         </Container>
     );
 };
@@ -68,7 +57,7 @@ export default UserBasicInfo;
 
 const Container = styled.div`
     ${tw`
-        mt-[71px] w-[1280px] mb-[108px]
+        mt-[71px] w-[1280px] 
     `}
 
     .user-info-header {
@@ -87,22 +76,6 @@ const Container = styled.div`
         ${tw`
             text-medium-20 font-medium text-fontColor3
         `}
-    }
-
-    .canary {
-        ${tw`
-            mt-[36px] flex flex-col gap-[22px] items-start
-        `}
-        .canary-header {
-            ${tw`
-            flex  gap-[11px] items-baseline
-        `}
-            .canary-desc {
-                ${tw`
-                text-medium-15 font-medium text-fontColor2
-            `}
-            }
-        }
     }
 `;
 
