@@ -188,7 +188,7 @@ const Body = styled.div`
 
 const Container = styled.div`
     ${tw`
-            mt-[72px] w-full flex flex-col gap-[49px] items-center
+            mt-[72px] mb-[287px] w-full flex flex-col gap-[49px] items-center
     `}
 `;
 
