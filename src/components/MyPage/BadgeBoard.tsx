@@ -16,7 +16,7 @@ import Badge from "./Badge";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Badges = [
     {
@@ -109,6 +109,16 @@ const BadgeBoard = () => {
     // 슬라이드 버튼 참조
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
+    const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
+        null
+    );
+
+    useEffect(() => {
+        if (swiperInstance) {
+            swiperInstance.navigation?.init();
+            swiperInstance.navigation?.update();
+        }
+    }, [swiperInstance]);
 
     return (
         <Container>
@@ -131,10 +141,7 @@ const BadgeBoard = () => {
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,
                         }}
-                        onSwiper={(swiper: SwiperClass) => {
-                            swiper.navigation.init();
-                            swiper.navigation.update();
-                        }}
+                        onSwiper={setSwiperInstance}
                     >
                         <div className="badges">
                             {Badges.map((badge, index) => (

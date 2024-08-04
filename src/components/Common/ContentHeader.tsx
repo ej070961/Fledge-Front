@@ -6,9 +6,15 @@ interface ContentHeaderProps {
     title: string;
     desc: string;
     onClick?: () => void;
+    imgSrc?: string;
 }
 
-const ContentHeader = ({ title, desc, onClick }: ContentHeaderProps) => {
+const ContentHeader = ({
+    title,
+    desc,
+    onClick,
+    imgSrc,
+}: ContentHeaderProps) => {
     return (
         <Container>
             <TextContainer>
@@ -18,6 +24,7 @@ const ContentHeader = ({ title, desc, onClick }: ContentHeaderProps) => {
             {onClick && (
                 <Image src={RightArrow} alt="right-arrow" onClick={onClick} />
             )}
+            {imgSrc && <img src={imgSrc} alt="content-desc-image" />}
         </Container>
     );
 };
