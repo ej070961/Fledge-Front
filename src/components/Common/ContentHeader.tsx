@@ -7,6 +7,10 @@ interface ContentHeaderProps {
     desc: string;
     onClick?: () => void;
     imgSrc?: string;
+    mt?: string;
+    mb?: string;
+    ml?: string;
+    mr?: string;
 }
 
 const ContentHeader = ({
@@ -14,9 +18,12 @@ const ContentHeader = ({
     desc,
     onClick,
     imgSrc,
+    mt,
+    mb,
+    ml,
 }: ContentHeaderProps) => {
     return (
-        <Container>
+        <Container mt={mt} mb={mb} ml={ml} mr={ml}>
             <TextContainer>
                 <Title>{title}</Title>
                 <Desc>{desc}</Desc>
@@ -24,12 +31,21 @@ const ContentHeader = ({
             {onClick && (
                 <Image src={RightArrow} alt="right-arrow" onClick={onClick} />
             )}
-            {imgSrc && <img src={imgSrc} alt="content-desc-image" />}
+            {imgSrc && (
+                <img src={imgSrc} alt="content-desc-image" className="image" />
+            )}
         </Container>
     );
 };
 
-const Container = styled.div`
+type MarginProps = {
+    mt?: string;
+    mb?: string;
+    ml?: string;
+    mr?: string;
+};
+
+const Container = styled.div<MarginProps>`
     ${tw`
         flex
         justify-between
@@ -37,6 +53,14 @@ const Container = styled.div`
         w-[1280px]
         m-auto
     `}
+    .image {
+        ${({ mt, mb, ml, mr }) => `
+        ${mt ? `margin-top: ${mt};` : ""}
+        ${mb ? `margin-bottom: ${mb};` : ""}
+        ${ml ? `margin-left: ${ml};` : ""}
+        ${mr ? `margin-right: ${mr};` : ""}
+    `}
+    }
 `;
 
 const Image = styled.img`

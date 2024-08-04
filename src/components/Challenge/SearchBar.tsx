@@ -36,6 +36,7 @@ const Keywords = styled.div`
         ${tw`
             h-[33px] border border-mainColor border-[2px] rounded-[37px] px-[12px]
             text-medium-20 font-medium text-mainColor flex items-center justify-center
+            bg-[250, 248, 245, 0.3]
         `}
     }
 `;
