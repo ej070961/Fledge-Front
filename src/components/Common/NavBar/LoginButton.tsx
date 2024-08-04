@@ -4,19 +4,18 @@ import { ReactComponent as KakaoSignUp } from "../../../assets/images/kakao_sign
 import { ReactComponent as KaKaoSignIn } from "../../../assets/images/kakao_sign_in.svg";
 import { useState } from "react";
 
-const LoginButton = () => {
+interface LoginButtonProps {
+    handleSign: () => void;
+}
+
+const LoginButton = ({ handleSign }: LoginButtonProps) => {
     const [isSignUpHovered, setIsSignUpHovered] = useState(false);
     const [isSignInHovered, setIsSignInHovered] = useState(false);
-
-    // 카카오 로그인 URL (백엔드)
-    const handleSign = () => {
-        window.location.href = "https://fledge.site/oauth2/authorization/kakao";
-    };
 
     return (
         <MenuContainer>
             <SocialContainer
-                onClick={handleSign}
+                onClick={() => handleSign()}
                 onMouseEnter={() => setIsSignUpHovered(true)}
                 onMouseLeave={() => setIsSignUpHovered(false)}
             >
@@ -28,7 +27,7 @@ const LoginButton = () => {
                 )}
             </SocialContainer>
             <SocialContainer
-                onClick={handleSign}
+                onClick={() => handleSign()}
                 onMouseEnter={() => setIsSignInHovered(true)}
                 onMouseLeave={() => setIsSignInHovered(false)}
             >

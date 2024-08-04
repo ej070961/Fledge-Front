@@ -11,45 +11,72 @@ import Bird from "../assets/images/bird.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import DefaultLayout from "../components/Common/DefaultLayout";
+import useAuthStore from "../storage/useAuthStore";
+import axios from "axios";
+import { get } from "http";
 
 function Main() {
-  // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
-  const location = useLocation();
-  const navigate = useNavigate();
+    // redirection 주소로 부터 accessToken을 받아와서 localStorage에 저장
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const accessToken = query.get("accessToken");
+    useEffect(() => {
+        const getUserInfo = async (accessToken: string) => {
+            await axios
+                .get("https://fledge.site/api/v1/members/me", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                })
+                .then((res) => {
+                    useAuthStore.setState({
+                        isLoggedIn: true,
+                        userData: res.data.data,
+                        accessToken: accessToken,
+                    });
+                })
+                .finally(() => {
+                    navigate("/");
+                });
+        };
+        const query = new URLSearchParams(location.search);
+        let accessToken = useAuthStore.getState().accessToken;
+        if (!accessToken) {
+            const token = query.get("accessToken");
+            if (token) {
+                accessToken = token;
+            }
+        }
+        if (accessToken && useAuthStore.getState().userData.id === undefined) {
+            getUserInfo(accessToken);
+        }
 
-    if (accessToken) {
-      localStorage.setItem("accessToken", accessToken);
-      navigate("/");
-    }
+        console.log(accessToken);
+    }, [location.search, navigate]);
 
-    console.log(accessToken);
-  }, [location, navigate]);
-
-  return (
-    <DefaultLayout>
-      <TagLine />
-      <Banner />
-      <ContentsContainer>
-        <DonationSection />
-        <ChallengeSection />
-        <MentoringSection />
-        <InformationSection />
-        <FledgeContainer>
-          <Title>fledge 플리지에게 흥미가 생기셨나요?</Title>
-          <Button title="fledge가 뭐에요?" />
-          <img src={Bird} alt="bird" />
-        </FledgeContainer>
-      </ContentsContainer>
-    </DefaultLayout>
-  );
+    return (
+        <DefaultLayout>
+            <TagLine />
+            <Banner />
+            <ContentsContainer>
+                <DonationSection />
+                <ChallengeSection />
+                <MentoringSection />
+                <InformationSection />
+                <FledgeContainer>
+                    <Title>fledge 플리지에게 흥미가 생기셨나요?</Title>
+                    <Button title="fledge가 뭐에요?" />
+                    <img src={Bird} alt="bird" />
+                </FledgeContainer>
+            </ContentsContainer>
+        </DefaultLayout>
+    );
 }
 
 const FledgeContainer = styled.div`
-  ${tw`
+    ${tw`
         flex
         flex-col
         items-center
@@ -59,7 +86,7 @@ const FledgeContainer = styled.div`
 `;
 
 const Title = styled.span`
-  ${tw`
+    ${tw`
         text-bold-64
         font-bold
         text-fontColor1
@@ -67,7 +94,7 @@ const Title = styled.span`
 `;
 
 const ContentsContainer = styled.div`
-  ${tw`
+    ${tw`
         flex
         flex-col
         items-center
