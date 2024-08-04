@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import DefaultLayout from "../components/Common/DefaultLayout";
 import Header from "../components/SponsorRegister/Header";
@@ -9,8 +9,9 @@ import ImageUploadSection from "../components/SponsorRegister/ImageUploadSection
 import AddressSection from "../components/SponsorRegister/AddressSection";
 import SubContentSection from "../components/SponsorRegister/SubContentSection";
 import AccountSection from "../components/SponsorRegister/AccountSection";
-import { postAccountItem } from "../apis/sponsor";
+import { postAccountItem, postAddressItem } from "../apis/sponsor";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../storage/useAuthStore";
 
 function SponsorRegister() {
   //mode를 onChange로 설정하여 폼 상태가 변경될때마다 유효성 검사 실행
@@ -20,7 +21,7 @@ function SponsorRegister() {
       title: "",
       item: "",
       price: 0,
-      category: "",
+      category: "DAILY_NECESSITY",
       itemUrl: "",
       promise: "ONCE",
       recipientName: "",
@@ -30,6 +31,9 @@ function SponsorRegister() {
       endDate: "",
       reason: "",
       images: [],
+      address: "",
+      detailAddress: "",
+      zip: "",
 
       // 추가 필드들
     },
@@ -42,10 +46,11 @@ function SponsorRegister() {
     formState: { isValid },
   } = methods;
 
-  console.log(isValid);
+  // console.log(isValid);
 
   const navigate = useNavigate();
-
+  const selectedCategory = watch("category");
+  const accesstoken = useAuthStore((state) => state.accessToken)!;
   //서버 api 요청 코드 추가 예정
   const onSubmit = async () => {
     const {
@@ -66,7 +71,11 @@ function SponsorRegister() {
       selectedCategory === "LEGAL_AID"
     ) {
       const { bank, account } = getValues();
-      const res = await postAccountItem({
+      if (bank === "" || account === "") {
+        alert("은행명 정보와 계좌번호를 입력해 주세요.");
+        return; // 요청 보내지 않음
+      }
+      const res = await postAccountItem(accesstoken, {
         title: title,
         reason: reason,
         item: item,
@@ -82,10 +91,41 @@ function SponsorRegister() {
       if (res.success) {
         navigate("/sponsor");
       }
+    } else {
+      const { address, detailAddress, zip, recipientName, phone } = getValues();
+      if (
+        address === "" ||
+        detailAddress === "" ||
+        zip === "" ||
+        recipientName === "" ||
+        phone === ""
+      ) {
+        alert("배송지 정보를 모두 입력해 주세요.");
+        return; // 요청 보내지 않음
+      }
+      const res = await postAddressItem(accesstoken, {
+        title: title,
+        reason: reason,
+        item: item,
+        price: price,
+        supportCategory: category,
+        purchaseUrl: itemUrl,
+        expirationDate: endDate,
+        promise: promise,
+
+        images: images,
+        address: address,
+        detailAddress: detailAddress,
+        zip: zip,
+        recipientName: recipientName,
+        phone: phone,
+      });
+      console.log(res.data);
+      if (res.success) {
+        navigate("/sponsor");
+      }
     }
   };
-
-  const selectedCategory = watch("category");
 
   return (
     <DefaultLayout>
@@ -119,7 +159,7 @@ const RegisterForm = styled.form`
   ${tw`flex flex-col mt-32 w-[1280px]`}
 `;
 
-const SubmitButton = styled.button<{ disabled: boolean }>`
+const SubmitButton = styled.button<{ disabled?: boolean }>`
   ${tw`w-52 h-12 font-sans font-bold text-bold-24 rounded-full transition-colors duration-200 my-[105px]`}
   ${({ disabled }) =>
     disabled

@@ -18,6 +18,7 @@ const ContentSection = () => {
       setValue("itemUrl", "판매사이트 없음");
     }
   }, [selectedCategory, setValue]);
+  console.log(getValues("category"));
   return (
     <>
       <Title>후원 게시물 본문</Title>
