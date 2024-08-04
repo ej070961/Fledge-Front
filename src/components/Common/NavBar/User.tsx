@@ -33,7 +33,7 @@ const Container = styled.div`
 
 const Profile = styled.img`
     ${tw`
-        pl-[20px]
+        ml-[20px] w-[44px] h-[44px] rounded-full object-cover
     `}
 `;
 
