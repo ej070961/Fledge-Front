@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import AccountForm from "./AccountForm";
 
 function AccountSection() {
-  const { getValues, setValue, watch } = useFormContext();
+  const { setValue, watch } = useFormContext();
   return (
     <>
       <Title>계좌번호 입력</Title>

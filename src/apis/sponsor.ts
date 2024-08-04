@@ -2,8 +2,10 @@ import axios from "axios";
 import { SponsorData } from "../@types/sponsor";
 import { CommonError } from "../@types/api";
 
-export const postAddressItem = async (data: SponsorData) => {
-  const accesstoken = localStorage.getItem("accessToken");
+export const postAddressItem = async (
+  accesstoken: string,
+  data: SponsorData
+) => {
   try {
     const res = await axios.post(
       "/api/v1/supports",
@@ -45,7 +47,10 @@ export const postAddressItem = async (data: SponsorData) => {
   }
 };
 
-export const postAccountItem = async (data: SponsorData) => {
+export const postAccountItem = async (
+  accessToken: string,
+  data: SponsorData
+) => {
   const accesstoken = localStorage.getItem("accessToken");
   try {
     const res = await axios.post(
@@ -72,6 +77,27 @@ export const postAccountItem = async (data: SponsorData) => {
       }
     );
 
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
+    }
+  }
+};
+
+export const getAddress = async (accesstoken: string) => {
+  try {
+    const res = await axios.get("/api/v1/canary/delivery", {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+        // 다른 헤더를 추가할 수 있습니다.
+        "Content-Type": "application/json",
+      },
+    });
     return res.data;
   } catch (error) {
     console.log(error);
