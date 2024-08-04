@@ -1,26 +1,36 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-
+import { ReactComponent as Search } from "../../assets/icons/search-icon.svg";
 interface InputProps {
-    hint: string;
+    icon?: boolean;
+    hint?: string;
     placeholder?: string;
     value?: string | number;
     width?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ hint, placeholder, value, width, onChange }: InputProps) => {
+const Input = ({
+    icon = false,
+    hint,
+    placeholder,
+    value,
+    width,
+    onChange,
+}: InputProps) => {
     return (
         <Container width={width}>
-            {" "}
             {/* 직접 width 속성을 전달 */}
             <span>{hint}</span>
-            <input
-                type="text"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-            />
+            <div className="input">
+                {icon && <Search />}
+                <input
+                    type="text"
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                />
+            </div>
         </Container>
     );
 };
@@ -40,9 +50,20 @@ const Container = styled.div<ContainerProps>`
             text-medium-20 font-medium text-fontColor3
         `}
     }
+    .input {
+        ${tw`
+            px-[21px] h-[46px] bg-white flex items-center rounded-full
+        `}
+        svg {
+            ${tw`
+                mr-[10px]
+            `}
+        }
+        width: 100%; /* Container 내부의 input 요소의 너비를 100%로 설정 */
+    }
     input {
         ${tw`
-            h-[46px] px-[21px] outline-none rounded-full text-medium-20 font-medium text-fontColor1 truncate
+            outline-none rounded-full text-medium-20 font-medium text-fontColor1 truncate pl-1
         `}
         width: 100%; /* 컨테이너 내에서 input의 너비를 100%로 설정 */
     }

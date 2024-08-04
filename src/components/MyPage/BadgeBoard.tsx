@@ -166,7 +166,7 @@ const BadgeSlide = styled.div`
         flex items-center gap-[50px]
     `}
     button {
-        z-index: 10;
+        z-index: 100;
     }
 `;
 

@@ -3,25 +3,27 @@ import tw from "twin.macro";
 import RightArrow from "../../assets/images/right-arrow.png";
 
 interface ContentHeaderProps {
-  title: string;
-  desc: string;
-  onClick?: () => void;
+    title: string;
+    desc: string;
+    onClick?: () => void;
 }
 
 const ContentHeader = ({ title, desc, onClick }: ContentHeaderProps) => {
-  return (
-    <Container>
-      <TextContainer>
-        <Title>{title}</Title>
-        <Desc>{desc}</Desc>
-      </TextContainer>
-      <Image src={RightArrow} alt="right-arrow" onClick={onClick} />
-    </Container>
-  );
+    return (
+        <Container>
+            <TextContainer>
+                <Title>{title}</Title>
+                <Desc>{desc}</Desc>
+            </TextContainer>
+            {onClick && (
+                <Image src={RightArrow} alt="right-arrow" onClick={onClick} />
+            )}
+        </Container>
+    );
 };
 
 const Container = styled.div`
-  ${tw`
+    ${tw`
         flex
         justify-between
         items-center
@@ -31,7 +33,7 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-  ${tw`
+    ${tw`
         w-[25.5px]
         h-[51px]
         cursor-pointer
@@ -39,7 +41,7 @@ const Image = styled.img`
 `;
 
 const TextContainer = styled.div`
-  ${tw`
+    ${tw`
         flex
         flex-col
         gap-[10px]
@@ -47,14 +49,14 @@ const TextContainer = styled.div`
 `;
 
 const Title = styled.span`
-  ${tw`
+    ${tw`
         text-bold-36
         font-bold
         text-fontColor1
     `}
 `;
 const Desc = styled.span`
-  ${tw`
+    ${tw`
         text-medium-20
         font-medium
         text-fontColor3
