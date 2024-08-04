@@ -61,7 +61,7 @@ const ChallengeItem = ({
 
 interface ChallengeLargeItemProps {
     title: string;
-    bubbleType: string;
+    bubbleType?: string;
     partnerImages?: string[];
     heartCount: number;
     challengeTypes: string[];
@@ -84,13 +84,19 @@ const ChallengeItemLarge = ({
     benefits,
     date,
 }: ChallengeLargeItemProps) => {
-    const BubbleType =
-        bubbleType === "partnership" ? BubblePartnership : BubbleOrganization;
+    let BubbleType = null;
+    if (bubbleType) {
+        BubbleType =
+            bubbleType === "partnership"
+                ? BubblePartnership
+                : BubbleOrganization;
+    }
+
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
 
     return (
         <Container>
-            <Bubble src={BubbleType} alt="bubble-hot" />
+            {BubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
             <BackgroundLarge>
                 <div>
                     <PartnerContainer hasPartners={hasPartners}>

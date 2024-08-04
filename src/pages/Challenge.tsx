@@ -4,6 +4,7 @@ import PageHeader from "../components/Common/PageHeader";
 import challenge from "../assets/images/challenge_banner.png";
 import HotChallenge from "../components/Challenge/HotChallenge";
 import BestChallenger from "../components/Challenge/BestChallenger";
+import ChainChallenge from "../components/Challenge/ChainChallenge";
 
 const Challenge = () => {
     return (
@@ -25,6 +26,7 @@ const Challenge = () => {
             <HotChallenge />
 
             {/* 연계 챌린지 */}
+            <ChainChallenge />
 
             {/* 신규 챌린지 */}
             {/* <NewChallenge /> */}

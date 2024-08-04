@@ -43,7 +43,7 @@ const HotChallenge = () => {
                         rows: 2,
                         fill: "row",
                     }}
-                    spaceBetween={30}
+                    spaceBetween={23}
                     pagination={{
                         clickable: true,
                     }}
@@ -190,7 +190,7 @@ const BestChallengerContainer = styled.div`
         items-center
         justify-between
         gap-[40px]
-        mt-[20px]
+        mt-[-90px]
     `}
 `;
 
@@ -203,6 +203,5 @@ const Container = styled.div`
 const StyledSwiper = styled(Swiper)`
     ${tw`
         w-[1280px]
-        mt-[-110px]
     `}
 `;

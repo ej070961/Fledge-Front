@@ -91,7 +91,7 @@ const Container = styled.div`
         ${tw`
             w-full flex justify-between gap-[40px]
         `}
-        animation: ${scroll} 20s linear infinite;
+        animation: ${scroll} 30s linear infinite;
         display: flex;
         white-space: nowrap;
         overflow: hidden;
