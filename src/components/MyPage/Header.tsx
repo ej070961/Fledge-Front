@@ -1,15 +1,12 @@
 import styled from "styled-components";
 import tw from "twin.macro";
+import profile from "../../assets/images/profile-big.png";
 
 const ProfileHeader = () => {
     return (
         <Profile>
             <span className="title">마이페이지</span>
-            <img
-                className="profile-image"
-                src="https://via.placeholder.com/150"
-                alt="프로필"
-            />
+            <img className="profile-image" src={profile} alt="프로필" />
             <span className="profile-name">카드값줘체리</span>
             <span className="change-name">닉네임 변경</span>
         </Profile>

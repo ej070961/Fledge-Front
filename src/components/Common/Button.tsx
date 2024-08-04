@@ -42,6 +42,8 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
         rounded-[30px]
         h-[46px]
     `}
+
+    margin-top: auto;
 `;
 
 export default Button;
