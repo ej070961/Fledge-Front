@@ -4,7 +4,7 @@ import tw from "twin.macro";
 import Button from "../Common/Button";
 import { useFormContext } from "react-hook-form";
 import PostalCode from "../MyPage/PostalCode";
-import { phoneRegex } from "../../utils/regex";
+
 import { getAddress } from "../../apis/sponsor";
 import useAuthStore from "../../storage/useAuthStore";
 
