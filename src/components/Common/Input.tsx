@@ -4,7 +4,7 @@ import tw from "twin.macro";
 interface InputProps {
     hint: string;
     placeholder?: string;
-    value?: string;
+    value?: string | number;
     width?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

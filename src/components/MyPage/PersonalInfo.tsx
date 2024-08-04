@@ -4,6 +4,7 @@ import DropDown from "../Common/DropDown";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
 import XIcon from "../../assets/icons/x-icon";
+import PostalCode from "./PostalCode";
 
 const PersonalInfo = () => {
     return (
@@ -35,21 +36,8 @@ const PersonalInfo = () => {
                     <textarea className="text" />
                 </div>
 
-                {/* 회원 개인 정보 3열*/}
-                <div className="first">
-                    <Input
-                        hint="거주 주소지"
-                        placeholder="서울특별시 강남구"
-                        width="577px"
-                    />
-                    <Input
-                        hint="상세 주소"
-                        placeholder="역삼동 123-4"
-                        width="199px"
-                    />
-                    <Input hint="우편번호" placeholder="12345" width="102px" />
-                    <Button title="우편번호 검색" mainColor />
-                </div>
+                {/* 주소 검색 */}
+                <PostalCode />
 
                 {/* 회원 개인 정보 4열*/}
                 <div className="fourth">
