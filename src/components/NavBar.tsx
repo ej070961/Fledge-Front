@@ -28,7 +28,9 @@ const NavBar = () => {
                 <MenuItem onClick={() => navigate("/sponsor")}>
                     후원하기
                 </MenuItem>
-                <MenuItem>챌린지</MenuItem>
+                <MenuItem onClick={() => navigate("/challenge")}>
+                    챌린지
+                </MenuItem>
                 <MenuItem onClick={() => navigate("/mentor-intro")}>
                     멘토링
                 </MenuItem>

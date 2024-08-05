@@ -10,7 +10,7 @@ import Benefit, { BenefitProps } from "./Benefit";
 
 interface ChallengeItemProps {
     title: string;
-    bubbleType: string;
+    bubbleType?: string;
     heartCount: number;
     challengeTypes: string[];
     description: string;
@@ -27,11 +27,13 @@ const ChallengeItem = ({
     successRate,
     participants,
 }: ChallengeItemProps) => {
-    const BubbleType = bubbleType === "hot" ? BubbleHot : BubbleNew;
-
+    let BubbleType = null;
+    if (bubbleType) {
+        BubbleType = bubbleType === "hot" ? BubbleHot : BubbleNew;
+    }
     return (
         <Container>
-            <Bubble src={BubbleType} alt="bubble-hot" />
+            {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
             <Background>
                 <div>
                     <ChallengeHeader>
@@ -59,7 +61,7 @@ const ChallengeItem = ({
 
 interface ChallengeLargeItemProps {
     title: string;
-    bubbleType: string;
+    bubbleType?: string;
     partnerImages?: string[];
     heartCount: number;
     challengeTypes: string[];
@@ -82,13 +84,19 @@ const ChallengeItemLarge = ({
     benefits,
     date,
 }: ChallengeLargeItemProps) => {
-    const BubbleType =
-        bubbleType === "partnership" ? BubblePartnership : BubbleOrganization;
+    let BubbleType = null;
+    if (bubbleType) {
+        BubbleType =
+            bubbleType === "partnership"
+                ? BubblePartnership
+                : BubbleOrganization;
+    }
+
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
 
     return (
         <Container>
-            <Bubble src={BubbleType} alt="bubble-hot" />
+            {BubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
             <BackgroundLarge>
                 <div>
                     <PartnerContainer hasPartners={hasPartners}>
