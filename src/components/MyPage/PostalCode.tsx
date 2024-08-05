@@ -4,53 +4,80 @@ import tw from "twin.macro";
 import Input from "../Common/Input";
 import { useState } from "react";
 import DaumPost from "../Common/DaumPost";
+import react, { useEffect } from "react";
 
-const PostalCode = () => {
-    const [popup, setPopup] = useState(false);
+interface postCode {
+  address: string;
+  zonecode: number | string;
+  detailAddress?: string;
+}
+interface PostalCodeProps {
+  initialAddress?: postCode;
+  onChange?: (data: postCode) => void;
+}
+const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
+  const [popup, setPopup] = useState(false);
 
-    interface postCode {
-        address: string;
-        zonecode: number | string;
+  const [form, setForm] = useState<postCode>({
+    address: "",
+    zonecode: "",
+  });
+
+  const handlePopup = () => {
+    setPopup(!popup);
+  };
+
+  useEffect(() => {
+    if (initialAddress) {
+      setForm(initialAddress);
     }
+  }, [initialAddress]);
 
-    const [form, setForm] = useState<postCode>({
-        address: "",
-        zonecode: "",
-    });
+  useEffect(() => {
+    if (onChange) {
+      onChange(form);
+    }
+  }, [form, onChange]);
 
-    const handlePopup = () => {
-        setPopup(!popup);
-    };
+  const handleDetailAddressChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForm((prevForm) => ({ ...prevForm, detailAddress: e.target.value }));
+  };
 
-    return (
-        <>
-            <Container>
-                <Input
-                    hint="거주 주소지"
-                    placeholder="거주 주소지"
-                    width="577px"
-                    value={form.address}
-                />
-                <Input hint="상세 주소" placeholder="상세 주소" width="199px" />
-                <Input
-                    hint="우편번호"
-                    placeholder="12345"
-                    width="102px"
-                    value={form.zonecode}
-                />
-                <Button title="우편번호 검색" mainColor onClick={handlePopup} />
-                {popup && (
-                    <DaumPost handlePopup={handlePopup} setAddress={setForm} />
-                )}
-            </Container>
-        </>
-    );
+  return (
+    <>
+      <Container>
+        <Input
+          hint="거주 주소지"
+          placeholder="거주 주소지"
+          width="577px"
+          value={form.address}
+        />
+        <Input
+          hint="상세 주소"
+          placeholder="상세 주소"
+          width="199px"
+          value={form.detailAddress}
+          onChange={handleDetailAddressChange}
+        />
+        <Input
+          hint="우편번호"
+          placeholder="12345"
+          width="102px"
+          value={form.zonecode}
+        />
+        <Button title="우편번호 검색" mainColor onClick={handlePopup} />
+        {popup && <DaumPost handlePopup={handlePopup} setAddress={setForm} />}
+      </Container>
+    </>
+  );
 };
 
 export default PostalCode;
 
 const Container = styled.div`
-    ${tw`
+  ${tw`
             flex gap-[23px] items-baseline relative
         `}
 `;
