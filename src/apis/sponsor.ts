@@ -109,3 +109,56 @@ export const getAddress = async (accesstoken: string) => {
     }
   }
 };
+
+export const getPagingPost = async (
+  page: number,
+  keyword: string,
+  categories: string[],
+  status: string
+) => {
+  const queryCategoryString = categories
+    .map((category) => `category=${encodeURIComponent(category)}`)
+    .join("&");
+
+  let url = `/api/v1/public/supports/paging?page=${page}&${queryCategoryString}&status=${status}`;
+  if (keyword) {
+    url += `&q=${encodeURIComponent(keyword)}`;
+  }
+  try {
+    const res = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
+    }
+  }
+};
+export const getDeadlinePost = async (page: number) => {
+  try {
+    const res = await axios.get(
+      `/api/v1/public/supports/deadline?paging=${page}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
+    }
+  }
+};

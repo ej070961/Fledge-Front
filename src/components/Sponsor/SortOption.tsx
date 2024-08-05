@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import useFilterStore from "../../storage/useFilterStore";
 
 function SortOption() {
-  const [status, setStatus] = useState("");
+  const { status, setStatus } = useFilterStore();
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setStatus(event.target.value);
@@ -12,8 +13,8 @@ function SortOption() {
   return (
     <>
       <Select value={status} onChange={handleChange}>
-        <option value="ongoing">진행 중</option>
-        <option value="ended">기간 종료</option>
+        <option value="ing">진행 중</option>
+        <option value="end">기간 종료</option>
       </Select>
     </>
   );

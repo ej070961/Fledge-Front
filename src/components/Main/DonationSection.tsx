@@ -15,7 +15,7 @@ const DonationSection = () => {
           window.scrollTo(0, 0);
         }}
       />
-      <Slider />
+      <Slider menu="main" />
     </Contents>
   );
 };
