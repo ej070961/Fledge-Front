@@ -1,4 +1,3 @@
-
 import create from "zustand";
 
 import { persist } from "zustand/middleware";
@@ -34,6 +33,7 @@ const useAuthStore = create(
         set({
           isLoggedIn: false,
           userData: {},
+          accessToken: "",
         }),
       userData: {},
       setUserData: (userData) => set({ userData }),

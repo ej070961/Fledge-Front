@@ -1,13 +1,14 @@
 import axios from "axios";
 import { SponsorData } from "../@types/sponsor";
 import { CommonError } from "../@types/api";
+import { axiosInstance } from ".";
 
 export const postAddressItem = async (
   accesstoken: string,
   data: SponsorData
 ) => {
   try {
-    const res = await axios.post(
+    const res = await axiosInstance.post(
       "/api/v1/supports",
       {
         title: data.title,
@@ -28,10 +29,7 @@ export const postAddressItem = async (
       {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
-          // 다른 헤더를 추가할 수 있습니다.
-          "Content-Type": "application/json",
         },
-        withCredentials: true,
       }
     );
 
@@ -48,12 +46,11 @@ export const postAddressItem = async (
 };
 
 export const postAccountItem = async (
-  accessToken: string,
+  accesstoken: string,
   data: SponsorData
 ) => {
-  const accesstoken = localStorage.getItem("accessToken");
   try {
-    const res = await axios.post(
+    const res = await axiosInstance.post(
       "/api/v1/supports",
       {
         title: data.title,
@@ -91,7 +88,7 @@ export const postAccountItem = async (
 
 export const getAddress = async (accesstoken: string) => {
   try {
-    const res = await axios.get("/api/v1/canary/delivery", {
+    const res = await axiosInstance.get("/api/v1/canary/delivery", {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
         // 다른 헤더를 추가할 수 있습니다.
@@ -158,7 +155,6 @@ export const getDeadlinePost = async (page: number) => {
       const errorCode = error.response.data.errorCode;
       const message = error.response.data.message;
       console.log(`${errorCode}: ${message}`);
-      alert(message);
     }
   }
 };
