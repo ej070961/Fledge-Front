@@ -7,6 +7,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import PageHeader from "../components/Common/PageHeader";
 import DefaultLayout from "../components/Common/DefaultLayout";
+
 function Sponsor() {
   return (
     <DefaultLayout>
@@ -26,7 +27,7 @@ function Sponsor() {
             건네주세요.
           </span>
         </ContentWrapper>
-        <Slider />
+        <Slider menu="sponsor" />
 
         {/* 모든 후원글 목록 */}
         <ContentWrapper>

@@ -23,7 +23,7 @@ function AddressSection() {
   });
   const getAddressData = async () => {
     const res = await getAddress(accesstoken!);
-    if (res.success) {
+    if (res && res.success) {
       const { address, detailAddress, zip, name, phone } = res.data;
       setValue("address", address);
       setValue("detailAddress", detailAddress);

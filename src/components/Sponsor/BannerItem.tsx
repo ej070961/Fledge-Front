@@ -1,26 +1,29 @@
 import React from "react";
 import tw from "twin.macro";
 import { styled, keyframes } from "styled-components";
-import PostImg from "../../assets/images/postDummyImg.png";
-type SponsorItemProps = {
-  remained: number;
-  detail: string;
-  progressNum: number;
-  price: string;
-};
-function BannerItem(data: SponsorItemProps) {
+import NoImg from "../../assets/images/no_img.png";
+import { SponsorBannerData } from "../../@types/sponsor";
+
+function BannerItem(data: SponsorBannerData) {
+  console.log(data);
   return (
     <Card>
-      <Image imageUrl={PostImg} />
+      <Image
+        imageUrl={data.supportPostImageUrl ? data.supportPostImageUrl : NoImg}
+      />
       <Background />
-      <Content remained={data.remained}>
-        <span className="d-day-text">D-{data.remained}</span>
-        <span className="title-text">{data.detail}</span>
+      <Content remained={data.leftDays}>
+        <span className="d-day-text">D-{data.leftDays}</span>
+        <span className="title-text">{data.title}</span>
         <div className="progress-wrapper">
-          <span className="progress-text">진행률 {data.progressNum}%</span>
-          <span className="progress-text">{data.price}</span>
+          <span className="progress-text">
+            진행률 {data.supportRecord.progress}%
+          </span>
+          <span className="progress-text">
+            {data.supportRecord.totalPrice}원
+          </span>
         </div>
-        <ProgressBar progress={data.progressNum} />
+        <ProgressBar progress={data.supportRecord.progress} />
       </Content>
     </Card>
   );
@@ -53,7 +56,7 @@ const Background = styled.div`
   );
 `;
 
-const Content = styled.div<{ remained: number }>`
+const Content = styled.div<{ remained: string }>`
   ${tw`flex flex-col mt-64 z-10 w-64 mx-auto `}
   span {
     cursor: default;
@@ -61,11 +64,11 @@ const Content = styled.div<{ remained: number }>`
 
   .d-day-text {
     ${tw`font-sans text-bold-36 font-bold`}
-    color: ${({ remained }: { remained: number }) => {
-      if (remained === 3) return "#FFE9E9";
-      if (remained === 2) return "#FFB6B6";
-      if (remained === 1) return "#EE5D5D";
-      if (remained === 0) return "#F84141";
+    color: ${({ remained }: { remained: string }) => {
+      if (remained === "3") return "#FFE9E9";
+      if (remained === "2") return "#FFB6B6";
+      if (remained === "1") return "#EE5D5D";
+      if (remained === "0") return "#F84141";
       return "#FFFFFF"; // default color
     }};
   }

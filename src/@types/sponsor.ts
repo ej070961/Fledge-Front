@@ -16,3 +16,20 @@ export interface SponsorData {
   detailAddress?: string;
   zip?: string;
 }
+
+export interface PagingData {
+  totalPosts: number;
+  totalPages?: number;
+  supportPosts: SponsorBannerData;
+}
+export interface SponsorBannerData {
+  supportId: number;
+  title: string;
+  leftDays: string;
+  supportPostImageUrl?: string;
+  supportRecord: {
+    totalPrice: number;
+    supportedPrice: number;
+    progress: number;
+  };
+}

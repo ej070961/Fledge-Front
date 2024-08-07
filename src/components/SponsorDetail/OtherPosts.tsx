@@ -11,7 +11,7 @@ function OtherPosts() {
           당신의 작은 도움이 자립준비청년들의 큰 가능성을 열어갑니다.
         </span>
       </Container>
-      <Slider />
+      <Slider menu="other" />
     </>
   );
 }
