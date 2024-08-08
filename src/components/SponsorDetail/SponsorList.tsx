@@ -2,56 +2,49 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import Polygon from "../../assets/icons/polygon";
-function SponsorList() {
-  const names = [
-    "니콜키크드만",
-    "독도는록시땅",
-    "라이언고슬밥",
-    "빛과송금",
-    "니콜키크드만",
-    "독도는록시땅",
-    "라이언고슬밥",
-    "빛과송금",
-    "니콜키크드만",
-    "독도는록시땅",
-    "라이언고슬밥",
-    "빛과송금",
-    "니콜키크드만",
-    "독도는록시땅",
-    "라이언고슬밥",
-    "빛과송금",
-  ];
+import { Supporter } from "../../@types/sponsor";
+import HeartImg from "../../assets/images/sponsor_heart.png";
+type SponsorListProps = {
+  supporters: Supporter[];
+  nickname: string;
+};
+function SponsorList({ supporters, nickname }: SponsorListProps) {
   //호버 된 아이템 인덱스를 담을 state
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   return (
     <Container>
       <span className="title">후원자 명단</span>
-      <span className="desc">
-        카드값줘체리 님을 후원해주신 분들의 명단이에요.
-      </span>
+      <span className="desc">{nickname}님을 후원해주신 분들의 명단이에요.</span>
       <NameWrapper>
-        {names.map((name, index) => (
-          <NameBoxContainer
-            key={index}
-            onMouseEnter={() => setHoverIndex(index)}
-            onMouseLeave={() => setHoverIndex(null)}
-          >
-            <NameBox>
-              <label className="name">{name}</label>
-            </NameBox>
-            {hoverIndex === index && (
-              <HoverContainer>
-                <div className="flex flex-col items-center">
-                  <HoverBox>
-                    <span className="bold-20">10,000원 후원</span>
-                    <span className="medium-12">2024년 01월 01일</span>
-                  </HoverBox>
-                  <Polygon width={36} height={36} color="#FFFFFF" />
-                </div>
-              </HoverContainer>
-            )}
-          </NameBoxContainer>
-        ))}
+        {supporters.length > 0 ? (
+          supporters.map((supporter, index) => (
+            <NameBoxContainer
+              key={index}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() => setHoverIndex(null)}
+            >
+              <NameBox>
+                <label className="name">{supporter.key}</label>
+              </NameBox>
+              {hoverIndex === index && (
+                <HoverContainer>
+                  <div className="flex flex-col items-center">
+                    <HoverBox>
+                      <span className="medium-12">후원 금액</span>
+                      <span className="bold-20">{supporter.value}원</span>
+                    </HoverBox>
+                    <Polygon width={36} height={36} color="#FFFFFF" />
+                  </div>
+                </HoverContainer>
+              )}
+            </NameBoxContainer>
+          ))
+        ) : (
+          <NoSponsorBox>
+            <span>자립준비청년이 도움을 기다리고 있어요.</span>
+            <img src={HeartImg} alt="하트이미지" width={64} height={64} />
+          </NoSponsorBox>
+        )}
       </NameWrapper>
     </Container>
   );
@@ -95,5 +88,13 @@ const HoverBox = styled.div`
   }
   .medium-12 {
     ${tw`font-medium text-[12px] text-fontColor3`}
+  }
+`;
+
+const NoSponsorBox = styled.div`
+  ${tw`w-full h-[168px] bg-white [border-radius: 16px] flex flex-col items-center justify-center`}
+
+  span {
+    ${tw`font-sans font-medium text-medium-20 text-fontColor2`}
   }
 `;

@@ -1,5 +1,5 @@
-import axios from "axios";
-import { SponsorData } from "../@types/sponsor";
+import axios, { AxiosResponse } from "axios";
+import { SponsorData, SponsorDetailData } from "../@types/sponsor";
 import { CommonError } from "../@types/api";
 import { axiosInstance } from ".";
 
@@ -138,6 +138,7 @@ export const getPagingPost = async (
     }
   }
 };
+
 export const getDeadlinePost = async (page: number) => {
   try {
     const res = await axios.get(
@@ -148,6 +149,50 @@ export const getDeadlinePost = async (page: number) => {
         },
       }
     );
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const getSupportsInfo = async (supportId: string) => {
+  try {
+    const res = await axiosInstance.get(`/api/v1/public/supports/${supportId}`);
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const getProgressInfo = async (supportId: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `/api/v1/public/supports/${supportId}/progress`
+    );
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const getCanaryInfo = async (memberId: number) => {
+  try {
+    const res = await axiosInstance.get(`/api/v1/canary/${memberId}/supports`);
     return res.data.data;
   } catch (error) {
     console.log(error);

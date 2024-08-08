@@ -35,7 +35,7 @@ function MyPage() {
             후원을 받고 인증했던 히스토리를 다시 볼 수 있어요.
           </span>
         </Header>
-        <Slider menu="my" />
+        {/* <Slider menu="my" /> */}
       </SponsorWrapper>
 
       {/* 회원 기본 정보 */}

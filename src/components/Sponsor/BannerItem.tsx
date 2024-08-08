@@ -3,27 +3,35 @@ import tw from "twin.macro";
 import { styled, keyframes } from "styled-components";
 import NoImg from "../../assets/images/no_img.png";
 import { SponsorBannerData } from "../../@types/sponsor";
+import { useNavigate } from "react-router-dom";
 
-function BannerItem(data: SponsorBannerData) {
-  console.log(data);
+function BannerItem({
+  supportId,
+  supportPostImageUrl,
+  leftDays,
+  title,
+  supportRecord,
+}: SponsorBannerData) {
+  const navigate = useNavigate();
   return (
-    <Card>
-      <Image
-        imageUrl={data.supportPostImageUrl ? data.supportPostImageUrl : NoImg}
-      />
+    <Card
+      onClick={() => {
+        navigate(`/sponsor-detail/${supportId}`);
+        window.scrollTo(0, 0);
+      }}
+    >
+      <Image imageUrl={supportPostImageUrl ? supportPostImageUrl : NoImg} />
       <Background />
-      <Content remained={data.leftDays}>
-        <span className="d-day-text">D-{data.leftDays}</span>
-        <span className="title-text">{data.title}</span>
+      <Content remained={leftDays}>
+        <span className="d-day-text">D-{leftDays}</span>
+        <span className="title-text">{title}</span>
         <div className="progress-wrapper">
           <span className="progress-text">
-            진행률 {data.supportRecord.progress}%
+            진행률 {supportRecord.progress}%
           </span>
-          <span className="progress-text">
-            {data.supportRecord.totalPrice}원
-          </span>
+          <span className="progress-text">{supportRecord.totalPrice}원</span>
         </div>
-        <ProgressBar progress={data.supportRecord.progress} />
+        <ProgressBar progress={supportRecord.progress} />
       </Content>
     </Card>
   );
@@ -35,7 +43,7 @@ type ImageProps = {
   imageUrl: string;
 };
 const Card = styled.div`
-  ${tw`w-[300px] h-[415px] [border-radius: 16px] flex flex-col overflow-hidden relative `}
+  ${tw`w-[300px] h-[415px] [border-radius: 16px] flex flex-col overflow-hidden relative cursor-pointer `}
   flex: 0 0 auto; // 고정 너비를 유지
 `;
 
@@ -49,11 +57,7 @@ const Image = styled.div<ImageProps>`
 `;
 const Background = styled.div`
   ${tw`absolute inset-0 [border-radius: 16px] flex flex-col`}
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 10.44%,
-    #000000 120.07%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10.44%, rgba(0, 0, 0, 0.5) 120.07%);
 `;
 
 const Content = styled.div<{ remained: string }>`
