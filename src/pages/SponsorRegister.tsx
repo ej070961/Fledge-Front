@@ -12,10 +12,28 @@ import AccountSection from "../components/SponsorRegister/AccountSection";
 import { postAccountItem, postAddressItem } from "../apis/sponsor";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../storage/useAuthStore";
-
+import { getPresignedUrl, uploadImageToS3 } from "../apis/file-upload";
+interface FormData {
+  title: string;
+  item: string;
+  price: number;
+  category: string;
+  itemUrl: string;
+  promise: string;
+  recipientName: string;
+  phone: string;
+  bank: string;
+  account: string;
+  endDate: string;
+  reason: string;
+  images: File[]; // 이미지 필드의 타입을 File 배열로 명시
+  address: string;
+  detailAddress: string;
+  zip: string;
+}
 function SponsorRegister() {
   //mode를 onChange로 설정하여 폼 상태가 변경될때마다 유효성 검사 실행
-  const methods = useForm({
+  const methods = useForm<FormData>({
     mode: "onChange",
     defaultValues: {
       title: "",
@@ -65,6 +83,22 @@ function SponsorRegister() {
       images,
     } = getValues();
 
+    const uploadedImages = [];
+    // presigned URL 요청
+    if (images && images.length > 0) {
+      for (let file of images) {
+        const presignedData = await getPresignedUrl(
+          "support-post",
+          file.name,
+          accesstoken
+        );
+        const presignedUrl = presignedData.data.url; // presigned URL
+        const filePath = presignedData.data.filePath; // 파일 경로
+        await uploadImageToS3(file, presignedUrl);
+        uploadedImages.push(filePath);
+      }
+    }
+
     if (
       selectedCategory === "EDUCATION" ||
       selectedCategory === "MEDICAL" ||
@@ -86,7 +120,7 @@ function SponsorRegister() {
         promise: promise,
         bank: bank,
         account: account,
-        images: images,
+        images: uploadedImages,
       });
       if (res.success) {
         navigate("/sponsor");
@@ -113,7 +147,7 @@ function SponsorRegister() {
         expirationDate: endDate,
         promise: promise,
 
-        images: images,
+        images: uploadedImages,
         address: address,
         detailAddress: detailAddress,
         zip: zip,

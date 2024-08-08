@@ -6,7 +6,13 @@ import Dropdown from "./Dropdown";
 import { categories } from "../../@types/sponsor-category";
 
 const ContentSection = () => {
-  const { register, setValue, getValues, watch } = useFormContext();
+  const {
+    register,
+    setValue,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useFormContext();
   const selectedCategory = watch("category");
 
   useEffect(() => {
@@ -34,7 +40,19 @@ const ContentSection = () => {
         </InputBox>
         <InputBox className="w-1/3">
           <label>*후원 물품 금액</label>
-          <input type="text" {...register("price", { required: true })} />
+          <input
+            type="text"
+            {...register("price", {
+              required: true,
+              validate: (value) =>
+                parseFloat(value) > 0 || "금액은 0원보다 커야 합니다.",
+            })}
+          />
+          {errors.price && (
+            <span className="absolute mt-24 ml-2 text-[red]">
+              {errors.price.message?.toString()}
+            </span>
+          )}
         </InputBox>
         <InputBox className="w-[166px]">
           <label>*카테고리</label>
