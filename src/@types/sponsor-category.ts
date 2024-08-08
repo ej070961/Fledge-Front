@@ -46,3 +46,8 @@ export const banks: Category[] = [
   { id: "090", label: "카카오뱅크" },
   { id: "092", label: "토스뱅크" },
 ];
+
+export const sorts: Category[] = [
+  { id: "ing", label: "후원 중" },
+  { id: "end", label: "후원 종료" },
+];

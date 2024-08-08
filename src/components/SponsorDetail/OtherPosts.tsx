@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import Slider from "../Sponsor/Slider";
+import DeadlinePosts from "../Sponsor/DeadlinePosts";
 function OtherPosts() {
   return (
     <>
@@ -11,7 +12,7 @@ function OtherPosts() {
           당신의 작은 도움이 자립준비청년들의 큰 가능성을 열어갑니다.
         </span>
       </Container>
-      <Slider menu="other" />
+      <DeadlinePosts />
     </>
   );
 }
