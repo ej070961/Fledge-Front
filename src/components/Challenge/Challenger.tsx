@@ -1,34 +1,8 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import CrownIcon from "../../assets/icons/crown-icon";
-
-type ChallengerProps = {
-    imgSrc: string;
-    name: string;
-    desc: string;
-    categoryList: string[];
-    rank: number;
-};
-
-// 챌린지 카테고리 매핑
-type CategoryMap = {
-    [key: string]: string;
-    LIFE: "생활";
-    MIND_CONTROL: "마인드컨트롤";
-    SELF_DEVELOPMENT: "자기계발";
-    FINANCIAL_MANAGEMENT: "재정관리";
-    CERTIFICATION: "자격증";
-    EXERCISE: "운동";
-};
-
-const categoryMap: CategoryMap = {
-    LIFE: "생활",
-    MIND_CONTROL: "마인드컨트롤",
-    SELF_DEVELOPMENT: "자기계발",
-    FINANCIAL_MANAGEMENT: "재정관리",
-    CERTIFICATION: "자격증",
-    EXERCISE: "운동",
-};
+import { challengeType } from "../../@types/challenge-category";
+import { ChallengerProps } from "../../@types/challenge";
 
 const Challenger = ({
     imgSrc = "https://via.placeholder.com/150",
@@ -49,7 +23,10 @@ const Challenger = ({
                 <div className="category-list">
                     {categoryList.map((item, index) => (
                         <div key={index} className="category">
-                            {categoryMap[item]}
+                            {
+                                challengeType.find((type) => type.id === item)
+                                    ?.label
+                            }
                         </div>
                     ))}
                 </div>

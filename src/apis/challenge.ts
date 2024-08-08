@@ -2,13 +2,25 @@ import axios from "axios";
 import { axiosInstance } from ".";
 import { CommonError } from "../@types/api";
 
-export const getChallenges = async (accessToken: string) => {
+export const getChallenges = async (
+    accessToken: string,
+    page: number,
+    size: number,
+    type: string,
+    categories?: string[]
+) => {
     try {
         const res = await axiosInstance.get(
             `https://www.fledge.site/api/v1/public/challenges`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
+                },
+                params: {
+                    page: page,
+                    size: size,
+                    type: type,
+                    categories: categories,
                 },
             }
         );
@@ -46,13 +58,23 @@ export const getTopParticipants = async (accessToken: string) => {
     }
 };
 
-export const getPartnershipChallenges = async (accessToken: string) => {
+export const getPartnershipChallenges = async (
+    accessToken: string,
+    page: number,
+    size: number,
+    categories?: string[]
+) => {
     try {
         const res = await axiosInstance.get(
             `https://www.fledge.site/api/v1/public/challenges/partnership-and-organization`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
+                },
+                params: {
+                    page: page,
+                    size: size,
+                    categories: categories,
                 },
             }
         );

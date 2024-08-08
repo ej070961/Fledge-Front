@@ -6,6 +6,7 @@ import { getTopParticipants } from "../../apis/challenge";
 import { useQuery } from "@tanstack/react-query";
 import useAuthStore from "../../storage/useAuthStore";
 import defaultProfile from "../../assets/images/profile-big.png";
+import { BestChallengerProps } from "../../@types/challenge";
 
 type ChallengerProps = {
     memberId: number;
@@ -44,7 +45,7 @@ const BestChallenger = () => {
             />
             <div className="challenger-list">
                 {topChallengersData.data.map(
-                    (challenger: ChallengerProps, index: number) => (
+                    (challenger: BestChallengerProps, index: number) => (
                         <Challenger
                             key={index}
                             imgSrc={defaultProfile}
