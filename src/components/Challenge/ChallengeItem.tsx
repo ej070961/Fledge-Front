@@ -7,6 +7,7 @@ import BubbleOrganization from "../../assets/images/bubble-organization.png";
 import ProgressBar from "../Common/ProgressBar";
 import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
+import { challengeType } from "../../@types/challenge-category";
 
 interface ChallengeItemProps {
     title: string;
@@ -29,7 +30,7 @@ const ChallengeItem = ({
 }: ChallengeItemProps) => {
     let BubbleType = null;
     if (bubbleType) {
-        BubbleType = bubbleType === "hot" ? BubbleHot : BubbleNew;
+        BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
     }
     return (
         <Container>
@@ -42,14 +43,20 @@ const ChallengeItem = ({
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
-                            <ChallengeType key={index}>{type}</ChallengeType>
+                            <ChallengeType key={index}>
+                                {
+                                    challengeType.find(
+                                        (item) => item.id === type
+                                    )?.label
+                                }
+                            </ChallengeType>
                         ))}
                     </ChallengeTypeList>
                     <ChallengeDescription>{description}</ChallengeDescription>
                 </div>
                 <ChallengeParticipants>
                     <ParticipantText>
-                        <span>{successRate}% 성공!</span>
+                        <span>{successRate.toFixed(1)}% 성공!</span>
                         <span>{participants}명 참여</span>
                     </ParticipantText>
                     <ProgressBar rate={successRate} />
@@ -205,6 +212,7 @@ const Title = styled.span`
         text-bold-24
         font-bold
         text-fontColor1
+        break-keep
     `}
 `;
 

@@ -3,7 +3,6 @@ import { axiosInstance } from ".";
 import { CommonError } from "../@types/api";
 
 export const getChallenges = async (
-    accessToken: string,
     page: number,
     size: number,
     type: string,
@@ -13,9 +12,6 @@ export const getChallenges = async (
         const res = await axiosInstance.get(
             `https://www.fledge.site/api/v1/public/challenges`,
             {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
                 params: {
                     page: page,
                     size: size,
@@ -36,15 +32,10 @@ export const getChallenges = async (
     }
 };
 
-export const getTopParticipants = async (accessToken: string) => {
+export const getTopParticipants = async () => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/top-participants`,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }
+            `https://www.fledge.site/api/v1/public/challenges/top-participants`
         );
         return res.data;
     } catch (error) {
@@ -59,7 +50,6 @@ export const getTopParticipants = async (accessToken: string) => {
 };
 
 export const getPartnershipChallenges = async (
-    accessToken: string,
     page: number,
     size: number,
     categories?: string[]
@@ -68,9 +58,6 @@ export const getPartnershipChallenges = async (
         const res = await axiosInstance.get(
             `https://www.fledge.site/api/v1/public/challenges/partnership-and-organization`,
             {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
                 params: {
                     page: page,
                     size: size,

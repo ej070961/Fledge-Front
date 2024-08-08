@@ -10,13 +10,21 @@ type ChallengeListProps = {
     title: string;
     desc: string;
     imgSrc: string;
+    type: string;
+    categories?: string[];
 };
 
-const ChallengeList = ({ title, desc, imgSrc }: ChallengeListProps) => {
+const ChallengeList = ({
+    title,
+    desc,
+    imgSrc,
+    type,
+    categories,
+}: ChallengeListProps) => {
     return (
         <Container>
             <ContentHeader title={title} desc={desc} imgSrc={imgSrc} />
-            <ChallengeGrid />
+            <ChallengeGrid type={type} categories={categories} />
         </Container>
     );
 };

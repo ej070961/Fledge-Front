@@ -31,6 +31,7 @@ const Challenge = () => {
                 title="인기 있는 챌린지"
                 desc="지금 가장 HOT한 챌린지들을 만나보세요!"
                 imgSrc={hot}
+                type="popular"
             />
 
             {/* 연계 챌린지 */}
@@ -41,6 +42,7 @@ const Challenge = () => {
                 title="신규 챌린지"
                 desc="새로 갱신된 흥미로운 챌린지들을 만나보세요!"
                 imgSrc={newImg}
+                type="new"
             />
 
             {/* 카테고리별 모아보기 */}

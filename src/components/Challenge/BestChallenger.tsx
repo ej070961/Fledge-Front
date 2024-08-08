@@ -30,12 +30,10 @@ const BestChallenger = () => {
     const { accessToken } = useAuthStore();
     const { data: topChallengersData, isLoading } = useQuery({
         queryKey: ["getTopParticipants"],
-        queryFn: () => getTopParticipants(accessToken!),
+        queryFn: () => getTopParticipants(),
     });
 
     if (isLoading) return <div></div>;
-
-    console.log(topChallengersData);
 
     return (
         <Container>
