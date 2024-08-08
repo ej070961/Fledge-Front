@@ -5,6 +5,7 @@ import tw from "twin.macro";
 import Arrow from "../../assets/images/under-arrow-small.png";
 import Button from "../../components/Common/Button";
 import useAuthStore from "../../storage/useAuthStore";
+import DropDown from "../Common/DropDown";
 
 const UserBasicInfo = () => {
     const userData = useAuthStore((state) => state.userData);
@@ -43,15 +44,18 @@ const UserBasicInfo = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className="input">
-                    <span className="sub-title">회원 구분</span>
-                    <div className="select">
-                        <span>
-                            {USERTYPE.find((item) => item.value === type)?.name}
-                        </span>
-                        <img src={Arrow} alt="화살표" />
-                    </div>
-                </div>
+                <DropDown
+                    hint="회원 구분"
+                    value={USERTYPE.find((item) => item.value === type)?.name}
+                    items={USERTYPE.map((item) => item.name)}
+                    onChange={(e) =>
+                        setType(
+                            USERTYPE.find(
+                                (item) => item.name === e.target.value
+                            )?.value
+                        )
+                    }
+                />
             </InfoInput>
         </Container>
     );

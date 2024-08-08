@@ -187,7 +187,6 @@ const PersonalInfo = () => {
                                 onChange={(e) =>
                                     handleArea("sido", e.target.value)
                                 }
-                                width="100px"
                             />
                             <DropDown
                                 items={["시/군/구", "강동구"]}

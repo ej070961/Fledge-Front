@@ -93,20 +93,33 @@ const DropdownButton = styled.div`
     ${tw`
         flex items-center gap-[4px] h-[46px] bg-white px-[19px] rounded-full text-medium-20 font-medium text-fontColor1 cursor-pointer
     `}
+    span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 `;
 
 const DropdownList = styled.ul`
     ${tw`
-        w-full bg-white rounded-[16px] absolute top-[90px] left-0 z-[1]
+        bg-white rounded-[16px] absolute top-[90px] left-0 z-[1]
     `}
+    width: auto; // 너비를 자동 조절
+    min-width: 100%; // 최소 너비를 100%로 설정
     max-height: 200px;
     overflow-y: auto;
 `;
+
 const DropdownItem = styled.li`
     ${tw`
-        h-[46px] px-[19px] text-medium-20 font-medium text-fontColor1 cursor-pointer z-[10]
+        px-[19px] text-medium-20 font-medium text-fontColor1 cursor-pointer z-[10]
         flex items-center
     `}
+    min-height: 46px; // 최소 높이 유지
+    white-space: nowrap; // 텍스트가 한 줄에 표시
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: auto; // 너비를 자동 조절
     &:hover {
         ${tw`
             bg-background
