@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import Button from "../Common/Button";
 
-const CanaryAuth = () => {
+const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
     return (
         <Container>
             <div className="canary-header">
@@ -12,7 +12,12 @@ const CanaryAuth = () => {
                     멘토링을 신청할 수 있어요.
                 </span>
             </div>
-            <Button title="자립준비청년 인증하기" small mainColor />
+            <Button
+                title="자립준비청년 인증하기"
+                onClick={() => onClick()}
+                small
+                mainColor
+            />
         </Container>
     );
 };

@@ -13,73 +13,83 @@ import Input from "../components/Common/Input";
 import DropDown from "../components/Common/DropDown";
 import Button from "../components/Common/Button";
 import PersonalInfo from "../components/MyPage/PersonalInfo";
+import CanaryModal from "../components/MyPage/CanaryModal";
+import useAuthStore from "../storage/useAuthStore";
 
 function MyPage() {
-  const [isCanary, setIsCanary] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { userData } = useAuthStore.getState();
+    const isCanary = userData.role === "CANARY";
 
-  return (
-    <Wrapper>
-      <NavBar />
+    return (
+        <Wrapper>
+            <NavBar />
 
-      {/* 프로필 상단 */}
-      <ProfileHeader />
+            {/* 프로필 상단 */}
+            <ProfileHeader />
 
-      {/* 챌린지 달성 뱃지 */}
-      <BadgeBoard />
+            {/* 챌린지 달성 뱃지 */}
+            {isCanary && <BadgeBoard />}
 
-      {/* 후원 인증 히스토리 */}
-      <SponsorWrapper>
-        <Header>
-          <span className="title-text">후원 인증 히스토리</span>
-          <span className="sub-text">
-            후원을 받고 인증했던 히스토리를 다시 볼 수 있어요.
-          </span>
-        </Header>
-        <Slider menu="my" />
-      </SponsorWrapper>
+            {/* 후원 인증 히스토리 */}
+            <SponsorWrapper>
+                <Header>
+                    <span className="title-text">후원 인증 히스토리</span>
+                    <span className="sub-text">
+                        후원을 받고 인증했던 히스토리를 다시 볼 수 있어요.
+                    </span>
+                </Header>
+                <Slider menu="my" />
+            </SponsorWrapper>
 
-      {/* 회원 기본 정보 */}
-      <UserBasicInfo />
+            {/* 회원 기본 정보 */}
+            <UserBasicInfo />
 
-      {/* 자립준비청년 인증 */}
-      <CanaryAuth />
+            {/* 자립준비청년 인증 */}
+            {!isCanary && <CanaryAuth onClick={() => setIsModalOpen(true)} />}
 
-      {/* 회원 개인 정보*/}
-      <PersonalInfo />
+            {/* 회원 개인 정보*/}
+            {isCanary && <PersonalInfo />}
 
-      {/* 자청년 인증 모달 */}
-      {/* {isCanary && <CanaryModal />} */}
-      <Footer />
-    </Wrapper>
-  );
+            {/* 자청년 인증 모달 */}
+            {isModalOpen && (
+                <CanaryModal
+                    onClick={() => {
+                        setIsModalOpen(false);
+                    }}
+                />
+            )}
+            <Footer />
+        </Wrapper>
+    );
 }
 
 const SponsorWrapper = styled.div`
-  ${tw`
+    ${tw`
         w-[1280px] flex flex-col items-center mb-[280px]
     `}
 `;
 
 const Wrapper = styled.div`
-  ${tw`
+    ${tw`
             w-full flex flex-col justify-center items-center font-sans text-fontColor1
         `}
 `;
 
 const Header = styled.div`
-  ${tw`
+    ${tw`
             w-[1280px] flex flex-col items-start gap-[3px]
         `}
-  .title-text {
-    ${tw`
+    .title-text {
+        ${tw`
                 text-bold-36 font-bold text-fontColor1
             `}
-  }
-  .sub-text {
-    ${tw`
+    }
+    .sub-text {
+        ${tw`
                 text-medium-20 font-medium text-fontColor3
             `}
-  }
+    }
 `;
 
 export default MyPage;

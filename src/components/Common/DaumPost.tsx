@@ -24,31 +24,25 @@ const DaumPost = (props: any) => {
             ...props,
             address: fullAddress,
             zonecode: data.zonecode,
+            detailAddress: "",
         });
 
         props.handlePopup();
     };
 
     return (
-        <Background>
+        <>
             <Container>
                 <DaumPostcodeEmbed onComplete={complete} {...props} />
             </Container>
-        </Background>
+        </>
     );
 };
 
 export default DaumPost;
 
-const Background = styled.div`
-    ${tw`
-        absolute  z-50 top-[100px]
-    `}
-`;
-
 const Container = styled.div`
     ${tw`
-        bg-white z-50
-        w-[1280px]
+        absolute  z-50 top-0 left-0 right-0 bottom-0
     `}
 `;
