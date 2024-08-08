@@ -63,3 +63,25 @@ export const postCanaryApply = async (
         }
     }
 };
+
+export const getCanaryStatus = async (userId: number, accessToken: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://fledge.site/api/v1/canary/${userId}/status`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
