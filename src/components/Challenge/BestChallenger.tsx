@@ -1,53 +1,20 @@
 import styled, { keyframes } from "styled-components";
 import tw from "twin.macro";
-import CrownIcon from "../../assets/icons/crown-icon";
 import ContentHeader from "../Common/ContentHeader";
 import Challenger from "./Challenger";
+import { getTopParticipants } from "../../apis/challenge";
+import { useQuery } from "@tanstack/react-query";
+import useAuthStore from "../../storage/useAuthStore";
+import defaultProfile from "../../assets/images/profile-big.png";
 
-const challenger = [
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 1,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 2,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 1,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 2,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 3,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "40/41개 챌린지 성공!",
-        categoryList: ["주거", "금융"],
-        rank: 1,
-    },
-];
+type ChallengerProps = {
+    memberId: number;
+    memberName: string;
+    participationCount: number;
+    successCount: number;
+    successRate: number;
+    topCategories: string[];
+};
 
 const scroll = keyframes`
     from {
@@ -59,6 +26,16 @@ const scroll = keyframes`
 `;
 
 const BestChallenger = () => {
+    const { accessToken } = useAuthStore();
+    const { data: topChallengersData, isLoading } = useQuery({
+        queryKey: ["getTopParticipants"],
+        queryFn: () => getTopParticipants(accessToken!),
+    });
+
+    if (isLoading) return <div></div>;
+
+    console.log(topChallengersData);
+
     return (
         <Container>
             <ContentHeader
@@ -66,16 +43,23 @@ const BestChallenger = () => {
                 desc="금주의 베스트 챌린저! 베스트 챌린저는 어떤 챌린지에 참여했을까요?"
             />
             <div className="challenger-list">
-                {challenger.map((challenger, index) => (
-                    <Challenger
-                        key={index}
-                        imgSrc={challenger.imgSrc}
-                        name={challenger.name}
-                        desc={challenger.desc}
-                        categoryList={challenger.categoryList}
-                        rank={challenger.rank}
-                    />
-                ))}
+                {topChallengersData.data.map(
+                    (challenger: ChallengerProps, index: number) => (
+                        <Challenger
+                            key={index}
+                            imgSrc={defaultProfile}
+                            name={challenger.memberName}
+                            desc={
+                                challenger.successCount +
+                                "/" +
+                                challenger.participationCount +
+                                "개 챌린지 성공!"
+                            }
+                            categoryList={challenger.topCategories}
+                            rank={4 - Math.floor(challenger.successRate / 30)}
+                        />
+                    )
+                )}
             </div>
         </Container>
     );

@@ -10,6 +10,26 @@ type ChallengerProps = {
     rank: number;
 };
 
+// 챌린지 카테고리 매핑
+type CategoryMap = {
+    [key: string]: string;
+    LIFE: "생활";
+    MIND_CONTROL: "마인드컨트롤";
+    SELF_DEVELOPMENT: "자기계발";
+    FINANCIAL_MANAGEMENT: "재정관리";
+    CERTIFICATION: "자격증";
+    EXERCISE: "운동";
+};
+
+const categoryMap: CategoryMap = {
+    LIFE: "생활",
+    MIND_CONTROL: "마인드컨트롤",
+    SELF_DEVELOPMENT: "자기계발",
+    FINANCIAL_MANAGEMENT: "재정관리",
+    CERTIFICATION: "자격증",
+    EXERCISE: "운동",
+};
+
 const Challenger = ({
     imgSrc = "https://via.placeholder.com/150",
     name,
@@ -27,9 +47,9 @@ const Challenger = ({
                     <p className="desc">{desc}</p>
                 </div>
                 <div className="category-list">
-                    {categoryList.map((category, index) => (
+                    {categoryList.map((item, index) => (
                         <div key={index} className="category">
-                            {category}
+                            {categoryMap[item]}
                         </div>
                     ))}
                 </div>
