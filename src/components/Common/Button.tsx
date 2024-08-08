@@ -45,8 +45,10 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
         text-[white]
         font-sans
         text-nowrap
+        border-[3px]
+        border-subColor
     `}
-    ${({ mainColor }) => mainColor && tw`bg-mainColor`}
+    ${({ mainColor }) => mainColor && tw`bg-mainColor border-mainColor`}
     ${({ small }) =>
         small &&
         tw`
@@ -57,6 +59,8 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
         h-[46px]
     `}
     ${({ background }) => background === "white" && tw`bg-white text-subColor`}
+    ${({ background, mainColor }) =>
+        background === "white" && mainColor && tw`text-mainColor`}
 
     margin-top: auto;
 `;

@@ -7,11 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 
 const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
     const { userData, accessToken } = useAuthStore.getState();
-    const { data: applyStatus } = useQuery({
+    const { data: applyStatus, isLoading } = useQuery({
         queryKey: ["getCanaryStatus", userData.id, accessToken],
         queryFn: () => getCanaryStatus(userData.id!, accessToken!),
     });
-    console.log(applyStatus.data);
+    console.log(applyStatus);
+
+    if (isLoading) return <div></div>;
+
     return (
         <Container>
             <div className="canary-header">
@@ -27,14 +30,18 @@ const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
                     onClick={() => onClick()}
                     small
                     mainColor
-                    background="white"
                 />
             )}
             {applyStatus.data === 1 && (
                 <Button title="자립준비청년 인증대기" small />
             )}
             {applyStatus.data === 2 && (
-                <Button title="자립준비청년 인증완료" small mainColor />
+                <Button
+                    title="자립준비청년 인증완료"
+                    small
+                    mainColor
+                    background="white"
+                />
             )}
         </Container>
     );

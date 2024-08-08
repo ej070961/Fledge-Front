@@ -25,10 +25,10 @@ const PersonalInfo = () => {
         dong: "",
     });
 
-    // const { data, isLoading, isError } = useQuery({
-    //     queryKey: ["getCanaryProfile", userData.id, accessToken],
-    //     queryFn: () => getCanaryProfile(userData.id!, accessToken!),
-    // });
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["getCanaryProfile", userData.id, accessToken],
+        queryFn: () => getCanaryProfile(userData.id!, accessToken!),
+    });
 
     const [viewData, setViewData] = useState({
         id: 0,
@@ -44,17 +44,17 @@ const PersonalInfo = () => {
         interestArea: ["서울특별시"],
     });
 
-    // useEffect(() => {
-    //     if (data) {
-    //         setDisabled(false);
-    //         setViewData(data);
-    //         setBirthData({
-    //             year: data.birth.split("-")[0],
-    //             month: data.birth.split("-")[1],
-    //             day: data.birth.split("-")[2],
-    //         });
-    //     }
-    // }, [data]);
+    useEffect(() => {
+        if (data) {
+            setDisabled(false);
+            setViewData(data.data);
+            setBirthData({
+                year: data.data.birth.split("-")[0],
+                month: data.data.birth.split("-")[1],
+                day: data.data.birth.split("-")[2],
+            });
+        }
+    }, [data]);
 
     const handleInterestArea = (area: string) => {
         if (viewData.interestArea.length < 10) {
@@ -83,7 +83,10 @@ const PersonalInfo = () => {
         if (
             area.sido.length > 0 &&
             area.sigungu.length > 0 &&
-            area.dong.length > 0
+            area.dong.length > 0 &&
+            area.sido !== "시/도" &&
+            area.sigungu !== "시/군/구" &&
+            area.dong !== "행정구/시"
         ) {
             handleInterestArea(`${area.sido} ${area.sigungu} ${area.dong}`);
         } else {
@@ -94,6 +97,13 @@ const PersonalInfo = () => {
     const handleBirthData = (key: string, value: string) => {
         setBirthData({
             ...birthData,
+            [key]: value,
+        });
+    };
+
+    const handleViewData = (key: string, value: any) => {
+        setViewData({
+            ...viewData,
             [key]: value,
         });
     };
@@ -136,13 +146,26 @@ const PersonalInfo = () => {
                             width="100px"
                         />
                     </div>
-                    <DropDown hint="성별" items={["남성", "여성"]} />
+                    <DropDown
+                        hint="성별"
+                        items={["남성", "여성"]}
+                        value={viewData.gender === true ? "남성" : "여성"}
+                        onChange={(e) => {
+                            handleViewData("gender", e.target.value === "남성");
+                        }}
+                    />
                 </div>
 
                 {/* 회원 개인 정보 2열*/}
                 <div className="second">
                     <div className="sub-text">소개글</div>
-                    <textarea className="text" value={viewData.introduction} />
+                    <textarea
+                        className="text"
+                        value={viewData.introduction}
+                        onChange={(e) =>
+                            handleViewData("introduction", e.target.value)
+                        }
+                    />
                 </div>
 
                 {/* 주소 검색 */}
@@ -164,6 +187,7 @@ const PersonalInfo = () => {
                                 onChange={(e) =>
                                     handleArea("sido", e.target.value)
                                 }
+                                width="100px"
                             />
                             <DropDown
                                 items={["시/군/구", "강동구"]}
@@ -212,7 +236,7 @@ export default PersonalInfo;
 
 const Header = styled.div`
     ${tw`
-            w-[1280px] flex flex-col items-start gap-[3px]
+            w-[1280px] flex flex-col items-start gap-[3px] text-bold-36 font-bold text-fontColor1
         `}
 `;
 

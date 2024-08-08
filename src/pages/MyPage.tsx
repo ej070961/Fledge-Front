@@ -32,16 +32,19 @@ function MyPage() {
             {isCanary && <BadgeBoard />}
 
             {/* 후원 인증 히스토리 */}
-            {/* <SponsorWrapper>
-                <Header>
-                    <span className="title-text">후원 인증 히스토리</span>
-                    <span className="sub-text">
-                        후원을 받고 인증했던 히스토리를 다시 볼 수 있어요.
-                    </span>
-                </Header>
-                <Slider menu="my" />
-            </SponsorWrapper> */}
-
+            {isCanary && (
+                <SponsorWrapper>
+                    <Header>
+                        <span className="title-text">
+                            내가 등록한 후원 게시물
+                        </span>
+                        <span className="sub-text">
+                            게시한 후원 게시물과 진행 상황을 확인할 수 있어요.
+                        </span>
+                    </Header>
+                    <Slider menu="sponsor" />
+                </SponsorWrapper>
+            )}
             {/* 회원 기본 정보 */}
             <UserBasicInfo />
 
