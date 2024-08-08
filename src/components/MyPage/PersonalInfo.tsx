@@ -3,10 +3,101 @@ import tw from "twin.macro";
 import DropDown from "../Common/DropDown";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
-import XIcon from "../../assets/icons/x-icon";
+
 import PostalCode from "./PostalCode";
+import { useEffect, useState } from "react";
+import { getCanaryProfile } from "../../apis/canary";
+import { useQuery } from "@tanstack/react-query";
+import useAuthStore from "../../storage/useAuthStore";
+import Location from "./Location";
 
 const PersonalInfo = () => {
+    const { userData, accessToken } = useAuthStore.getState();
+    const [disabled, setDisabled] = useState(true);
+    const [birthData, setBirthData] = useState({
+        year: "2000",
+        month: "1",
+        day: "1",
+    });
+    const [area, setArea] = useState({
+        sido: "",
+        sigungu: "",
+        dong: "",
+    });
+
+    // const { data, isLoading, isError } = useQuery({
+    //     queryKey: ["getCanaryProfile", userData.id, accessToken],
+    //     queryFn: () => getCanaryProfile(userData.id!, accessToken!),
+    // });
+
+    const [viewData, setViewData] = useState({
+        id: 0,
+        phone: "",
+        birth: "",
+        gender: true,
+        introduction: "",
+        address: "",
+        detailAddress: "",
+        zip: "",
+        latitude: 0,
+        longitude: 0,
+        interestArea: ["서울특별시"],
+    });
+
+    // useEffect(() => {
+    //     if (data) {
+    //         setDisabled(false);
+    //         setViewData(data);
+    //         setBirthData({
+    //             year: data.birth.split("-")[0],
+    //             month: data.birth.split("-")[1],
+    //             day: data.birth.split("-")[2],
+    //         });
+    //     }
+    // }, [data]);
+
+    const handleInterestArea = (area: string) => {
+        if (viewData.interestArea.length < 10) {
+            setViewData({
+                ...viewData,
+                interestArea: [...viewData.interestArea, area],
+            });
+        }
+    };
+
+    const handleDeleteInterestArea = (area: string) => {
+        setViewData({
+            ...viewData,
+            interestArea: viewData.interestArea.filter((item) => item !== area),
+        });
+    };
+
+    const handleArea = (key: string, value: string) => {
+        setArea({
+            ...area,
+            [key]: value,
+        });
+    };
+
+    const handleSave = () => {
+        if (
+            area.sido.length > 0 &&
+            area.sigungu.length > 0 &&
+            area.dong.length > 0
+        ) {
+            handleInterestArea(`${area.sido} ${area.sigungu} ${area.dong}`);
+        } else {
+            alert("지역을 선택해주세요.");
+        }
+    };
+
+    const handleBirthData = (key: string, value: string) => {
+        setBirthData({
+            ...birthData,
+            [key]: value,
+        });
+    };
+
     return (
         <>
             {/* 회원 개인 정보 헤더 */}
@@ -18,14 +109,32 @@ const PersonalInfo = () => {
             <Container>
                 {/* 회원 개인 정보 1열*/}
                 <div className="first">
-                    <Input hint="휴대폰 번호" placeholder="010-1234-5678" />
+                    <Input hint="휴대폰 번호" value={viewData.phone} />
                     <div className="birth">
                         <DropDown
                             hint="생년월일"
-                            items={["1990년", "1991년", "1992년"]}
+                            type="year"
+                            value={birthData.year + "년"}
+                            onChange={(e) =>
+                                handleBirthData("year", e.target.value)
+                            }
                         />
-                        <DropDown items={["01월", "02월", "03월"]} />
-                        <DropDown items={["01일", "02일", "03일"]} />
+                        <DropDown
+                            type="month"
+                            value={birthData.month + "월"}
+                            onChange={(e) =>
+                                handleBirthData("month", e.target.value)
+                            }
+                            width="100px"
+                        />
+                        <DropDown
+                            type="day"
+                            value={birthData.day + "일"}
+                            onChange={(e) =>
+                                handleBirthData("day", e.target.value)
+                            }
+                            width="100px"
+                        />
                     </div>
                     <DropDown hint="성별" items={["남성", "여성"]} />
                 </div>
@@ -33,7 +142,7 @@ const PersonalInfo = () => {
                 {/* 회원 개인 정보 2열*/}
                 <div className="second">
                     <div className="sub-text">소개글</div>
-                    <textarea className="text" />
+                    <textarea className="text" value={viewData.introduction} />
                 </div>
 
                 {/* 주소 검색 */}
@@ -49,24 +158,48 @@ const PersonalInfo = () => {
                     </div>
                     <div className="selection">
                         <div className="selection-item">
-                            <DropDown items={["시/도", "경기", "인천"]} />
-                            <DropDown items={["시/군/구", "강동구"]} />
-                            <DropDown items={["행정구/시", "청담동"]} />
-                            <Button title="저장" mainColor />
+                            <DropDown
+                                items={["시/도", "경기", "인천"]}
+                                value={area.sido}
+                                onChange={(e) =>
+                                    handleArea("sido", e.target.value)
+                                }
+                            />
+                            <DropDown
+                                items={["시/군/구", "강동구"]}
+                                value={area.sigungu}
+                                onChange={(e) =>
+                                    handleArea("sigungu", e.target.value)
+                                }
+                            />
+                            <DropDown
+                                items={["행정구/시", "청담동"]}
+                                value={area.dong}
+                                onChange={(e) =>
+                                    handleArea("dong", e.target.value)
+                                }
+                            />
+                            <Button
+                                title="저장"
+                                mainColor
+                                onClick={() => {
+                                    handleSave();
+                                }}
+                            />
                         </div>
                         <div className="selected-list">
-                            <div className="selected-item">
-                                <span>서울특별시 전체</span>
-                                <button>
-                                    <XIcon />
-                                </button>
-                            </div>
-                            <div className="selected-item">
-                                <span>서울특별시 전체</span>
-                                <button>
-                                    <XIcon />
-                                </button>
-                            </div>
+                            {viewData.interestArea.map(
+                                (area, index) =>
+                                    area.length > 0 && (
+                                        <Location
+                                            key={index}
+                                            text={area}
+                                            onClick={() => {
+                                                handleDeleteInterestArea(area);
+                                            }}
+                                        />
+                                    )
+                            )}
                         </div>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ function MyPage() {
             {isCanary && <BadgeBoard />}
 
             {/* 후원 인증 히스토리 */}
-            <SponsorWrapper>
+            {/* <SponsorWrapper>
                 <Header>
                     <span className="title-text">후원 인증 히스토리</span>
                     <span className="sub-text">
@@ -40,13 +40,13 @@ function MyPage() {
                     </span>
                 </Header>
                 <Slider menu="my" />
-            </SponsorWrapper>
+            </SponsorWrapper> */}
 
             {/* 회원 기본 정보 */}
             <UserBasicInfo />
 
             {/* 자립준비청년 인증 */}
-            {!isCanary && <CanaryAuth onClick={() => setIsModalOpen(true)} />}
+            <CanaryAuth onClick={() => setIsModalOpen(true)} />
 
             {/* 회원 개인 정보*/}
             {isCanary && <PersonalInfo />}

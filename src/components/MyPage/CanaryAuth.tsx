@@ -11,6 +11,7 @@ const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
         queryKey: ["getCanaryStatus", userData.id, accessToken],
         queryFn: () => getCanaryStatus(userData.id!, accessToken!),
     });
+    console.log(applyStatus.data);
     return (
         <Container>
             <div className="canary-header">
@@ -20,19 +21,20 @@ const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
                     멘토링을 신청할 수 있어요.
                 </span>
             </div>
-            {applyStatus === 0 ? (
+            {applyStatus.data === 0 && (
                 <Button
                     title="자립준비청년 인증하기"
                     onClick={() => onClick()}
                     small
                     mainColor
+                    background="white"
                 />
-            ) : (
-                <Button
-                    title="자립준비청년 인증 진행중"
-                    onClick={() => onClick()}
-                    small
-                />
+            )}
+            {applyStatus.data === 1 && (
+                <Button title="자립준비청년 인증대기" small />
+            )}
+            {applyStatus.data === 2 && (
+                <Button title="자립준비청년 인증완료" small mainColor />
             )}
         </Container>
     );

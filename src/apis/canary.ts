@@ -85,3 +85,30 @@ export const getCanaryStatus = async (userId: number, accessToken: string) => {
         }
     }
 };
+
+export const putCanaryProfile = async (
+    userId: number,
+    editedProfile: CanaryApplyForm,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.put(
+            `https://fledge.site/api/v1/canary/${userId}`,
+            editedProfile,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
