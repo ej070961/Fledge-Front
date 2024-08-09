@@ -2,28 +2,27 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import ContentHeader from "../Common/ContentHeader";
 import LeftArrowIcon from "../../assets/icons/left-arrow";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { ChallengeItemLarge } from "./ChallengeItem";
 import RightArrowIcon from "../../assets/icons/right-arrow";
-import { useEffect, useRef, useState } from "react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
 import chain from "../../assets/images/challenge_chain.png";
-const ChainChallenge = () => {
-    const prevRef = useRef<HTMLButtonElement>(null);
-    const nextRef = useRef<HTMLButtonElement>(null);
-    const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
-        null
-    );
+import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getPartnershipChallenges } from "../../apis/challenge";
 
-    useEffect(() => {
-        if (swiperInstance) {
-            swiperInstance.navigation?.init();
-            swiperInstance.navigation?.update();
-        }
-    }, [swiperInstance]);
+const ChainChallenge = () => {
+    const [page, setPage] = useState<number>(0);
+
+    const { data: challengeData, isLoading } = useQuery({
+        queryKey: ["getPartnershipChallenges", page],
+        queryFn: () => getPartnershipChallenges(page, 2),
+        enabled: true,
+        placeholderData: keepPreviousData,
+    });
+
+    if (isLoading) return <div></div>;
+
+    console.log(challengeData);
+
     return (
         <Container>
             <ContentHeader
@@ -32,99 +31,32 @@ const ChainChallenge = () => {
                 imgSrc={chain}
             />
             <ChallengerContainer>
-                <button ref={prevRef}>
+                <button onClick={() => setPage(page - 1)} disabled={page === 0}>
                     <LeftArrowIcon width={24} height={51} />
                 </button>
-                <StyledSwiper
-                    onSwiper={setSwiperInstance}
-                    slidesPerView={2}
-                    spaceBetween={23}
-                    pagination={{
-                        clickable: true,
-                    }}
-                    modules={[Navigation]}
-                    navigation={{
-                        prevEl: prevRef.current,
-                        nextEl: nextRef.current,
-                    }}
+                <ChallengeSlider>
+                    {challengeData.data.content.map(
+                        (challenge: any, index: number) => (
+                            <ChallengeItemLarge
+                                key={index}
+                                title={challenge.title}
+                                bubbleType={challenge.type}
+                                heartCount={challenge.likeCount}
+                                challengeTypes={challenge.categories}
+                                description={challenge.description}
+                                successRate={challenge.successRate}
+                                participants={challenge.participantCount}
+                                startDate={challenge.startDate}
+                                endDate={challenge.endDate}
+                                supportContent={challenge.supportContent}
+                            />
+                        )
+                    )}
+                </ChallengeSlider>
+                <button
+                    onClick={() => setPage(page + 1)}
+                    disabled={challengeData.data.last}
                 >
-                    <SwiperSlide>
-                        <ChallengeItemLarge
-                            title="1주 1권 독서하기"
-                            heartCount={3}
-                            challengeTypes={["명상", "자기계발"]}
-                            description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                            successRate={75}
-                            participants={123}
-                            date="2021.09.01 ~ 2021.09.30"
-                            benefits={[
-                                {
-                                    title: "맞춤형 주거지원",
-                                    price: "최대 300만원",
-                                },
-                                {
-                                    title: "자격증 취득 지원",
-                                    price: "최대 100만원",
-                                },
-                                {
-                                    title: "자격증 취득 격려금",
-                                    price: "인당 30만원",
-                                },
-                            ]}
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ChallengeItemLarge
-                            title="1주 1권 독서하기"
-                            heartCount={3}
-                            challengeTypes={["명상", "자기계발"]}
-                            description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                            successRate={75}
-                            participants={123}
-                            date="2021.09.01 ~ 2021.09.30"
-                            benefits={[
-                                {
-                                    title: "맞춤형 주거지원",
-                                    price: "최대 300만원",
-                                },
-                                {
-                                    title: "자격증 취득 지원",
-                                    price: "최대 100만원",
-                                },
-                                {
-                                    title: "자격증 취득 격려금",
-                                    price: "인당 30만원",
-                                },
-                            ]}
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ChallengeItemLarge
-                            title="1주 1권 독서하기"
-                            heartCount={3}
-                            challengeTypes={["명상", "자기계발"]}
-                            description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                            successRate={75}
-                            participants={123}
-                            date="2021.09.01 ~ 2021.09.30"
-                            benefits={[
-                                {
-                                    title: "맞춤형 주거지원",
-                                    price: "최대 300만원",
-                                },
-                                {
-                                    title: "자격증 취득 지원",
-                                    price: "최대 100만원",
-                                },
-                                {
-                                    title: "자격증 취득 격려금",
-                                    price: "인당 30만원",
-                                },
-                            ]}
-                        />
-                    </SwiperSlide>
-                </StyledSwiper>
-                <button ref={nextRef}>
                     <RightArrowIcon width={24} height={51} />
                 </button>
             </ChallengerContainer>
@@ -150,8 +82,8 @@ const Container = styled.div`
     `}
 `;
 
-const StyledSwiper = styled(Swiper)`
+const ChallengeSlider = styled.div`
     ${tw`
-        w-[1280px]
-    `}
+    grid grid-cols-2  gap-[23px]
+`}
 `;

@@ -8,7 +8,6 @@ import { useState } from "react";
 
 const CategoryChallenge = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    console.log(selectedCategories);
 
     const handleSelectCategory = (category: string) => {
         if (selectedCategories.includes(category)) {

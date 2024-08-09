@@ -30,8 +30,6 @@ const ChallengeGrid = ({ type, categories }: ChallengeGridProps) => {
         setPage(0);
     }, [categories]);
 
-    console.log(challengeData);
-
     if (isLoading) return <div></div>;
     if (challengeData === undefined) return <div></div>;
 
