@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import LeftArrowIcon from "../../assets/icons/left-arrow";
@@ -14,18 +14,26 @@ type ChallengeGridProps = {
 
 const ChallengeGrid = ({ type, categories }: ChallengeGridProps) => {
     const [page, setPage] = useState<number>(0);
+    const isCategory = categories !== undefined;
     const {
         data: challengeData,
         isLoading,
         error,
     } = useQuery({
-        queryKey: ["getChallengeData", page],
-        queryFn: () => getChallenges(page, 8, type, categories),
+        queryKey: ["getChallengeData", page, type, categories || []],
+        queryFn: () => getChallenges(page, 8, type, categories || []),
         enabled: true,
         placeholderData: keepPreviousData,
     });
 
+    useEffect(() => {
+        setPage(0);
+    }, [categories]);
+
+    console.log(challengeData);
+
     if (isLoading) return <div></div>;
+    if (challengeData === undefined) return <div></div>;
 
     return (
         <ChallengerContainer>
@@ -44,6 +52,7 @@ const ChallengeGrid = ({ type, categories }: ChallengeGridProps) => {
                             description={challenge.description}
                             successRate={challenge.successRate}
                             participants={challenge.participantCount}
+                            isCategory={isCategory}
                         />
                     )
                 )}
@@ -66,6 +75,7 @@ const ChallengerContainer = styled.div`
         justify-between
         gap-[40px]
         mt-[-80px]
+        w-[1400px]
     `}
 `;
 

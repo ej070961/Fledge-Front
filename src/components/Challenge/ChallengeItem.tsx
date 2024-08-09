@@ -17,6 +17,7 @@ interface ChallengeItemProps {
     description: string;
     successRate: number;
     participants: number;
+    isCategory?: boolean;
 }
 
 const ChallengeItem = ({
@@ -27,11 +28,14 @@ const ChallengeItem = ({
     description,
     successRate,
     participants,
+    isCategory,
 }: ChallengeItemProps) => {
     let BubbleType = null;
-    if (bubbleType) {
-        BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
-    }
+    if (!isCategory) {
+        if (bubbleType) {
+            BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
+        }
+    } else bubbleType = undefined;
     return (
         <Container>
             {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
