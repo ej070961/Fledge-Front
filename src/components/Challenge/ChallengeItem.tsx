@@ -8,6 +8,7 @@ import ProgressBar from "../Common/ProgressBar";
 import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
 import { challengeType } from "../../@types/challenge-category";
+import { useCallback } from "react";
 
 interface ChallengeItemProps {
     title: string;
@@ -17,6 +18,7 @@ interface ChallengeItemProps {
     description: string;
     successRate: number;
     participants: number;
+    isCategory?: boolean;
 }
 
 const ChallengeItem = ({
@@ -27,11 +29,14 @@ const ChallengeItem = ({
     description,
     successRate,
     participants,
+    isCategory,
 }: ChallengeItemProps) => {
     let BubbleType = null;
-    if (bubbleType) {
-        BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
-    }
+    if (!isCategory) {
+        if (bubbleType) {
+            BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
+        }
+    } else bubbleType = undefined;
     return (
         <Container>
             {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
@@ -75,8 +80,9 @@ interface ChallengeLargeItemProps {
     description: string;
     successRate: number;
     participants: number;
-    benefits?: BenefitProps[];
-    date: string;
+    startDate: string;
+    endDate: string;
+    supportContent?: string;
 }
 
 const ChallengeItemLarge = ({
@@ -88,18 +94,41 @@ const ChallengeItemLarge = ({
     description,
     successRate,
     participants,
-    benefits,
-    date,
+    startDate,
+    endDate,
+    supportContent,
 }: ChallengeLargeItemProps) => {
     let BubbleType = null;
+    let supportTitle = "";
     if (bubbleType) {
         BubbleType =
-            bubbleType === "partnership"
+            bubbleType === "PARTNERSHIP"
                 ? BubblePartnership
                 : BubbleOrganization;
     }
 
+    const formDate = useCallback((startDate: string, endDate: string) => {
+        const start = startDate.split("-");
+        const end = endDate.split("-");
+        return `${start[0]}년 ${start[1]}월 ${start[2]}일 - ${end[0]}년 ${end[1]}월 ${end[2]}일`;
+    }, []);
+
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
+
+    const parseCampaignText = (text: string) => {
+        const [title, rest] = text.split(",");
+        const price = rest.replace("지원", "").trim();
+        return {
+            title: title.trim(),
+            price,
+        };
+    };
+
+    if (supportContent) {
+        const { title, price } = parseCampaignText(supportContent);
+        supportTitle = title;
+        supportContent = price;
+    }
 
     return (
         <Container>
@@ -121,7 +150,13 @@ const ChallengeItemLarge = ({
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
-                            <ChallengeType key={index}>{type}</ChallengeType>
+                            <ChallengeType key={index}>
+                                {
+                                    challengeType.find(
+                                        (item) => item.id === type
+                                    )?.label
+                                }
+                            </ChallengeType>
                         ))}
                     </ChallengeTypeList>
                 </div>
@@ -132,7 +167,7 @@ const ChallengeItemLarge = ({
                         </ChallengeDescriptionLarge>
                         <ChallengeParticipants>
                             <ParticipantText>
-                                <span>{successRate}% 성공!</span>
+                                <span>{successRate.toFixed(1)}% 성공!</span>
                                 <span>{participants}명 참여</span>
                             </ParticipantText>
                             <ProgressBar rate={successRate} />
@@ -140,15 +175,14 @@ const ChallengeItemLarge = ({
                     </LeftSection>
                     <RightSection>
                         <BenefitList>
-                            {benefits?.map((benefit, index) => (
+                            {supportContent && (
                                 <Benefit
-                                    key={index}
-                                    title={benefit.title}
-                                    price={benefit.price}
+                                    title={supportTitle}
+                                    price={supportContent}
                                 />
-                            ))}
+                            )}
                         </BenefitList>
-                        <Date>{date}</Date>
+                        <Date>{formDate(startDate, endDate)}</Date>
                     </RightSection>
                 </BodyContainer>
             </BackgroundLarge>

@@ -11,6 +11,7 @@ import { postCanaryApply } from "../../apis/canary";
 
 const CanaryModal = ({ onClick }: { onClick: () => void }) => {
     const { userData } = useAuthStore.getState();
+    const [success, setSuccess] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const accesstoken = useAuthStore((state) => state.accessToken)!;
@@ -90,116 +91,150 @@ const CanaryModal = ({ onClick }: { onClick: () => void }) => {
             const birth = convertToISO(+year, +month, +day);
             uploadApplyData.birth = birth;
             const res = await postCanaryApply(uploadApplyData, accesstoken);
-            if (res.success) {
-                onClick();
+            if (res ? res.success : false) {
+                setSuccess(true);
             } else {
                 alert("제출에 실패했습니다.");
             }
         }
-    }, [accesstoken, applyData, handleApplyData, image, onClick, birthData]);
+    }, [accesstoken, applyData, image, birthData]);
     return (
         <CanaryWrapper
             onClick={() => {
                 onClick();
             }}
         >
-            <Canary
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-            >
-                <span className="title-text">자립준비청년 인증하기</span>
-                <div className="input-section main-text">
-                    <div className="sub-section">
-                        <div className="w-[662.79px]">
-                            <span className="sub-text">
-                                보호종료확인서 업로드
-                            </span>
-                            <ImageInput>
-                                <div className="input-field">
-                                    <Input
-                                        type="file"
-                                        onChange={handleImageChange}
-                                        style={{ display: "none" }} // Hide the file input
-                                        ref={fileInputRef} // Use a ref to interact with this input
+            {!success ? (
+                <Canary
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                >
+                    <span className="title-text">자립준비청년 인증하기</span>
+                    <div className="input-section main-text">
+                        <div className="sub-section">
+                            <div className="w-[662.79px]">
+                                <span className="sub-text">
+                                    보호종료확인서 업로드
+                                </span>
+                                <ImageInput>
+                                    <div className="input-field">
+                                        <Input
+                                            type="file"
+                                            onChange={handleImageChange}
+                                            style={{ display: "none" }} // Hide the file input
+                                            ref={fileInputRef} // Use a ref to interact with this input
+                                        />
+                                        <span>{image?.name || ""}</span>
+                                    </div>
+                                    <Button
+                                        title="업로드"
+                                        mainColor
+                                        small
+                                        onClick={() =>
+                                            fileInputRef.current?.click()
+                                        }
                                     />
-                                    <span>{image?.name || ""}</span>
-                                </div>
-                                <Button
-                                    title="업로드"
-                                    mainColor
-                                    small
-                                    onClick={() =>
-                                        fileInputRef.current?.click()
+                                </ImageInput>
+                            </div>
+                        </div>
+                        <div className="sub-section">
+                            <div className="w-[303.19px]">
+                                <span className="sub-text">휴대폰 번호</span>
+                                <Input
+                                    placeholder="010-1234-5678"
+                                    onChange={(e) =>
+                                        handleApplyData(e.target.value, "phone")
+                                    }
+                                    value={applyData.phone.toString()}
+                                />
+                            </div>
+                            <div className="birth">
+                                <DropDown
+                                    hint="생년월일"
+                                    type="year"
+                                    value={birthData.year + "년"}
+                                    onChange={(e) =>
+                                        handleBirthData(e.target.value, "year")
                                     }
                                 />
-                            </ImageInput>
+                                <DropDown
+                                    type="month"
+                                    width="110px"
+                                    value={birthData.month + "월"}
+                                    onChange={(e) =>
+                                        handleBirthData(e.target.value, "month")
+                                    }
+                                />
+                                <DropDown
+                                    type="day"
+                                    width="110px"
+                                    value={birthData.day + "일"}
+                                    onChange={(e) =>
+                                        handleBirthData(e.target.value, "day")
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <DropDown
+                                    hint="성별"
+                                    items={["남성", "여성"]}
+                                    value={
+                                        applyData.gender === true
+                                            ? "남성"
+                                            : "여성"
+                                    }
+                                    onChange={(e) =>
+                                        handleApplyData(
+                                            e.target.value === "남성",
+                                            "gender"
+                                        )
+                                    }
+                                />
+                            </div>
                         </div>
+                        <PostalCode onChange={handleAddressChange} />
                     </div>
-                    <div className="sub-section">
-                        <div className="w-[303.19px]">
-                            <span className="sub-text">휴대폰 번호</span>
-                            <Input
-                                placeholder="010-1234-5678"
-                                onChange={(e) =>
-                                    handleApplyData(e.target.value, "phone")
-                                }
-                                value={applyData.phone.toString()}
-                            />
-                        </div>
-                        <div className="birth">
-                            <DropDown
-                                hint="생년월일"
-                                type="year"
-                                value={birthData.year + "년"}
-                                onChange={(e) =>
-                                    handleBirthData(e.target.value, "year")
-                                }
-                            />
-                            <DropDown
-                                type="month"
-                                width="110px"
-                                value={birthData.month + "월"}
-                                onChange={(e) =>
-                                    handleBirthData(e.target.value, "month")
-                                }
-                            />
-                            <DropDown
-                                type="day"
-                                width="110px"
-                                value={birthData.day + "일"}
-                                onChange={(e) =>
-                                    handleBirthData(e.target.value, "day")
-                                }
-                            />
-                        </div>
-                        <div>
-                            <DropDown
-                                hint="성별"
-                                items={["남성", "여성"]}
-                                value={
-                                    applyData.gender === true ? "남성" : "여성"
-                                }
-                                onChange={(e) =>
-                                    handleApplyData(
-                                        e.target.value === "남성",
-                                        "gender"
-                                    )
-                                }
-                            />
-                        </div>
+                    <div>
+                        <Button title="제출하기" small onClick={onSubmit} />
                     </div>
-                    <PostalCode onChange={handleAddressChange} />
-                </div>
-                <div>
-                    <Button title="제출하기" small onClick={onSubmit} />
-                </div>
-            </Canary>
+                </Canary>
+            ) : (
+                <SuccessModal>
+                    <div className="title-text">인증 서류를 제출했습니다.</div>
+                    <div className="sub-text">
+                        자립준비청년 인증까지 영업일 기준 최대 10일 소요됩니다.
+                    </div>
+                    <Button
+                        title="닫기"
+                        small
+                        background="white"
+                        margin={false}
+                        onClick={onClick}
+                    />
+                </SuccessModal>
+            )}
         </CanaryWrapper>
     );
 };
 
 export default CanaryModal;
+
+const SuccessModal = styled.div`
+    ${tw`
+        w-[636px] h-[294px] rounded-[16px] bg-background flex flex-col justify-center items-center gap-[23px]
+    `}
+    .title-text {
+        ${tw`
+            text-bold-36 font-bold text-fontColor1
+        `}
+    }
+    .sub-text {
+        ${tw`
+            text-medium-20 font-medium text-fontColor3
+        `}
+    }
+`;
 
 const ImageInput = styled.div`
     ${tw`

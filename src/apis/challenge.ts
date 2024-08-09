@@ -9,15 +9,19 @@ export const getChallenges = async (
     categories?: string[]
 ) => {
     try {
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("size", size.toString());
+        params.append("type", type);
+        if (categories) {
+            categories.forEach((category) => {
+                params.append("categories", category);
+            });
+        }
         const res = await axiosInstance.get(
             `https://www.fledge.site/api/v1/public/challenges`,
             {
-                params: {
-                    page: page,
-                    size: size,
-                    type: type,
-                    categories: categories,
-                },
+                params: params,
             }
         );
         return res.data;
