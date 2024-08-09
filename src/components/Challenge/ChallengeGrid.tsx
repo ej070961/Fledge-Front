@@ -1,172 +1,57 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import LeftArrowIcon from "../../assets/icons/left-arrow";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
-import { Grid, Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
 import { ChallengeItem } from "./ChallengeItem";
 import RightArrowIcon from "../../assets/icons/right-arrow";
+import { getChallenges } from "../../apis/challenge";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-const ChallengeGrid = () => {
-    const prevRef = useRef<HTMLButtonElement>(null);
-    const nextRef = useRef<HTMLButtonElement>(null);
-    const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
-        null
-    );
+type ChallengeGridProps = {
+    type: string;
+    categories?: string[];
+};
 
-    useEffect(() => {
-        if (swiperInstance) {
-            swiperInstance.navigation?.init();
-            swiperInstance.navigation?.update();
-        }
-    }, [swiperInstance]);
+const ChallengeGrid = ({ type, categories }: ChallengeGridProps) => {
+    const [page, setPage] = useState<number>(0);
+    const {
+        data: challengeData,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["getChallengeData", page],
+        queryFn: () => getChallenges(page, 8, type, categories),
+        enabled: true,
+        placeholderData: keepPreviousData,
+    });
+
+    if (isLoading) return <div></div>;
+
     return (
         <ChallengerContainer>
-            <button ref={prevRef}>
+            <button onClick={() => setPage(page - 1)} disabled={page === 0}>
                 <LeftArrowIcon width={24} height={51} />
             </button>
-            <StyledSwiper
-                onSwiper={setSwiperInstance}
-                slidesPerView={4}
-                grid={{
-                    rows: 2,
-                    fill: "row",
-                }}
-                spaceBetween={23}
-                pagination={{
-                    clickable: true,
-                }}
-                modules={[Grid, Navigation]}
-                navigation={{
-                    prevEl: prevRef.current,
-                    nextEl: nextRef.current,
-                }}
+            <ChallengeSlider>
+                {challengeData.data.content.map(
+                    (challenge: any, index: number) => (
+                        <ChallengeItem
+                            key={index}
+                            title={challenge.title}
+                            bubbleType={type.toString()}
+                            heartCount={challenge.likeCount}
+                            challengeTypes={challenge.categories}
+                            description={challenge.description}
+                            successRate={challenge.successRate}
+                            participants={challenge.participantCount}
+                        />
+                    )
+                )}
+            </ChallengeSlider>
+            <button
+                onClick={() => setPage(page + 1)}
+                disabled={challengeData.data.last}
             >
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ChallengeItem
-                        title="1주 1권 독서하기"
-                        heartCount={3}
-                        challengeTypes={["명상", "자기계발"]}
-                        description="매일 1분, 나를 위한 명상으로 하루를 시작해보세요!"
-                        successRate={75}
-                        participants={123}
-                    />
-                </SwiperSlide>
-            </StyledSwiper>
-            <button ref={nextRef}>
                 <RightArrowIcon width={24} height={51} />
             </button>
         </ChallengerContainer>
@@ -184,8 +69,8 @@ const ChallengerContainer = styled.div`
     `}
 `;
 
-const StyledSwiper = styled(Swiper)`
+const ChallengeSlider = styled.div`
     ${tw`
-        w-[1280px]
-    `}
+    grid grid-cols-4 grid-rows-2 gap-[23px]
+`}
 `;

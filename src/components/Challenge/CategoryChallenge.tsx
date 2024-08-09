@@ -24,7 +24,19 @@ const CategoryChallenge = () => {
                 <div>자격증</div>
             </Keywords>
             <CategoryContainer>
-                <ChallengeGrid />
+                <ChallengeGrid
+                    type="category"
+                    categories={[
+                        "생활",
+                        "주거",
+                        "재정관리",
+                        "취업",
+                        "학습",
+                        "자기계발",
+                        "웰빙",
+                        "자격증",
+                    ]}
+                />
             </CategoryContainer>
         </Container>
     );
