@@ -17,7 +17,7 @@ import CanaryModal from "../components/MyPage/CanaryModal";
 import useAuthStore from "../storage/useAuthStore";
 
 function MyPage() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
     const { userData } = useAuthStore.getState();
     const isCanary = userData.role === "CANARY";
 
@@ -31,7 +31,6 @@ function MyPage() {
             {/* 챌린지 달성 뱃지 */}
             {isCanary && <BadgeBoard />}
 
-
             {/* 후원 인증 히스토리 */}
             {isCanary && (
                 <SponsorWrapper>
@@ -43,12 +42,11 @@ function MyPage() {
                             게시한 후원 게시물과 진행 상황을 확인할 수 있어요.
                         </span>
                     </Header>
-                   {/* <Slider menu="my" /> */}
+                    {/* <Slider menu="my" /> */}
                 </SponsorWrapper>
             )}
             {/* 회원 기본 정보 */}
             <UserBasicInfo />
-
 
             {/* 자립준비청년 인증 */}
             <CanaryAuth onClick={() => setIsModalOpen(true)} />

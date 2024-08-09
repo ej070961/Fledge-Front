@@ -7,6 +7,7 @@ interface ButtonProps {
     mainColor?: boolean;
     small?: boolean;
     background?: string;
+    margin?: boolean;
 }
 
 const Button = ({
@@ -15,6 +16,7 @@ const Button = ({
     mainColor,
     small,
     background = "color",
+    margin = true,
 }: ButtonProps) => {
     return (
         <ButtonContainer
@@ -23,6 +25,7 @@ const Button = ({
             mainColor={mainColor}
             small={small}
             background={background}
+            margin={margin}
         >
             {title}
         </ButtonContainer>
@@ -33,6 +36,7 @@ interface ButtonContainerProps {
     mainColor?: boolean;
     small?: boolean;
     background?: string;
+    margin?: boolean;
 }
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
@@ -62,7 +66,7 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
     ${({ background, mainColor }) =>
         background === "white" && mainColor && tw`text-mainColor`}
 
-    margin-top: auto;
+    ${({ margin }) => margin && tw`mt-auto`}
 `;
 
 export default Button;
