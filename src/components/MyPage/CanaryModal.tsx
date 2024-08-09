@@ -86,7 +86,6 @@ const CanaryModal = ({ onClick }: { onClick: () => void }) => {
             uploadApplyData.certificateFilePath = filePath;
         }
         if (applyData.userId) {
-            console.log(applyData);
             const { year, month, day } = birthData;
             const birth = convertToISO(+year, +month, +day);
             uploadApplyData.birth = birth;

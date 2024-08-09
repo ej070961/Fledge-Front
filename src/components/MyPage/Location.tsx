@@ -3,7 +3,7 @@ import XIcon from "../../assets/icons/x-icon";
 import tw from "twin.macro";
 
 interface LocationProps {
-    text: string;
+    text: string | null;
     onClick: () => void;
 }
 

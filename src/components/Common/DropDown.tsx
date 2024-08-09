@@ -91,7 +91,8 @@ const Container = styled.div`
 `;
 const DropdownButton = styled.div`
     ${tw`
-        flex items-center gap-[4px] h-[46px] bg-white px-[19px] rounded-full text-medium-20 font-medium text-fontColor1 cursor-pointer
+        flex items-center justify-between
+         gap-[4px] h-[46px] bg-white px-[19px] rounded-full text-medium-20 font-medium text-fontColor1 cursor-pointer
     `}
     span {
         white-space: nowrap;

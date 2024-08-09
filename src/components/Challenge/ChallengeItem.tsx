@@ -116,12 +116,23 @@ const ChallengeItemLarge = ({
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
 
     const parseCampaignText = (text: string) => {
-        const [title, rest] = text.split(",");
-        const price = rest.replace("지원", "").trim();
-        return {
-            title: title.trim(),
-            price,
-        };
+        //text 내에 ,가 있는 경우,
+        if (text.includes(",")) {
+            const [title, rest] = text.split(",");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim(),
+                price,
+            };
+        } else {
+            //첫번쨰 지원이라는 단어 뒤에 쉼표 생성
+            const [title, rest] = text.split("지원");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim() + "지원",
+                price,
+            };
+        }
     };
 
     if (supportContent) {

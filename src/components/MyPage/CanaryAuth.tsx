@@ -11,7 +11,6 @@ const CanaryAuth = ({ onClick }: { onClick: () => void }) => {
         queryKey: ["getCanaryStatus", userData.id, accessToken],
         queryFn: () => getCanaryStatus(userData.id!, accessToken!),
     });
-    console.log(applyStatus);
 
     if (isLoading) return <div></div>;
 
