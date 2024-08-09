@@ -4,7 +4,6 @@ import ContentHeader from "../Common/ContentHeader";
 import Challenger from "./Challenger";
 import { getTopParticipants } from "../../apis/challenge";
 import { useQuery } from "@tanstack/react-query";
-import defaultProfile from "../../assets/images/profile-big.png";
 import { BestChallengerProps } from "../../@types/challenge";
 
 export const scroll = keyframes`
@@ -35,8 +34,8 @@ const BestChallenger = () => {
                     (challenger: BestChallengerProps, index: number) => (
                         <Challenger
                             key={index}
-                            imgSrc={defaultProfile}
-                            name={challenger.memberName}
+                            imgSrc={challenger.profileImageUrl}
+                            name={challenger.nickname}
                             desc={
                                 challenger.successCount +
                                 "/" +
@@ -67,14 +66,5 @@ const Container = styled.div`
         display: flex;
         white-space: nowrap;
         overflow: hidden;
-    }
-
-    .profile {
-        ${tw`
-            flex
-            flex-col
-            items-center
-            gap-[7px]
-        `}
     }
 `;

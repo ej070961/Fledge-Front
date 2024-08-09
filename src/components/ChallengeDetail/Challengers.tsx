@@ -4,53 +4,22 @@ import Button from "../Common/Button";
 import ContentHeader from "../Common/ContentHeader";
 import tw from "twin.macro";
 import { scroll } from "../Challenge/BestChallenger";
+import { useQuery } from "@tanstack/react-query";
+import { getChallengeParticipants } from "../../apis/challenge";
+import { BestChallengerProps } from "../../@types/challenge";
 
-const challenger = [
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 2,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "반지하의제왕",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 1,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "반지하의제왕",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 1,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "반지하의제왕",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 1,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "명란젓코난",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 2,
-    },
-    {
-        imgSrc: "https://via.placeholder.com/150",
-        name: "반지하의제왕",
-        desc: "3/5개 챌린지 성공!",
-        categoryList: ["운동", "독서"],
-        rank: 1,
-    },
-];
+type ChallengerProps = {
+    challengeId?: string;
+};
 
-const Challengers = () => {
+const Challengers = ({ challengeId = "1" }: ChallengerProps) => {
+    const { data: challengerData, isLoading } = useQuery({
+        queryKey: ["getChallengeParticipants", challengeId],
+        queryFn: () => getChallengeParticipants(challengeId),
+    });
+
+    if (isLoading) return <div></div>;
+
     return (
         <Container>
             <div className="challengers">
@@ -61,16 +30,26 @@ const Challengers = () => {
                 <Button title="챌린지 참여하기" small margin={false} />
             </div>
             <div className="challenger-list">
-                {challenger.map((challenger, index) => (
-                    <Challenger
-                        key={index}
-                        imgSrc={challenger.imgSrc}
-                        name={challenger.name}
-                        desc={challenger.desc}
-                        categoryList={challenger.categoryList}
-                        rank={challenger.rank}
-                    />
-                ))}
+                {challengerData.data.map(
+                    (challenger: BestChallengerProps, index: number) => (
+                        <Challenger
+                            key={index}
+                            imgSrc={challenger.profileImageUrl}
+                            name={challenger.nickname}
+                            desc={
+                                challenger.successCount +
+                                "/" +
+                                challenger.totalCount +
+                                "개 챌린지 성공!"
+                            }
+                            categoryList={challenger.topCategories}
+                            rank={
+                                4 -
+                                Math.floor((challenger.successRate * 100) / 30)
+                            }
+                        />
+                    )
+                )}
             </div>
         </Container>
     );

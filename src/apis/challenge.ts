@@ -97,3 +97,37 @@ export const getRecommendedChallenges = async (challengeId: string) => {
         }
     }
 };
+
+export const getChallengeParticipants = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/participants`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const getChallengeDetail = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};

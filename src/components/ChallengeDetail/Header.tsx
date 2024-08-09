@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import LikeIcon from "../../assets/icons/like-icon";
+import { challengeType } from "../../@types/challenge-category";
+import { useState } from "react";
 
 type HeaderProps = {
-    category: string;
+    categories?: string[];
     title: string;
     desc: string;
     likeCount: number;
@@ -12,28 +14,39 @@ type HeaderProps = {
 };
 
 const Header = ({
-    category,
+    categories,
     title,
     desc,
     likeCount,
     isClicked,
     onClick,
 }: HeaderProps) => {
+    const [isLike, setIsLike] = useState(isClicked);
     return (
         <Container>
             <ChallengeInfo>
-                <div className="category">{category}</div>
+                {categories?.map((category) => (
+                    <div className="category">
+                        {challengeType.find((type) => type.id === category)
+                            ?.label || category}
+                    </div>
+                ))}
                 <p className="title">{title}</p>
                 <p className="desc">{desc}</p>
             </ChallengeInfo>
-            <div className="like" onClick={onClick}>
-                <LikeIcon small={false} fill={isClicked} />
+            <div
+                className="like"
+                onClick={() => {
+                    setIsLike(!isLike);
+                }}
+            >
+                <LikeIcon small={false} fill={isLike} />
                 <p
                     onClick={(e) => {
                         e.stopPropagation();
                     }}
                 >
-                    {likeCount}
+                    {likeCount + (isLike ? 1 : 0)}
                 </p>
             </div>
         </Container>

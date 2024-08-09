@@ -9,35 +9,41 @@ import Challengers from "../components/ChallengeDetail/Challengers";
 import RecommendedChallenges from "../components/ChallengeDetail/RecommendedChallenges";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Common/Button";
+import { useQuery } from "@tanstack/react-query";
+import { getChallengeDetail } from "../apis/challenge";
 
 const ChallengeDetail = () => {
-    const [likeCount, setLikeCount] = useState(10);
     const [isClicked, setIsClicked] = useState(false);
     const navigate = useNavigate();
 
-    const handleLike = () => {
-        setIsClicked(!isClicked);
-        isClicked ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
-    };
-
     const { challengeId } = useParams();
+
+    const { data: ChallengeDetailData, isLoading } = useQuery({
+        queryKey: ["getChallengeDetail", challengeId],
+        queryFn: () => getChallengeDetail(challengeId!),
+    });
+
+    if (isLoading) return <div></div>;
+
+    console.log(ChallengeDetailData);
+
     return (
         <DefaultLayout>
             <Container>
                 <Header
-                    category="자기계발"
-                    title="1주 1권 독서하기"
-                    desc="한 달 동안 매주 한 권씩 독서 후, 독후감을 작성합니다."
-                    likeCount={likeCount}
-                    isClicked={isClicked}
-                    onClick={handleLike}
+                    categories={ChallengeDetailData.data.categories}
+                    title={ChallengeDetailData.data.title}
+                    desc={ChallengeDetailData.data.description}
+                    likeCount={ChallengeDetailData.data.likeCount}
                 />
                 <Progress
-                    totalParticipants={20}
-                    successParticipants={10}
-                    successRate={50}
+                    totalParticipants={
+                        ChallengeDetailData.data.participationCount
+                    }
+                    successParticipants={ChallengeDetailData.data.successCount}
+                    successRate={ChallengeDetailData.data.successRate * 100}
                 />
-                <Challengers />
+                <Challengers challengeId={challengeId} />
                 <OtherChallenge>
                     <ContentHeader
                         title="다른 챌린지 둘러보기"

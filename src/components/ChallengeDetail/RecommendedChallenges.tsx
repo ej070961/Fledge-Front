@@ -35,8 +35,6 @@ const RecommendedChallenges = ({ challengeId }: RecommendedChallengesProps) => {
     if (isLoading) return <div></div>;
     if (challengeData === undefined) return <div></div>;
 
-    console.log(challengeData);
-
     return (
         <ChallengerContainer>
             <button onClick={() => setPage(page - 1)} disabled={page === 0}>

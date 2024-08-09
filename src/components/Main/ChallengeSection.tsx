@@ -41,7 +41,7 @@ const ChallengeList = styled.div`
     `}
     .position-control {
         ${tw`
-        mt-[-80px]
+            mt-[220px]
      `}
     }
 `;
