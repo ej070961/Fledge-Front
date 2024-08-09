@@ -1,11 +1,113 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import Button from "../../components/Common/Button";
+import Input from "../Common/Input";
+import DropDown from "../Common/DropDown";
+import { useCallback, useEffect, useRef, useState } from "react";
+import PostalCode from "./PostalCode";
+import useAuthStore from "../../storage/useAuthStore";
+import { getPresignedUrl, uploadImageToS3 } from "../../apis/file-upload";
+import { postCanaryApply } from "../../apis/canary";
 
-const CanaryModal = () => {
+const CanaryModal = ({ onClick }: { onClick: () => void }) => {
+    const { userData } = useAuthStore.getState();
+    const [image, setImage] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const accesstoken = useAuthStore((state) => state.accessToken)!;
+    const [birthData, setBirthData] = useState({
+        year: "2000",
+        month: "1",
+        day: "1",
+    });
+    const [applyData, setApplyData] = useState({
+        userId: userData.id || 0,
+        name: userData.nickname || "",
+        phone: "",
+        birth: "",
+        gender: true,
+        address: "",
+        detailAddress: "",
+        zip: "",
+        certificateFilePath: "",
+        latitude: 0,
+        longitude: 0,
+    });
+    const handleApplyData = useCallback(
+        (data: any, key: string) => {
+            setApplyData({ ...applyData, [key]: data });
+        },
+        [applyData]
+    );
+    const handleBirthData = useCallback(
+        (data: any, key: string) => {
+            setBirthData({ ...birthData, [key]: data });
+        },
+        [birthData]
+    );
+    const handleAddressChange = useCallback(
+        (data: any) => {
+            setApplyData({
+                ...applyData,
+                address: data.address,
+                detailAddress: data.detailAddress,
+                zip: data.zonecode,
+            });
+        },
+        [applyData]
+    );
+
+    const handleImageChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files ? e.target.files[0] : null;
+            if (file) {
+                setImage(file);
+            }
+        },
+        []
+    );
+
+    const convertToISO = (year: number, month: number, day: number): string => {
+        const date = new Date(year, month - 1, day);
+        return date.toISOString();
+    };
+
+    const onSubmit = useCallback(async () => {
+        const uploadApplyData = { ...applyData };
+        if (image) {
+            const presignedData = await getPresignedUrl(
+                "canary-certificate",
+                image.name,
+                accesstoken
+            );
+            const presignedUrl = presignedData.data.url;
+            const filePath = presignedData.data.filePath;
+            await uploadImageToS3(image, presignedUrl);
+            uploadApplyData.certificateFilePath = filePath;
+        }
+        if (applyData.userId) {
+            console.log(applyData);
+            const { year, month, day } = birthData;
+            const birth = convertToISO(+year, +month, +day);
+            uploadApplyData.birth = birth;
+            const res = await postCanaryApply(uploadApplyData, accesstoken);
+            if (res.success) {
+                onClick();
+            } else {
+                alert("제출에 실패했습니다.");
+            }
+        }
+    }, [accesstoken, applyData, handleApplyData, image, onClick, birthData]);
     return (
-        <CanaryWrapper>
-            <Canary>
+        <CanaryWrapper
+            onClick={() => {
+                onClick();
+            }}
+        >
+            <Canary
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+            >
                 <span className="title-text">자립준비청년 인증하기</span>
                 <div className="input-section main-text">
                     <div className="sub-section">
@@ -13,47 +115,85 @@ const CanaryModal = () => {
                             <span className="sub-text">
                                 보호종료확인서 업로드
                             </span>
-                            <div className="background">보호종료확인서.hwp</div>
+                            <ImageInput>
+                                <div className="input-field">
+                                    <Input
+                                        type="file"
+                                        onChange={handleImageChange}
+                                        style={{ display: "none" }} // Hide the file input
+                                        ref={fileInputRef} // Use a ref to interact with this input
+                                    />
+                                    <span>{image?.name || ""}</span>
+                                </div>
+                                <Button
+                                    title="업로드"
+                                    mainColor
+                                    small
+                                    onClick={() =>
+                                        fileInputRef.current?.click()
+                                    }
+                                />
+                            </ImageInput>
                         </div>
-                        <Button title="저장" mainColor small />
                     </div>
                     <div className="sub-section">
                         <div className="w-[303.19px]">
                             <span className="sub-text">휴대폰 번호</span>
-                            <div className="background">010-1234-5678</div>
+                            <Input
+                                placeholder="010-1234-5678"
+                                onChange={(e) =>
+                                    handleApplyData(e.target.value, "phone")
+                                }
+                                value={applyData.phone.toString()}
+                            />
                         </div>
-                        <div className="w-[300px]">
-                            <span className="sub-text">생년월일</span>
-                            <div className="background  justify-center">
-                                <div>2005년</div>
-                                <div>01월</div>
-                                <div>01일</div>
-                            </div>
+                        <div className="birth">
+                            <DropDown
+                                hint="생년월일"
+                                type="year"
+                                value={birthData.year + "년"}
+                                onChange={(e) =>
+                                    handleBirthData(e.target.value, "year")
+                                }
+                            />
+                            <DropDown
+                                type="month"
+                                width="110px"
+                                value={birthData.month + "월"}
+                                onChange={(e) =>
+                                    handleBirthData(e.target.value, "month")
+                                }
+                            />
+                            <DropDown
+                                type="day"
+                                width="110px"
+                                value={birthData.day + "일"}
+                                onChange={(e) =>
+                                    handleBirthData(e.target.value, "day")
+                                }
+                            />
                         </div>
                         <div>
-                            <span className="sub-text">성별</span>
-                            <div className="background">여성</div>
+                            <DropDown
+                                hint="성별"
+                                items={["남성", "여성"]}
+                                value={
+                                    applyData.gender === true ? "남성" : "여성"
+                                }
+                                onChange={(e) =>
+                                    handleApplyData(
+                                        e.target.value === "남성",
+                                        "gender"
+                                    )
+                                }
+                            />
                         </div>
                     </div>
-                    <div className="sub-section">
-                        <div className="w-[581.2px]">
-                            <span className="sub-text">거주 주소지</span>
-                            <div className="background">
-                                서울특별시 은평구 용암동 00-00
-                            </div>
-                        </div>
-                        <div className="w-[200.45px]">
-                            <span className="sub-text">상세주소</span>
-                            <div className="background">단독</div>
-                        </div>
-                        <div className="w-[102.74px]">
-                            <span className="sub-text">우편번호</span>
-                            <div className="background">00000</div>
-                        </div>
-                        <Button title="우편번호 검색" mainColor small />
-                    </div>
+                    <PostalCode onChange={handleAddressChange} />
                 </div>
-                <Button title="제출하기" small />
+                <div>
+                    <Button title="제출하기" small onClick={onSubmit} />
+                </div>
             </Canary>
         </CanaryWrapper>
     );
@@ -61,11 +201,28 @@ const CanaryModal = () => {
 
 export default CanaryModal;
 
+const ImageInput = styled.div`
+    ${tw`
+        flex gap-[20px]
+    `}
+    .input-field {
+        ${tw`
+            relative w-[662px]
+        `}
+        span {
+            ${tw`
+                absolute left-0 top-0 w-full h-full flex items-center ml-[21px]
+            `}
+        }
+    }
+`;
+
 const CanaryWrapper = styled.div`
     ${tw`
         w-full h-full bg-[black] bg-opacity-50 
         fixed top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]
         flex justify-center items-center
+        z-[2]
     `}
 `;
 
@@ -115,6 +272,12 @@ const Canary = styled.div`
         ${tw`
             bg-white p-[0px 21px] rounded-full h-[46px]
             flex gap-[12px] items-center
+        `}
+    }
+
+    .birth {
+        ${tw`
+            flex gap-[10px]
         `}
     }
 `;
