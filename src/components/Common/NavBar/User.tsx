@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import tw from "twin.macro";
-import useAuthStore from "../../../storage/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import ProfileMenu from "./ProfileMenu";
 
 interface UserContainerProps {
     nickname: string;
@@ -9,27 +9,22 @@ interface UserContainerProps {
 }
 
 const User = ({ nickname, profile }: UserContainerProps) => {
-    const navigate = useNavigate();
-    const onLogout = () => {
-        useAuthStore.getState().logout();
-        navigate("/");
-    };
-    const onClickProfile = () => {
-        navigate("/mypage");
-    };
+    const [isProfileHovered, setIsProfileHovered] = useState(false);
 
     return (
         <Container>
             <div>
                 <Nickname>{nickname}</Nickname> 님,
                 <span> 환영합니다!</span>
-                <Logout onClick={() => onLogout()}>로그아웃</Logout>
             </div>
-            <Profile
-                src={profile}
-                alt="profile"
-                onClick={() => onClickProfile()}
-            />
+            <div
+                className="profile"
+                onMouseEnter={() => setIsProfileHovered(true)}
+                onMouseLeave={() => setIsProfileHovered(false)}
+            >
+                <Profile src={profile} alt="profile" />
+                {isProfileHovered && <ProfileMenu />}
+            </div>
         </Container>
     );
 };
@@ -45,6 +40,21 @@ const Container = styled.div`
         items-center
         gap-[2px]
     `}
+
+    .profile {
+        ${tw`
+            flex flex-col
+            items-center
+            justify-center
+            gap-[12px]
+            relative
+        `}
+        &:before {
+            ${tw`
+                content-[""] absolute top-[-30px] bottom-[-30px] left-[-80px] right-[-80px]
+            `}
+        }
+    }
 `;
 
 const Profile = styled.img`
