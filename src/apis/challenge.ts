@@ -80,3 +80,20 @@ export const getPartnershipChallenges = async (
         }
     }
 };
+
+export const getRecommendedChallenges = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/explore`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};

@@ -9,6 +9,7 @@ import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
 import { challengeType } from "../../@types/challenge-category";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ChallengeItemProps {
     title: string;
@@ -19,6 +20,7 @@ interface ChallengeItemProps {
     successRate: number;
     participants: number;
     isCategory?: boolean;
+    challengeId?: string;
 }
 
 const ChallengeItem = ({
@@ -30,7 +32,9 @@ const ChallengeItem = ({
     successRate,
     participants,
     isCategory,
+    challengeId = "1",
 }: ChallengeItemProps) => {
+    const navigate = useNavigate();
     let BubbleType = null;
     if (!isCategory) {
         if (bubbleType) {
@@ -44,7 +48,14 @@ const ChallengeItem = ({
             <Background>
                 <div>
                     <ChallengeHeader>
-                        <Title>{title}</Title>
+                        <Title
+                            onClick={() => {
+                                navigate(`/challenge/${challengeId}`);
+                                window.scrollTo(0, 0);
+                            }}
+                        >
+                            {title}
+                        </Title>
                         <Heart
                             heartCount={heartCount + (isLiked ? 1 : 0)}
                             fill={isLiked}
@@ -269,6 +280,7 @@ const Title = styled.span`
         font-bold
         text-fontColor1
         break-keep
+        cursor-pointer
     `}
 `;
 

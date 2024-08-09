@@ -9,7 +9,7 @@ export type ChallengerProps = {
 export type BestChallengerProps = {
     memberId: number;
     memberName: string;
-    participationCount: number;
+    totalCount: number;
     successCount: number;
     successRate: number;
     topCategories: string[];
