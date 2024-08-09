@@ -7,17 +7,13 @@ import ProfileHeader from "../components/MyPage/Header";
 import UserBasicInfo from "../components/MyPage/UserBasicInfo";
 import { useState } from "react";
 import BadgeBoard from "../components/MyPage/BadgeBoard";
-import Slider from "../components/Sponsor/Slider";
 import CanaryAuth from "../components/MyPage/CanaryAuth";
-import Input from "../components/Common/Input";
-import DropDown from "../components/Common/DropDown";
-import Button from "../components/Common/Button";
 import PersonalInfo from "../components/MyPage/PersonalInfo";
 import CanaryModal from "../components/MyPage/CanaryModal";
 import useAuthStore from "../storage/useAuthStore";
 
 function MyPage() {
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { userData } = useAuthStore.getState();
     const isCanary = userData.role === "CANARY";
 
