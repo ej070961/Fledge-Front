@@ -3,6 +3,7 @@ import tw from "twin.macro";
 import ContentHeader from "../Common/ContentHeader";
 import Slider from "../Sponsor/Slider";
 import { useNavigate } from "react-router-dom";
+import DeadlinePosts from "../Sponsor/DeadlinePosts";
 const DonationSection = () => {
   const navigate = useNavigate();
   return (
@@ -15,7 +16,7 @@ const DonationSection = () => {
           window.scrollTo(0, 0);
         }}
       />
-      <Slider menu="main" />
+      <DeadlinePosts />
     </Contents>
   );
 };

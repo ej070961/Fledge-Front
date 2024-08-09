@@ -2,31 +2,49 @@ import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import tw from "twin.macro";
 import Polygon from "../../assets/icons/polygon";
+import { getProgressInfo } from "../../apis/sponsor";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 interface progressProps {
   modal?: boolean;
 }
 function Progress({ modal }: progressProps) {
-  return (
-    <Container>
-      <div className="relative">
-        {!modal && (
-          <TagBox progress={70}>
-            <div className="upper">
-              <span>50,000,000원 달성!</span>
-            </div>
-            <Polygon color={"#EE5D5D"} />
-          </TagBox>
-        )}
+  const { supportId } = useParams() as { supportId: string };
 
-        <ProgressBar progress={70} modal={modal}></ProgressBar>
-      </div>
-      <RowBox>
-        <span className="medium-20">진행률 50%</span>
-        <span className="medium-20">₩ 10000000</span>
-      </RowBox>
-    </Container>
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getSponsorProgress"],
+    queryFn: () => getProgressInfo(supportId),
+  });
+
+  if (!isLoading && data) {
+    return (
+      <Container>
+        <div className="relative">
+          {!modal && (
+            <TagBox progress={data.progress}>
+              <div className="upper">
+                {data.supportedPrice !== 0 ? (
+                  <span>{data.supportedPrice}원 달성!</span>
+                ) : (
+                  <span>첫 후원자가 되어 주세요!</span>
+                )}
+              </div>
+              <Polygon color={"#EE5D5D"} />
+            </TagBox>
+          )}
+
+          <ProgressBar progress={data.progress} modal={modal}></ProgressBar>
+        </div>
+        <RowBox>
+          <span className="medium-20">진행률 {data.progress}%</span>
+          <span className="medium-20">₩ {data.totalPrice}</span>
+        </RowBox>
+      </Container>
+    );
+  } else {
+    return <div></div>;
+  }
 }
 
 export default Progress;

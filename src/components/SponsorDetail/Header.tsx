@@ -3,9 +3,18 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 import DefaultProfile from "../../assets/images/profile.png";
-
-function Header() {
-  const role: string = "CANARY";
+import { useQuery } from "@tanstack/react-query";
+import { getCanaryInfo } from "../../apis/sponsor";
+import useAuthStore from "../../storage/useAuthStore";
+type HeaderProps = {
+  memberId: number;
+};
+function Header({ memberId }: HeaderProps) {
+  const currentUserId = useAuthStore((state) => state.userData.id);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getCanaryInfo"],
+    queryFn: () => getCanaryInfo(memberId),
+  });
   return (
     <Container>
       <RowBox>
@@ -18,7 +27,7 @@ function Header() {
           </RowBox>
         </ColBox>
       </RowBox>
-      {role === "USER" ? (
+      {memberId !== currentUserId! ? (
         <StyledBtn main>후원하기</StyledBtn>
       ) : (
         <RowBox className="w-[250px]">

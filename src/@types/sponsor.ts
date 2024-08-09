@@ -1,3 +1,5 @@
+import { NumberLiteralType } from "typescript";
+
 export interface SponsorData {
   title: string;
   reason: string;
@@ -32,4 +34,23 @@ export interface SponsorBannerData {
     supportedPrice: number;
     progress: number;
   };
+}
+
+export interface SponsorDetailData {
+  supportPostId: number;
+  memberId: number;
+  nickname: string;
+  title: string;
+  reason: string;
+  item: string;
+  purchaseUrl: string;
+  price: number;
+  images: string[];
+  leftDays: string;
+  expirationDate: string;
+  supporterList: Supporter[];
+}
+
+export interface Supporter {
+  [key: string]: number;
 }

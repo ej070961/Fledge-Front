@@ -1,47 +1,59 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import NoImg from "../../assets/images/no_img.png";
-function ContentDetail() {
+
+import { SponsorDetailData } from "../../@types/sponsor";
+type ContentDetailProps = {
+  data: SponsorDetailData;
+};
+
+const ContentDetail: React.FC<ContentDetailProps> = ({ data }) => {
   return (
     <Container>
       <RowBox className="justify-between items-center">
-        <span className="d-day">D-99</span>
+        <span className="d-day">D-{data.leftDays}</span>
         <ColBox className="justify-end">
           <label className="medium-20">후원기간</label>
-          <span className="medium-20">2024년 01월 01일까지</span>
+          <span className="medium-20">{data.expirationDate}</span>
         </ColBox>
       </RowBox>
       <RowBox>
-        <span className="title">제목</span>
+        <span className="title">{data.title}</span>
       </RowBox>
-      <ImageContainer>
-        <img src={NoImg} alt="이미지 없음" />
-        <img src={NoImg} alt="이미지 없음" />
-      </ImageContainer>
+
+      {data.images && data.images.length > 0 ? (
+        <ImageContainer>
+          {data.images.map((image, index) => (
+            <img src={image} key={index} alt={`image-${index}`} />
+          ))}
+        </ImageContainer>
+      ) : (
+        <div className="my-10"></div>
+      )}
+
       <RowBox>
         <ColBox className="w-1/2">
           <RowBox className="my-2">
             <label className="medium-20">필요 물품</label>
-            <span className="content">필요 물품 내용</span>
+            <span className="content">{data.item}</span>
           </RowBox>
           <RowBox className="my-2">
             <label className="medium-20">구매 링크</label>
-            <span className="content">구매 링크 내용</span>
+            <span className="content">{data.purchaseUrl}</span>
           </RowBox>
           <RowBox className="my-2">
             <label className="medium-20">물품 금액</label>
-            <span className="content">물품 금액 내용</span>
+            <span className="content">{data.price}</span>
           </RowBox>
         </ColBox>
         <RowBox>
           <label className="medium-20">세부 내용</label>
-          <span className="content">세부내용</span>
+          <span className="content">{data.reason}</span>
         </RowBox>
       </RowBox>
     </Container>
   );
-}
+};
 
 export default ContentDetail;
 
