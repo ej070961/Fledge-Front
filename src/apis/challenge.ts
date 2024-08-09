@@ -131,3 +131,84 @@ export const getChallengeDetail = async (challengeId: string) => {
         }
     }
 };
+
+export const postChallengeApply = async (
+    challengeId: string,
+    memberId: number,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.post(
+            `https://fledge.site/api/v1/challenges`,
+            {
+                challengeId: challengeId,
+                memberId: memberId,
+                startDate: new Date().toISOString().split("T")[0],
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const getChallengeProofs = async (
+    challengeId: string,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://fledge.site/api/v1/challenges/${challengeId}/my-proof`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const postChallengeProof = async (
+    participationId: number,
+    proofDate: string,
+    proofImageUrl: string
+) => {
+    try {
+        const res = await axiosInstance.post(
+            `https://fledge.site/api/v1/challenges/${participationId}/proofs`,
+            {
+                proofDate: proofDate,
+                proofImageUrl: proofImageUrl,
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};

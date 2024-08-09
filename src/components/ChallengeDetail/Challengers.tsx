@@ -10,9 +10,17 @@ import { BestChallengerProps } from "../../@types/challenge";
 
 type ChallengerProps = {
     challengeId?: string;
+    participating?: boolean;
+    onClick?: () => void;
+    onCancle?: () => void;
 };
 
-const Challengers = ({ challengeId = "1" }: ChallengerProps) => {
+const Challengers = ({
+    challengeId = "1",
+    participating,
+    onClick,
+    onCancle,
+}: ChallengerProps) => {
     const { data: challengerData, isLoading } = useQuery({
         queryKey: ["getChallengeParticipants", challengeId],
         queryFn: () => getChallengeParticipants(challengeId),
@@ -27,7 +35,30 @@ const Challengers = ({ challengeId = "1" }: ChallengerProps) => {
                     title="함께 참여하는 챌린저들"
                     desc="이 챌린지에 함께 참여하고 있는 챌린저들이에요. 같이 힘내봐요!"
                 />
-                <Button title="챌린지 참여하기" small margin={false} />
+                {participating ? (
+                    <div className="buttons">
+                        <Button
+                            title="참여 포기"
+                            small
+                            background="white"
+                            margin={false}
+                            onClick={onCancle}
+                        />
+                        <Button
+                            title="챌린지 참여중"
+                            small
+                            gray
+                            margin={false}
+                        />
+                    </div>
+                ) : (
+                    <Button
+                        title="챌린지 참여하기"
+                        small
+                        margin={false}
+                        onClick={onClick}
+                    />
+                )}
             </div>
             <div className="challenger-list">
                 {challengerData.data.map(
@@ -59,16 +90,21 @@ export default Challengers;
 
 const Container = styled.div`
     ${tw`
-        flex flex-col gap-[42px] w-[full] 
+        flex flex-col gap-[42px] overflow-hidden items-center w-full
     `}
+    .buttons {
+        ${tw`
+            flex justify-end gap-[23px]
+        `}
+    }
     .challengers {
         ${tw`
-            flex justify-between items-center w-[1280px] overflow-y-hidden
+            flex justify-between items-center w-[1280px] overflow-hidden
         `}
     }
     .challenger-list {
         ${tw`
-            w-full flex justify-between gap-[40px]
+            flex justify-between gap-[40px] w-[100dvw]
         `}
         animation: ${scroll} 30s linear infinite;
         display: flex;
