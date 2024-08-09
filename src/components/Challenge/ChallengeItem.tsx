@@ -8,7 +8,7 @@ import ProgressBar from "../Common/ProgressBar";
 import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
 import { challengeType } from "../../@types/challenge-category";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 interface ChallengeItemProps {
     title: string;
@@ -37,6 +37,7 @@ const ChallengeItem = ({
             BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
         }
     } else bubbleType = undefined;
+    const [isLiked, setIsLiked] = useState(false);
     return (
         <Container>
             {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
@@ -44,7 +45,11 @@ const ChallengeItem = ({
                 <div>
                     <ChallengeHeader>
                         <Title>{title}</Title>
-                        <Heart heartCount={heartCount} />
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
@@ -107,6 +112,8 @@ const ChallengeItemLarge = ({
                 : BubbleOrganization;
     }
 
+    const [isLiked, setIsLiked] = useState(false);
+
     const formDate = useCallback((startDate: string, endDate: string) => {
         const start = startDate.split("-");
         const end = endDate.split("-");
@@ -154,7 +161,11 @@ const ChallengeItemLarge = ({
                                 alt="partner"
                             />
                         ))}
-                        <Heart heartCount={heartCount} />
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </PartnerContainer>
                     <ChallengeHeader>
                         <Title>{title}</Title>
