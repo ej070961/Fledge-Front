@@ -3,14 +3,13 @@ import tw from "twin.macro";
 import triangle from "../../../assets/images/triangle.png";
 import KakaoIcon from "../../../assets/icons/kakao-icon";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../../../storage/useAuthStore";
 
-const ProfileMenu = () => {
+type ProfileMenuProps = {
+    onLogout: () => void;
+};
+
+const ProfileMenu = ({ onLogout }: ProfileMenuProps) => {
     const navigate = useNavigate();
-    const onLogout = () => {
-        useAuthStore.getState().logout();
-        navigate("/");
-    };
 
     return (
         <Container>
