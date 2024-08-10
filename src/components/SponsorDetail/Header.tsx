@@ -7,11 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getCanaryInfo } from "../../apis/sponsor";
 import useAuthStore from "../../storage/useAuthStore";
 import DeleteModal from "./DeleteModal";
+import DonateModal from "./DonateModal";
 type HeaderProps = {
   memberId: number;
 };
 function Header({ memberId }: HeaderProps) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [isOpenDonate, setIsOpenDonate] = useState(false);
   const currentUserId = useAuthStore((state) => state.userData.id);
   // const { data, isLoading, error } = useQuery({
   //   queryKey: ["getCanaryInfo"],
@@ -35,7 +37,9 @@ function Header({ memberId }: HeaderProps) {
           </ColBox>
         </RowBox>
         {memberId !== currentUserId! ? (
-          <StyledBtn main>후원하기</StyledBtn>
+          <StyledBtn main onClick={() => setIsOpenDonate(!isOpenDonate)}>
+            후원하기
+          </StyledBtn>
         ) : (
           <RowBox className="w-[250px]">
             <StyledBtn main={false}>수정하기</StyledBtn>
@@ -46,6 +50,7 @@ function Header({ memberId }: HeaderProps) {
         )}
       </Container>
       {isOpenDelete && <DeleteModal onClose={() => setIsOpenDelete(false)} />}
+      {isOpenDonate && <DonateModal onClose={() => setIsOpenDonate(false)} />}
     </>
   );
 }
