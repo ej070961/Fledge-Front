@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import DefaultLayout from "../components/Common/DefaultLayout";
 import Header from "../components/SponsorRegister/Header";
@@ -13,6 +13,7 @@ import { postAccountItem, postAddressItem } from "../apis/sponsor";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../storage/useAuthStore";
 import { getPresignedUrl, uploadImageToS3 } from "../apis/file-upload";
+import CompleteModal from "../components/SponsorRegister/CompleteModal";
 interface FormData {
   title: string;
   item: string;
@@ -69,6 +70,7 @@ function SponsorRegister() {
   const navigate = useNavigate();
   const selectedCategory = watch("category");
   const accesstoken = useAuthStore((state) => state.accessToken)!;
+  const [isOpenComplete, setIsOpenComplete] = useState(false);
   //서버 api 요청 코드 추가 예정
   const onSubmit = async () => {
     const {
@@ -123,7 +125,8 @@ function SponsorRegister() {
         images: uploadedImages,
       });
       if (res.success) {
-        navigate("/sponsor");
+        setIsOpenComplete(true);
+        console.log(isOpenComplete);
       }
     } else {
       const { address, detailAddress, zip, recipientName, phone } = getValues();
@@ -156,33 +159,37 @@ function SponsorRegister() {
       });
       console.log(res.data);
       if (res.success) {
-        navigate("/sponsor");
+        setIsOpenComplete(true);
+        console.log(isOpenComplete);
       }
     }
   };
 
   return (
     <DefaultLayout>
-      <Header />
-      <FormProvider {...methods}>
-        <RegisterForm onSubmit={methods.handleSubmit(onSubmit)}>
-          <ContentSection />
-          <ImageUploadSection />
-          <SubContentSection />
+      <>
+        {isOpenComplete && <CompleteModal />}
+        <Header />
+        <FormProvider {...methods}>
+          <RegisterForm onSubmit={methods.handleSubmit(onSubmit)}>
+            <ContentSection />
+            <ImageUploadSection />
+            <SubContentSection />
 
-          {selectedCategory === "EDUCATION" ||
-          selectedCategory === "MEDICAL" ||
-          selectedCategory === "LEGAL_AID" ? (
-            <AccountSection />
-          ) : (
-            <AddressSection />
-          )}
+            {selectedCategory === "EDUCATION" ||
+            selectedCategory === "MEDICAL" ||
+            selectedCategory === "LEGAL_AID" ? (
+              <AccountSection />
+            ) : (
+              <AddressSection />
+            )}
 
-          <SubmitButton type="submit" disabled={!isValid}>
-            등록하기
-          </SubmitButton>
-        </RegisterForm>
-      </FormProvider>
+            <SubmitButton type="submit" disabled={!isValid}>
+              등록하기
+            </SubmitButton>
+          </RegisterForm>
+        </FormProvider>
+      </>
     </DefaultLayout>
   );
 }

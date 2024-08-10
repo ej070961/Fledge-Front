@@ -8,12 +8,15 @@ import { getCanaryInfo } from "../../apis/sponsor";
 import useAuthStore from "../../storage/useAuthStore";
 import DeleteModal from "./DeleteModal";
 import DonateModal from "./DonateModal";
+import CanaryModal from "./CanaryModal";
 type HeaderProps = {
   memberId: number;
+  nickname: string;
 };
-function Header({ memberId }: HeaderProps) {
+function Header({ memberId, nickname }: HeaderProps) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenDonate, setIsOpenDonate] = useState(false);
+  const [isOpenCanary, setIsOpenCanary] = useState(false);
   const currentUserId = useAuthStore((state) => state.userData.id);
   // const { data, isLoading, error } = useQuery({
   //   queryKey: ["getCanaryInfo"],
@@ -27,9 +30,10 @@ function Header({ memberId }: HeaderProps) {
             src={DefaultProfile}
             className="profile-img"
             alt="프로필 이미지"
+            onClick={() => setIsOpenCanary(!isOpenCanary)}
           />
           <ColBox className="ml-5">
-            <span className="nickname">카드값줘체리</span>
+            <span className="nickname">{nickname}</span>
             <RowBox>
               <span className="bold-span">후원 인증률 100% </span>
               <span className="medium-span"> 6/6 인증</span>
@@ -51,6 +55,12 @@ function Header({ memberId }: HeaderProps) {
       </Container>
       {isOpenDelete && <DeleteModal onClose={() => setIsOpenDelete(false)} />}
       {isOpenDonate && <DonateModal onClose={() => setIsOpenDonate(false)} />}
+      {isOpenCanary && (
+        <CanaryModal
+          onClose={() => setIsOpenCanary(false)}
+          nickname={nickname}
+        />
+      )}
     </>
   );
 }

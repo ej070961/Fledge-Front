@@ -29,7 +29,9 @@ function SponsorDetail() {
   return (
     <DefaultLayout>
       <div className="w-[1280px] ">
-        {!isLoading && data && <Header memberId={data.memberId} />}
+        {!isLoading && data && (
+          <Header memberId={data.memberId} nickname={data.nickname} />
+        )}
         {!isLoading && data && <ContentDetail data={data} />}
         {!isProgressLoading && ProgressData && (
           <Progress
