@@ -41,7 +41,9 @@ function AllPostSection() {
       if (userData.role === "USER") {
         alert("자립준비청년만 이용 가능한 기능입니다.");
       } else {
-        navigate("/sponsor-register");
+        navigate("/sponsor-register", {
+          state: { mode: "create" },
+        });
         window.scrollTo(0, 0);
       }
     } else {

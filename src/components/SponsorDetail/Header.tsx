@@ -4,11 +4,12 @@ import tw from "twin.macro";
 
 import DefaultProfile from "../../assets/images/profile.png";
 import { useQuery } from "@tanstack/react-query";
-import { getCanaryInfo } from "../../apis/sponsor";
+import { getCanaryInfo, getUpdate } from "../../apis/sponsor";
 import useAuthStore from "../../storage/useAuthStore";
 import DeleteModal from "./DeleteModal";
 import DonateModal from "./DonateModal";
 import CanaryModal from "./CanaryModal";
+import { useNavigate, useParams } from "react-router-dom";
 type HeaderProps = {
   memberId: number;
   nickname: string;
@@ -22,6 +23,19 @@ function Header({ memberId, nickname }: HeaderProps) {
   //   queryKey: ["getCanaryInfo"],
   //   queryFn: () => getCanaryInfo(memberId),
   // });
+  const navigate = useNavigate();
+  const { supportId } = useParams<{ supportId: string }>();
+  const accessToken = useAuthStore((state) => state.accessToken!);
+
+  // 수정하기 클릭시 함수 호출
+  const handleUpdate = async () => {
+    const res = await getUpdate(supportId!, accessToken);
+    if (res.success) {
+      navigate("/sponsor-register", {
+        state: { data: res.data, mode: "update" },
+      });
+    }
+  };
   return (
     <>
       <Container>
@@ -45,12 +59,17 @@ function Header({ memberId, nickname }: HeaderProps) {
             후원하기
           </StyledBtn>
         ) : (
-          <RowBox className="w-[250px]">
-            <StyledBtn main={false}>수정하기</StyledBtn>
+          <>
+            {/* // <RowBox className="w-[250px]"> */}
+            {/* <StyledBtn main={false} onClick={handleUpdate}>
+              수정하기
+            </StyledBtn> */}
             <StyledBtn main onClick={() => setIsOpenDelete(!isOpenDelete)}>
               삭제하기
             </StyledBtn>
-          </RowBox>
+
+            {/* // </RowBox> */}
+          </>
         )}
       </Container>
       {isOpenDelete && <DeleteModal onClose={() => setIsOpenDelete(false)} />}

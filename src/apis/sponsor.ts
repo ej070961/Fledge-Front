@@ -256,3 +256,109 @@ export const postDonate = async (
     }
   }
 };
+
+export const getUpdate = async (supportId: string, accesstoken: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `/api/v1/supports/${supportId}/update`,
+      {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const updateAddressItem = async (
+  accesstoken: string,
+  data: SponsorData,
+  supportId: string
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `/api/v1/supports/${supportId}`,
+      {
+        title: data.title,
+        reason: data.reason,
+        promise: data.promise,
+        item: data.item,
+        purchaseUrl: data.purchaseUrl,
+        price: data.price,
+        images: data.images,
+        expirationDate: data.expirationDate,
+        supportCategory: data.supportCategory,
+        recipientName: data.recipientName,
+        phone: data.phone,
+        address: data.address,
+        detailAddress: data.detailAddress,
+        zip: data.zip,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
+    }
+  }
+};
+
+export const updateAccountItem = async (
+  accesstoken: string,
+  data: SponsorData,
+  supportId: string
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `/api/v1/supports/${supportId}`,
+      {
+        title: data.title,
+        reason: data.reason,
+        promise: data.promise,
+        item: data.item,
+        purchaseUrl: data.purchaseUrl,
+        price: data.price,
+        images: data.images,
+        expirationDate: data.expirationDate,
+        supportCategory: data.supportCategory,
+        bank: data.bank,
+        account: data.account,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          // 다른 헤더를 추가할 수 있습니다.
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
+    }
+  }
+};
