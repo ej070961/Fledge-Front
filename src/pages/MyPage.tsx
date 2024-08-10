@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import NavBar from "../components/NavBar";
 import tw from "twin.macro";
 
-import Footer from "../components/Common/Footer";
 import ProfileHeader from "../components/MyPage/Header";
 import UserBasicInfo from "../components/MyPage/UserBasicInfo";
 import { useState } from "react";
@@ -16,8 +14,60 @@ import ContentHeader from "../components/Common/ContentHeader";
 import { useNavigate } from "react-router-dom";
 import phone from "../assets/demos/gosemvhs.png";
 import gimbap from "../assets/demos/tkarla.png";
+import DefaultLayout from "../components/Common/DefaultLayout";
 
 const demoItems = [
+    {
+        supportId: 1,
+        title: "핸드폰 수리비가 부족해요",
+        leftDays: "10",
+        supportPostImageUrl: phone,
+        supportRecord: {
+            progress: 80,
+            totalPrice: 100000,
+            supportedPrice: 80000,
+        },
+        banner: "인증완료",
+    },
+    {
+        supportId: 2,
+        title: "핸드폰 수리비가 부족해요",
+        leftDays: "10",
+        supportPostImageUrl: phone,
+        supportRecord: {
+            progress: 80,
+            totalPrice: 100000,
+            supportedPrice: 80000,
+        },
+        banner: "인증실패",
+    },
+    {
+        supportId: 3,
+        title: "핸드폰 수리비가 부족해요",
+        leftDays: "10",
+        supportPostImageUrl: phone,
+        supportRecord: {
+            progress: 80,
+            totalPrice: 100000,
+            supportedPrice: 80000,
+        },
+        banner: "인증하기",
+    },
+    {
+        supportId: 4,
+        title: "핸드폰 수리비가 부족해요",
+        leftDays: "10",
+        supportPostImageUrl: phone,
+        supportRecord: {
+            progress: 80,
+            totalPrice: 100000,
+            supportedPrice: 80000,
+        },
+        banner: "진행중",
+    },
+];
+
+const demoItemsExpired = [
     {
         supportId: 1,
         title: "핸드폰 수리비가 부족해요",
@@ -71,9 +121,7 @@ function MyPage() {
     const navigate = useNavigate();
 
     return (
-        <Wrapper>
-            <NavBar />
-
+        <DefaultLayout>
             {/* 프로필 상단 */}
             <ProfileHeader />
 
@@ -92,7 +140,7 @@ function MyPage() {
                             }}
                         />
                     </Header>
-                    <Slider items={demoItems} />
+                    <Slider items={demoItemsExpired} />
                 </SponsorWrapper>
             )}
             {/* 회원 기본 정보 */}
@@ -125,8 +173,7 @@ function MyPage() {
                     }}
                 />
             )}
-            <Footer />
-        </Wrapper>
+        </DefaultLayout>
     );
 }
 
