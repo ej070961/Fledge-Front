@@ -252,8 +252,9 @@ const ImageInput = styled.div`
         `}
         span {
             ${tw`
-                absolute left-0 top-0 w-full h-full flex items-center ml-[21px]
-            `}
+        absolute left-0 top-0 w-[500px] h-full flex items-center ml-[21px]
+        overflow-hidden whitespace-nowrap
+    `}
         }
     }
 `;
