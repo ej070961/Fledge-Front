@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { getOrdinalText } from "../../@types/challenge-category";
 
 type CertificationProps = {
     title: string;
@@ -70,15 +71,26 @@ const Certification = ({ title, challengeId }: CertificationProps) => {
                         (proof: any, index: number) => (
                             <div key={index}>
                                 {proof.status ? (
-                                    <SwiperSlide>
-                                        <img
-                                            src={
-                                                proof.proofImageUrl ||
-                                                "https://via.placeholder.com/301x415"
-                                            }
-                                            alt="certification"
-                                        />
-                                    </SwiperSlide>
+                                    <ProofSlide>
+                                        <div className="certification-item">
+                                            <img
+                                                src={
+                                                    proof.proofImageUrl
+                                                        ? proof.proofImageUrl
+                                                        : "https://via.placeholder.com/301x415"
+                                                }
+                                                alt="certification"
+                                            />
+                                            <div className="description">
+                                                <p className="title-text">
+                                                    {getOrdinalText(index)} 인증
+                                                </p>
+                                                <p className="sub-text">
+                                                    {proof.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </ProofSlide>
                                 ) : (
                                     <SwiperSlide>
                                         <div
