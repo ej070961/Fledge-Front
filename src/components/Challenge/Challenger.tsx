@@ -57,7 +57,8 @@ const Container = styled.div`
         .category {
             ${tw`
                     px-[7px] bg-mainColor rounded-[28px]
-                    text-white text-medium-12 font-medium
+                    text-white text-medium-15 font-medium
+                    pb-[2px]
                 `}
         }
     }

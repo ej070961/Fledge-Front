@@ -18,12 +18,9 @@ export const getChallenges = async (
                 params.append("categories", category);
             });
         }
-        const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges`,
-            {
-                params: params,
-            }
-        );
+        const res = await axiosInstance.get(`/public/challenges`, {
+            params: params,
+        });
         return res.data;
     } catch (error) {
         console.log(error);
@@ -39,7 +36,7 @@ export const getChallenges = async (
 export const getTopParticipants = async () => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/top-participants`
+            `/public/challenges/top-participants`
         );
         return res.data;
     } catch (error) {
@@ -60,7 +57,7 @@ export const getPartnershipChallenges = async (
 ) => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/partnership-and-organization`,
+            `/public/challenges/partnership-and-organization`,
             {
                 params: {
                     page: page,
@@ -84,7 +81,7 @@ export const getPartnershipChallenges = async (
 export const getRecommendedChallenges = async (challengeId: string) => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/explore`
+            `/public/challenges/${challengeId}/explore`
         );
         return res.data;
     } catch (error) {
@@ -101,7 +98,7 @@ export const getRecommendedChallenges = async (challengeId: string) => {
 export const getChallengeParticipants = async (challengeId: string) => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/participants`
+            `/public/challenges/${challengeId}/participants`
         );
         return res.data;
     } catch (error) {
@@ -121,7 +118,7 @@ export const getChallengeDetail = async (
 ) => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/${challengeId}`,
+            `/public/challenges/${challengeId}`,
             {
                 headers: {
                     ...(accessToken && {
