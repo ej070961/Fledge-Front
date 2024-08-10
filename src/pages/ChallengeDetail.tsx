@@ -15,8 +15,6 @@ import ApplyModal from "../components/ChallengeDetail/ApplyModal";
 import useAuthStore from "../storage/useAuthStore";
 import RejectModal from "../components/ChallengeDetail/RejectModal";
 import CompleteModal from "../components/ChallengeDetail/CompleteModal";
-import { set } from "react-hook-form";
-import AddIcon from "../assets/icons/add-icon";
 import Modal from "../components/ChallengeDetail/Modal";
 import Certification from "../components/ChallengeDetail/Certification";
 
@@ -55,7 +53,6 @@ const ChallengeDetail = () => {
             userData.id,
             accessToken
         );
-        console.log(res);
         if (res && res.success) {
             setParticipating(true);
             setCompleteModalOpen(true);
@@ -77,8 +74,6 @@ const ChallengeDetail = () => {
     }, [ChallengeDetailData]);
 
     if (isLoading) return <div></div>;
-
-    console.log(ChallengeDetailData);
 
     return (
         <DefaultLayout>
@@ -102,7 +97,10 @@ const ChallengeDetail = () => {
                     onClick={handleModalOpen}
                     onCancle={() => setCancleModalOpen(true)}
                 />
-                <Certification title={ChallengeDetailData.data.title} />
+                <Certification
+                    title={ChallengeDetailData.data.title}
+                    challengeId={challengeId!}
+                />
                 <OtherChallenge>
                     <ContentHeader
                         title="다른 챌린지 둘러보기"

@@ -5,60 +5,108 @@ import ContentHeader from "../Common/ContentHeader";
 import { useState } from "react";
 import ThumbsUpModal from "./ThumbsUpModal";
 import ProofModal from "./ProofModal";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getChallengeProofs } from "../../apis/challenge";
+import useAuthStore from "../../storage/useAuthStore";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 
 type CertificationProps = {
     title: string;
+    challengeId: string;
 };
 
-const Certification = ({ title }: CertificationProps) => {
+const Certification = ({ title, challengeId }: CertificationProps) => {
     const [proofModalOpen, setProofModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const { accessToken } = useAuthStore();
 
     const handleProofSuccess = () => {
         setProofModalOpen(false);
         setIsSuccessModalOpen(true);
     };
 
+    const {
+        data: ChallengeProofData,
+        isLoading,
+        refetch,
+    } = useQuery({
+        queryKey: ["getChallengeProof", challengeId, accessToken],
+        queryFn: () => getChallengeProofs(challengeId!, accessToken!),
+        placeholderData: keepPreviousData,
+    });
+
+    if (isLoading) return <div>Loading...</div>;
+
+    console.log(ChallengeProofData);
+
     return (
         <>
             <Container>
                 <ContentHeader
                     title="인증 내역"
-                    desc={`'${title}’ 챌린지를 달성하기 위해 총 4번의 인증이 필요해요.`}
+                    desc={`'${title}’ 챌린지를 달성하기 위해 총 ${ChallengeProofData.data.totalProofs}번의 인증이 필요해요.`}
                 />
-                <div className="certification-list">
-                    <img
-                        src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg"
-                        alt="certification"
-                    />
-                    <img
-                        src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg"
-                        alt="certification"
-                    />
-                    <div
-                        className="need-certification"
-                        onClick={() => {
-                            setProofModalOpen(true);
-                        }}
-                    >
-                        <AddIcon width={65} height={65} color="#EF7F18" />
-                        <span>인증 내역 추가 업로드</span>
-                    </div>
-                    <div
-                        className="need-certification"
-                        onClick={() => {
-                            setIsSuccessModalOpen(true);
-                        }}
-                    >
-                        <AddIcon width={65} height={65} color="#EF7F18" />
-                        <span>인증 내역 추가 업로드</span>
-                    </div>
-                </div>
+                <StyledSwiper spaceBetween={23} slidesPerView={4}>
+                    <ProofSlide>
+                        <div className="certification-item">
+                            <img
+                                src={"https://via.placeholder.com/301x415"}
+                                alt="certification"
+                            />
+                            <div className="description">
+                                <p className="title-text">첫 번째 인증</p>
+                                <p className="sub-text">
+                                    성냥팔이소녀를 읽고 주인공과 나를 비교하여
+                                    비슷한 점과 다른 점을
+                                </p>
+                            </div>
+                        </div>
+                    </ProofSlide>
+                    {ChallengeProofData.data.proofDetailResponses.map(
+                        (proof: any, index: number) => (
+                            <div key={index}>
+                                {proof.status ? (
+                                    <SwiperSlide>
+                                        <img
+                                            src={
+                                                proof.proofImageUrl ||
+                                                "https://via.placeholder.com/301x415"
+                                            }
+                                            alt="certification"
+                                        />
+                                    </SwiperSlide>
+                                ) : (
+                                    <SwiperSlide>
+                                        <div
+                                            className="need-certification"
+                                            onClick={() => {
+                                                setProofModalOpen(true);
+                                            }}
+                                        >
+                                            <AddIcon
+                                                width={65}
+                                                height={65}
+                                                color="#EF7F18"
+                                            />
+                                            <span>인증 내역 추가 업로드</span>
+                                        </div>
+                                    </SwiperSlide>
+                                )}
+                            </div>
+                        )
+                    )}
+                </StyledSwiper>
             </Container>
             {proofModalOpen && (
                 <ProofModal
                     onSuccess={handleProofSuccess}
                     onCancle={() => setProofModalOpen(false)}
+                    challengeId={challengeId}
+                    accessToken={accessToken!}
                 />
             )}
 
@@ -74,6 +122,51 @@ const Certification = ({ title }: CertificationProps) => {
 };
 
 export default Certification;
+
+const ProofSlide = styled(SwiperSlide)`
+    ${tw`
+        relative
+    `}
+    .description {
+        ${tw`
+            absolute bottom-0 p-[29px 22px] text-white
+        `}
+        .title-text {
+            ${tw`
+                text-bold-36 font-bold
+            `}
+        }
+        .sub-text {
+            ${tw`
+                text-medium-20 font-medium text-ellipsis overflow-hidden
+            `}
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+    }
+`;
+
+const StyledSwiper = styled(Swiper)`
+    ${tw`
+            mt-[50px] w-[1280px]
+        `}
+    img {
+        ${tw`
+                w-[301px] h-[415px] rounded-[16px]
+            `}
+    }
+    .need-certification {
+        ${tw`
+                cursor-pointer w-[301px] h-[415px] rounded-[16px] bg-white flex flex-col items-center justify-center gap-[23px]
+            `}
+        span {
+            ${tw`
+                    text-medium-20 font-medium text-fontColor3
+                `}
+        }
+    }
+`;
 
 const Container = styled.div`
     ${tw`

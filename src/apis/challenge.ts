@@ -189,9 +189,10 @@ export const getChallengeProofs = async (
 };
 
 export const postChallengeProof = async (
-    participationId: number,
+    participationId: string,
     proofDate: string,
-    proofImageUrl: string
+    proofImageUrl: string,
+    accessToken: string
 ) => {
     try {
         const res = await axiosInstance.post(
@@ -199,6 +200,11 @@ export const postChallengeProof = async (
             {
                 proofDate: proofDate,
                 proofImageUrl: proofImageUrl,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
             }
         );
         return res.data;

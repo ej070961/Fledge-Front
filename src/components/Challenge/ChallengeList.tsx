@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import ContentHeader from "../Common/ContentHeader";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
 import ChallengeGrid from "./ChallengeGrid";
 
 type ChallengeListProps = {
