@@ -60,12 +60,12 @@ const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
                     placeholder="상세 주소"
                     width="199px"
                     value={form.detailAddress}
-                    onChange={handleDetailAddressChange}
+                    onChange={(e) => handleDetailAddressChange(e)}
                 />
                 <Input
                     hint="우편번호"
                     placeholder="12345"
-                    width="102px"
+                    width="107px"
                     value={form.zonecode}
                 />
                 <Button title="우편번호 검색" mainColor onClick={handlePopup} />

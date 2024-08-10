@@ -56,6 +56,7 @@ const ChallengeDetail = () => {
         if (res && res.success) {
             setParticipating(true);
             setCompleteModalOpen(true);
+            setIsModalOpen(false);
             refetch();
         } else {
             setIsModalOpen(false);
