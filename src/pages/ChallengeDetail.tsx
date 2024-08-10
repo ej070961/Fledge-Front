@@ -34,8 +34,8 @@ const ChallengeDetail = () => {
         isLoading,
         refetch,
     } = useQuery({
-        queryKey: ["getChallengeDetail", challengeId],
-        queryFn: () => getChallengeDetail(challengeId!),
+        queryKey: ["getChallengeDetail", challengeId, accessToken],
+        queryFn: () => getChallengeDetail(challengeId!, accessToken),
     });
 
     const handleModalOpen = useCallback(() => {
@@ -56,6 +56,7 @@ const ChallengeDetail = () => {
         if (res && res.success) {
             setParticipating(true);
             setCompleteModalOpen(true);
+            setIsModalOpen(false);
             refetch();
         } else {
             setIsModalOpen(false);

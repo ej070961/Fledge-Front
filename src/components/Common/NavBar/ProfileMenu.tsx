@@ -18,7 +18,7 @@ const ProfileMenu = ({ onLogout }: ProfileMenuProps) => {
                 <div>로그인한 카카오 계정</div>
                 <div className="kakao">
                     <KakaoIcon />
-                    <p>gloss@kakao.com</p>
+                    <p>{userData.email}</p>
                 </div>
                 <hr />
                 <div className="notification">
@@ -49,7 +49,7 @@ export default ProfileMenu;
 const Container = styled.div`
     ${tw`
         absolute top-[65px] left-[-131px]
-        flex flex-col items-center
+        flex flex-col items-center z-[10]
     `}
     .menu {
         ${tw`

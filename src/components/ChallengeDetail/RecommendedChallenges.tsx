@@ -50,6 +50,7 @@ const RecommendedChallenges = ({ challengeId }: RecommendedChallengesProps) => {
                         description={challenge.description}
                         successRate={challenge.successRate}
                         participants={challenge.participantCount}
+                        challengeId={challenge.id}
                     />
                 ))}
             </ChallengeSlider>
