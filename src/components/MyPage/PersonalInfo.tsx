@@ -1,19 +1,17 @@
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import tw from "twin.macro";
-import DropDown from "../Common/DropDown";
 import Input from "../Common/Input";
-import Button from "../Common/Button";
-
-import PostalCode from "./PostalCode";
-import { useEffect, useState } from "react";
-import { getCanaryProfile } from "../../apis/canary";
-import { useQuery } from "@tanstack/react-query";
 import useAuthStore from "../../storage/useAuthStore";
-import Location from "./Location";
-
+import { getCanaryProfile } from "../../apis/canary";
+import BirthDate from "./PersonalInfo/BirthDate";
+import GenderSelection from "./PersonalInfo/GenderSelection";
+import Introduction from "./PersonalInfo/Introduction";
+import PostalCode from "./PostalCode";
+import InterestArea from "./PersonalInfo/InterestArea";
 const PersonalInfo = () => {
     const { userData, accessToken } = useAuthStore.getState();
-    const [disabled, setDisabled] = useState(true);
     const [birthData, setBirthData] = useState({
         year: "2000",
         month: "1",
@@ -41,12 +39,11 @@ const PersonalInfo = () => {
         zip: "",
         latitude: 0,
         longitude: 0,
-        interestArea: ["서울특별시"],
+        interestArea: null as string | null,
     });
 
     useEffect(() => {
         if (data) {
-            setDisabled(false);
             setViewData(data.data);
             setBirthData({
                 year: data.data.birth.split("-")[0],
@@ -57,18 +54,18 @@ const PersonalInfo = () => {
     }, [data]);
 
     const handleInterestArea = (area: string) => {
-        if (viewData.interestArea.length < 10) {
+        if (viewData.interestArea === null) {
             setViewData({
                 ...viewData,
-                interestArea: [...viewData.interestArea, area],
+                interestArea: area,
             });
         }
     };
 
-    const handleDeleteInterestArea = (area: string) => {
+    const handleDeleteInterestArea = () => {
         setViewData({
             ...viewData,
-            interestArea: viewData.interestArea.filter((item) => item !== area),
+            interestArea: "",
         });
     };
 
@@ -114,130 +111,40 @@ const PersonalInfo = () => {
             <Header>
                 <span className="title-text">회원 개인 정보</span>
             </Header>
-
-            {/* 회원 개인 정보 입력 */}
             <Container>
-                {/* 회원 개인 정보 1열*/}
                 <div className="first">
                     <Input hint="휴대폰 번호" value={viewData.phone} />
-                    <div className="birth">
-                        <DropDown
-                            hint="생년월일"
-                            type="year"
-                            value={birthData.year + "년"}
-                            onChange={(e) =>
-                                handleBirthData("year", e.target.value)
-                            }
-                        />
-                        <DropDown
-                            type="month"
-                            value={birthData.month + "월"}
-                            onChange={(e) =>
-                                handleBirthData("month", e.target.value)
-                            }
-                            width="100px"
-                        />
-                        <DropDown
-                            type="day"
-                            value={birthData.day + "일"}
-                            onChange={(e) =>
-                                handleBirthData("day", e.target.value)
-                            }
-                            width="100px"
-                        />
-                    </div>
-                    <DropDown
-                        hint="성별"
-                        items={["남성", "여성"]}
-                        value={viewData.gender === true ? "남성" : "여성"}
-                        onChange={(e) => {
-                            handleViewData("gender", e.target.value === "남성");
-                        }}
+                    <BirthDate
+                        year={birthData.year}
+                        month={birthData.month}
+                        day={birthData.day}
+                        onChange={handleBirthData}
+                    />
+                    <GenderSelection
+                        gender={viewData.gender}
+                        onChange={(gender) => handleViewData("gender", gender)}
                     />
                 </div>
-
-                {/* 회원 개인 정보 2열*/}
-                <div className="second">
-                    <div className="sub-text">소개글</div>
-                    <textarea
-                        className="text"
-                        value={viewData.introduction}
-                        onChange={(e) =>
-                            handleViewData("introduction", e.target.value)
-                        }
-                    />
-                </div>
-
-                {/* 주소 검색 */}
+                <Introduction
+                    introduction={viewData.introduction}
+                    onChange={(introduction) =>
+                        handleViewData("introduction", introduction)
+                    }
+                />
                 <PostalCode />
-
-                {/* 회원 개인 정보 4열*/}
-                <div className="fourth">
-                    <div className="header">
-                        <span className="sub-text">관심 지역</span>
-                        <span className="desc-text">
-                            쵀대 10개의 지역을 고를 수 있어요.
-                        </span>
-                    </div>
-                    <div className="selection">
-                        <div className="selection-item">
-                            <DropDown
-                                items={["시/도", "경기", "인천"]}
-                                value={area.sido}
-                                onChange={(e) =>
-                                    handleArea("sido", e.target.value)
-                                }
-                            />
-                            <DropDown
-                                items={["시/군/구", "강동구"]}
-                                value={area.sigungu}
-                                onChange={(e) =>
-                                    handleArea("sigungu", e.target.value)
-                                }
-                            />
-                            <DropDown
-                                items={["행정구/시", "청담동"]}
-                                value={area.dong}
-                                onChange={(e) =>
-                                    handleArea("dong", e.target.value)
-                                }
-                            />
-                            <Button
-                                title="저장"
-                                mainColor
-                                onClick={() => {
-                                    handleSave();
-                                }}
-                            />
-                        </div>
-                        <div className="selected-list">
-                            {viewData.interestArea.map(
-                                (area, index) =>
-                                    area.length > 0 && (
-                                        <Location
-                                            key={index}
-                                            text={area}
-                                            onClick={() => {
-                                                handleDeleteInterestArea(area);
-                                            }}
-                                        />
-                                    )
-                            )}
-                        </div>
-                    </div>
-                </div>
+                <InterestArea
+                    area={area}
+                    interestArea={viewData.interestArea}
+                    onAreaChange={handleArea}
+                    onSave={handleSave}
+                    onDeleteInterestArea={handleDeleteInterestArea}
+                />
             </Container>
         </>
     );
 };
 
 export default PersonalInfo;
-
-const Header = styled.div`
-    ${tw`
-            w-[1280px] flex flex-col items-start gap-[3px] text-bold-36 font-bold text-fontColor1
-        `}
-`;
 
 const Container = styled.div`
     ${tw`
@@ -248,74 +155,10 @@ const Container = styled.div`
             flex gap-[23px] items-baseline
         `}
     }
-    .birth {
-        ${tw`
-        flex gap-[10px] items-baseline
-    `}
-    }
-    .sub-text {
-        ${tw`
-                text-medium-20 font-medium text-fontColor3 mb-[24px] 
-            `}
-    }
-    .text {
-        ${tw`
-            w-[1280px] h-[225px] rounded-[25px] resize-none truncate outline-none px-[19px] py-[15px]
-            text-medium-20 font-medium text-fontColor1
+`;
+
+const Header = styled.div`
+    ${tw`
+            w-[1280px] flex flex-col items-start gap-[3px] text-bold-36 font-bold text-fontColor1
         `}
-    }
-    .title-text {
-        ${tw`
-                text-bold-36 font-bold text-fontColor1
-            `}
-    }
-    .desc-text {
-        ${tw`
-                text-medium-15 font-medium text-fontColor2
-            `}
-    }
-    .fourth {
-        .header {
-            ${tw`
-                flex gap-[13px] items-baseline  mb-[24px]
-            `}
-            .sub-text {
-                ${tw`
-                text-medium-20 font-medium text-fontColor3 mb-[0px]
-            `}
-            }
-        }
-        .selection {
-            ${tw` 
-                flex flex-col items-start gap-[17px] mt-[-50px] mb-[273px]
-            `}
-            .selection-item {
-                ${tw`
-                    flex gap-[6.5px] items-baseline
-                `}
-                button {
-                    ${tw`
-                   ml-[17px] mb-[5px] h-[46px]
-                `}
-                }
-            }
-            .selected-list {
-                ${tw`
-                    flex gap-[12px]
-                `}
-            }
-            .selected-item {
-                ${tw`
-                    h-[46px] flex gap-[10px] px-[21px]
-                    border-[3px] border-mainColor rounded-full
-                    justify-center items-center 
-                `}
-                span {
-                    ${tw`
-                    text-medium-20 font-medium text-mainColor mt-[-2px]
-                `}
-                }
-            }
-        }
-    }
 `;

@@ -80,3 +80,141 @@ export const getPartnershipChallenges = async (
         }
     }
 };
+
+export const getRecommendedChallenges = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/explore`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const getChallengeParticipants = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}/participants`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const getChallengeDetail = async (challengeId: string) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}`
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const postChallengeApply = async (
+    challengeId: string,
+    memberId: number,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.post(
+            `https://fledge.site/api/v1/challenges`,
+            {
+                challengeId: challengeId,
+                memberId: memberId,
+                startDate: new Date().toISOString().split("T")[0],
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const getChallengeProofs = async (
+    challengeId: string,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.get(
+            `https://fledge.site/api/v1/challenges/${challengeId}/my-proof`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};
+
+export const postChallengeProof = async (
+    participationId: string,
+    proofDate: string,
+    proofImageUrl: string,
+    accessToken: string
+) => {
+    try {
+        const res = await axiosInstance.post(
+            `https://fledge.site/api/v1/challenges/${participationId}/proofs`,
+            {
+                proofDate: proofDate,
+                proofImageUrl: proofImageUrl,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError<CommonError>(error) && error.response) {
+            const errorCode = error.response.data.errorCode;
+            const message = error.response.data.message;
+            console.log(`${errorCode}: ${message}`);
+            alert(message);
+        }
+    }
+};

@@ -46,6 +46,21 @@ const Container = styled.div`
         items-center
         gap-[2px]
     `}
+
+    .profile {
+        ${tw`
+            flex flex-col
+            items-center
+            justify-center
+            gap-[12px]
+            relative
+        `}
+        &:before {
+            ${tw`
+                content-[""] absolute top-[-30px] bottom-[-30px] left-[-80px] right-[-80px]
+            `}
+        }
+    }
 `;
 
 const Profile = styled.img`

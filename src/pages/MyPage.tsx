@@ -28,7 +28,7 @@ function MyPage() {
             {isCanary && <BadgeBoard />}
 
             {/* 후원 인증 히스토리 */}
-            {isCanary && (
+            {isCanary ? (
                 <SponsorWrapper>
                     <Header>
                         <span className="title-text">
@@ -36,6 +36,17 @@ function MyPage() {
                         </span>
                         <span className="sub-text">
                             게시한 후원 게시물과 진행 상황을 확인할 수 있어요.
+                        </span>
+                    </Header>
+                    {/* <Slider menu="my" /> */}
+                </SponsorWrapper>
+            ) : (
+                <SponsorWrapper>
+                    <Header>
+                        <span className="title-text">후원 인증 히스토리</span>
+                        <span className="sub-text">
+                            후원을 받은 자립준비청년의 후원 인증 메시지를 다시
+                            볼 수 있어요.
                         </span>
                     </Header>
                     {/* <Slider menu="my" /> */}

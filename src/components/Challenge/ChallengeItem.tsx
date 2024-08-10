@@ -8,7 +8,8 @@ import ProgressBar from "../Common/ProgressBar";
 import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
 import { challengeType } from "../../@types/challenge-category";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ChallengeItemProps {
     title: string;
@@ -19,6 +20,7 @@ interface ChallengeItemProps {
     successRate: number;
     participants: number;
     isCategory?: boolean;
+    challengeId?: string;
 }
 
 const ChallengeItem = ({
@@ -30,21 +32,35 @@ const ChallengeItem = ({
     successRate,
     participants,
     isCategory,
+    challengeId = "1",
 }: ChallengeItemProps) => {
+    const navigate = useNavigate();
     let BubbleType = null;
     if (!isCategory) {
         if (bubbleType) {
             BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
         }
     } else bubbleType = undefined;
+    const [isLiked, setIsLiked] = useState(false);
     return (
         <Container>
             {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
             <Background>
                 <div>
                     <ChallengeHeader>
-                        <Title>{title}</Title>
-                        <Heart heartCount={heartCount} />
+                        <Title
+                            onClick={() => {
+                                navigate(`/challenge/${challengeId}`);
+                                window.scrollTo(0, 0);
+                            }}
+                        >
+                            {title}
+                        </Title>
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
@@ -107,6 +123,8 @@ const ChallengeItemLarge = ({
                 : BubbleOrganization;
     }
 
+    const [isLiked, setIsLiked] = useState(false);
+
     const formDate = useCallback((startDate: string, endDate: string) => {
         const start = startDate.split("-");
         const end = endDate.split("-");
@@ -116,12 +134,23 @@ const ChallengeItemLarge = ({
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
 
     const parseCampaignText = (text: string) => {
-        const [title, rest] = text.split(",");
-        const price = rest.replace("지원", "").trim();
-        return {
-            title: title.trim(),
-            price,
-        };
+        //text 내에 ,가 있는 경우,
+        if (text.includes(",")) {
+            const [title, rest] = text.split(",");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim(),
+                price,
+            };
+        } else {
+            //첫번쨰 지원이라는 단어 뒤에 쉼표 생성
+            const [title, rest] = text.split("지원");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim() + "지원",
+                price,
+            };
+        }
     };
 
     if (supportContent) {
@@ -143,7 +172,11 @@ const ChallengeItemLarge = ({
                                 alt="partner"
                             />
                         ))}
-                        <Heart heartCount={heartCount} />
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </PartnerContainer>
                     <ChallengeHeader>
                         <Title>{title}</Title>
@@ -247,6 +280,7 @@ const Title = styled.span`
         font-bold
         text-fontColor1
         break-keep
+        cursor-pointer
     `}
 `;
 

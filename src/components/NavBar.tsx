@@ -36,7 +36,7 @@ const NavBar = () => {
             {isLoggedIn ? (
                 <User
                     nickname={userData.nickname ?? ""}
-                    profile={userData.profile}
+                    profile={userData.profile ?? Profile}
                 />
             ) : (
                 <LoginButton handleSign={handleSign} />

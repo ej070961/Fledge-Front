@@ -76,4 +76,12 @@ const Container = styled.div`
                 `}
         }
     }
+    .profile {
+        ${tw`
+            flex
+            flex-col
+            items-center
+            gap-[7px]
+        `}
+    }
 `;

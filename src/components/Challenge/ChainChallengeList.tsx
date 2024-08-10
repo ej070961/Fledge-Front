@@ -20,7 +20,6 @@ const ChainChallengeList = ({ onePage = false }: ChallengeGridProps) => {
 
     if (isLoading) return <div></div>;
 
-    console.log(challengeData);
     return (
         <ChallengerContainer>
             {!onePage && (
