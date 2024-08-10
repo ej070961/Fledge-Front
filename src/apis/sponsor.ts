@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { SponsorData, SponsorDetailData } from "../@types/sponsor";
 import { CommonError } from "../@types/api";
 import { axiosInstance } from ".";
+import { banks } from "../@types/sponsor-category";
 
 export const postAddressItem = async (
   accesstoken: string,
@@ -139,15 +140,10 @@ export const getPagingPost = async (
   }
 };
 
-export const getDeadlinePost = async (page: number) => {
+export const getDeadlinePost = async () => {
   try {
-    const res = await axios.get(
-      `/api/v1/public/supports/deadline?paging=${page}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const res = await axiosInstance.get(
+      `/api/v1/public/supports/deadline-approaching`
     );
     return res.data.data;
   } catch (error) {
@@ -200,6 +196,63 @@ export const getCanaryInfo = async (memberId: number) => {
       const errorCode = error.response.data.errorCode;
       const message = error.response.data.message;
       console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const deleteSupportPost = async (
+  supportId: string,
+  accesstoken: string
+) => {
+  try {
+    const res = await axiosInstance.delete(`/api/v1/supports/${supportId}`, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+    }
+  }
+};
+
+export const postDonate = async (
+  accesstoken: string,
+  supportId: string,
+  amount: number,
+  bankcode: string,
+  account: string
+) => {
+  const bankName = banks.find((b) => b.id === bankcode);
+  try {
+    const res = await axiosInstance.post(
+      `/api/v1/supports/${supportId}/record`,
+      {
+        bankName: bankName?.label,
+        bankCode: bankcode,
+        account: account,
+        amount: amount,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError<CommonError>(error) && error.response) {
+      const errorCode = error.response.data.errorCode;
+      const message = error.response.data.message;
+      console.log(`${errorCode}: ${message}`);
+      alert(message);
     }
   }
 };

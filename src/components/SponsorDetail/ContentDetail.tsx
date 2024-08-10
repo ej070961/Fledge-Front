@@ -7,7 +7,7 @@ type ContentDetailProps = {
   data: SponsorDetailData;
 };
 
-const ContentDetail: React.FC<ContentDetailProps> = ({ data }) => {
+function ContentDetail({ data }: ContentDetailProps) {
   return (
     <Container>
       <RowBox className="justify-between items-center">
@@ -53,7 +53,7 @@ const ContentDetail: React.FC<ContentDetailProps> = ({ data }) => {
       </RowBox>
     </Container>
   );
-};
+}
 
 export default ContentDetail;
 
