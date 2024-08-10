@@ -4,7 +4,6 @@ import tw from "twin.macro";
 import Input from "../Common/Input";
 import { useState } from "react";
 import DaumPost from "../Common/DaumPost";
-import react, { useEffect } from "react";
 
 interface postCode {
     address: string;
@@ -15,35 +14,23 @@ interface PostalCodeProps {
     initialAddress?: postCode;
     onChange?: (data: postCode) => void;
 }
+
 const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
     const [popup, setPopup] = useState(false);
-
-    const [form, setForm] = useState<postCode>({
-        address: "",
-        zonecode: "",
-        detailAddress: "",
-    });
 
     const handlePopup = () => {
         setPopup(!popup);
     };
 
-    useEffect(() => {
-        if (initialAddress) {
-            setForm(initialAddress);
-        }
-    }, [initialAddress]);
-
-    useEffect(() => {
-        if (onChange && form.address !== initialAddress?.address) {
-            onChange(form);
-        }
-    }, [form, initialAddress]);
-
     const handleDetailAddressChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setForm((prevForm) => ({ ...prevForm, detailAddress: e.target.value }));
+        if (onChange) {
+            onChange({
+                ...initialAddress,
+                detailAddress: e.target.value,
+            } as postCode);
+        }
     };
 
     return (
@@ -53,24 +40,33 @@ const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
                     hint="거주 주소지"
                     placeholder="거주 주소지"
                     width="577px"
-                    value={form.address}
+                    value={initialAddress?.address || ""}
                 />
                 <Input
                     hint="상세 주소"
                     placeholder="상세 주소"
                     width="199px"
-                    value={form.detailAddress}
-                    onChange={(e) => handleDetailAddressChange(e)}
+                    value={initialAddress?.detailAddress || ""}
+                    onChange={handleDetailAddressChange}
                 />
                 <Input
                     hint="우편번호"
                     placeholder="12345"
                     width="107px"
-                    value={form.zonecode}
+                    value={initialAddress?.zonecode.toString() || ""}
                 />
                 <Button title="우편번호 검색" mainColor onClick={handlePopup} />
                 {popup && (
-                    <DaumPost handlePopup={handlePopup} setAddress={setForm} />
+                    <DaumPost
+                        handlePopup={handlePopup}
+                        setAddress={(newAddress: any) =>
+                            onChange &&
+                            onChange({
+                                ...initialAddress,
+                                ...newAddress,
+                            })
+                        }
+                    />
                 )}
             </Container>
             {popup && (
