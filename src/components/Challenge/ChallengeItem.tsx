@@ -21,6 +21,7 @@ interface ChallengeItemProps {
     participants: number;
     isCategory?: boolean;
     challengeId: string;
+    noTag: boolean;
 }
 
 const ChallengeItem = ({
@@ -33,10 +34,11 @@ const ChallengeItem = ({
     participants,
     isCategory,
     challengeId,
+    noTag,
 }: ChallengeItemProps) => {
     const navigate = useNavigate();
     let BubbleType = null;
-    if (!isCategory) {
+    if (!isCategory && !noTag) {
         if (bubbleType) {
             BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
         }
@@ -260,7 +262,7 @@ const ChallengeParticipants = styled.div`
     ${tw`
         flex
         flex-col
-        gap-[5px]
+        gap-[8px]
     `}
 `;
 
@@ -286,8 +288,9 @@ const Title = styled.span`
 
 const ChallengeType = styled.div`
     ${tw`
+        mt-[4px]
         text-medium-15
-        font-bold
+        font-medium
         text-[white]
         bg-mainColor
         rounded-[28px]

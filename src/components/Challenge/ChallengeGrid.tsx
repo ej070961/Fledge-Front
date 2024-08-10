@@ -13,6 +13,7 @@ type ChallengeGridProps = {
     categories?: string[];
     size?: number;
     onePage?: boolean;
+    noTag: boolean;
 };
 
 const ChallengeGrid = ({
@@ -20,6 +21,7 @@ const ChallengeGrid = ({
     categories,
     size,
     onePage = false,
+    noTag,
 }: ChallengeGridProps) => {
     const [page, setPage] = useState<number>(0);
     const isCategory = categories !== undefined;
@@ -62,6 +64,7 @@ const ChallengeGrid = ({
                             participants={challenge.participantCount}
                             isCategory={isCategory}
                             challengeId={challenge.id}
+                            noTag={noTag}
                         />
                     )
                 )}
