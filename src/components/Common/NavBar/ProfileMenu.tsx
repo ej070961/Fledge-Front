@@ -3,6 +3,7 @@ import tw from "twin.macro";
 import triangle from "../../../assets/images/triangle.png";
 import KakaoIcon from "../../../assets/icons/kakao-icon";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../../storage/useAuthStore";
 
 type ProfileMenuProps = {
     onLogout: () => void;
@@ -10,11 +11,12 @@ type ProfileMenuProps = {
 
 const ProfileMenu = ({ onLogout }: ProfileMenuProps) => {
     const navigate = useNavigate();
+    const { userData } = useAuthStore();
 
     return (
         <Container>
-            <img src={triangle} alt="triangle" className="triangle" />
             <div className="menu">
+                <img src={triangle} alt="triangle" className="triangle" />
                 <div>로그인한 카카오 계정</div>
                 <div className="kakao">
                     <KakaoIcon />
@@ -53,8 +55,9 @@ const Container = styled.div`
     `}
     .menu {
         ${tw`
+            absolute left-[-125px]
             w-[342px]
-            bg-white 
+            bg-white
             rounded-[16px]
             p-[29px 30px]
             flex flex-col gap-[19px] items-start
@@ -81,8 +84,8 @@ const Container = styled.div`
     }
     .triangle {
         ${tw`
+            absolute top-[-15px] right-[30px]
             transform rotate-180
-            absolute top-[-12px] left-[50%] -translate-x-1/2
         `}
     }
     .notification {
