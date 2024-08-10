@@ -90,6 +90,6 @@ const Container = styled.div`
 
 const Background = styled.div`
     ${tw`
-        absolute  w-[100dvw] h-[100dvh] z-40 top-0 left-0
+        fixed  w-[100dvw] h-[100dvh] z-40 top-0 left-0
     `}
 `;
