@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../storage/useAuthStore";
 
 type ProfileMenuProps = {
-    onLogout: () => void;
+  onLogout: () => void;
 };
 
 const ProfileMenu = ({ onLogout }: ProfileMenuProps) => {
@@ -49,7 +49,7 @@ const ProfileMenu = ({ onLogout }: ProfileMenuProps) => {
 export default ProfileMenu;
 
 const Container = styled.div`
-    ${tw`
+  ${tw`
         absolute top-[65px] left-[-131px]
         flex flex-col items-center z-[10]
     `}
@@ -63,41 +63,40 @@ const Container = styled.div`
             flex flex-col gap-[19px] items-start
             text-bold-20 font-bold text-fontColor3
         `}
-        .sub-text {
-            ${tw`
+    .sub-text {
+      ${tw`
                 text-fontColor2
             `}
-        }
-        .kakao {
-            ${tw`
+    }
+    .kakao {
+      ${tw`
                 flex items-center justify-center gap-[10px]
                 bg-[#FAE100] rounded-[28px] p-[6px 12px]
                 text-fontColor1 text-medium-15 font-medium
             `}
-        }
-        hr {
-            ${tw`
+    }
+    hr {
+      ${tw`
                 w-full
                 border-[1px] border-fontColor2
             `}
-        }
     }
     .triangle {
         ${tw`
             absolute top-[-15px] right-[30px]
             transform rotate-180
         `}
-    }
-    .notification {
-        ${tw`
+  }
+  .notification {
+    ${tw`
             flex items-center justify-between w-full
         `}
-        .number {
-            ${tw`
+    .number {
+      ${tw`
                 bg-[#EE5D5D] rounded-full
                 text-bold-10 font-bold text-white
                 p-[3px 6px]
             `}
-        }
     }
+  }
 `;
