@@ -97,7 +97,7 @@ const ChallengeDetail = () => {
                         ChallengeDetailData.data.participantCount
                     }
                     successParticipants={ChallengeDetailData.data.successCount}
-                    successRate={ChallengeDetailData.data.successRate * 100}
+                    successRate={ChallengeDetailData.data.successRate}
                 />
                 <Challengers
                     challengeId={challengeId}
