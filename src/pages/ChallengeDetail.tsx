@@ -97,10 +97,12 @@ const ChallengeDetail = () => {
                     onClick={handleModalOpen}
                     onCancle={() => setCancleModalOpen(true)}
                 />
-                <Certification
-                    title={ChallengeDetailData.data.title}
-                    challengeId={challengeId!}
-                />
+                {participating && (
+                    <Certification
+                        title={ChallengeDetailData.data.title}
+                        challengeId={challengeId!}
+                    />
+                )}
                 <OtherChallenge>
                     <ContentHeader
                         title="다른 챌린지 둘러보기"
