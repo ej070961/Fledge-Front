@@ -115,10 +115,20 @@ export const getChallengeParticipants = async (challengeId: string) => {
     }
 };
 
-export const getChallengeDetail = async (challengeId: string) => {
+export const getChallengeDetail = async (
+    challengeId: string,
+    accessToken: string | undefined
+) => {
     try {
         const res = await axiosInstance.get(
-            `https://www.fledge.site/api/v1/public/challenges/${challengeId}`
+            `https://www.fledge.site/api/v1/public/challenges/${challengeId}`,
+            {
+                headers: {
+                    ...(accessToken && {
+                        Authorization: `Bearer ${accessToken}`,
+                    }),
+                },
+            }
         );
         return res.data;
     } catch (error) {

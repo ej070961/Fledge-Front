@@ -20,7 +20,7 @@ interface ChallengeItemProps {
     successRate: number;
     participants: number;
     isCategory?: boolean;
-    challengeId?: string;
+    challengeId: string;
 }
 
 const ChallengeItem = ({
@@ -32,7 +32,7 @@ const ChallengeItem = ({
     successRate,
     participants,
     isCategory,
-    challengeId = "1",
+    challengeId,
 }: ChallengeItemProps) => {
     const navigate = useNavigate();
     let BubbleType = null;

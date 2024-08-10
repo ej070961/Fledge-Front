@@ -61,6 +61,7 @@ const ChallengeGrid = ({
                             successRate={challenge.successRate}
                             participants={challenge.participantCount}
                             isCategory={isCategory}
+                            challengeId={challenge.id}
                         />
                     )
                 )}
