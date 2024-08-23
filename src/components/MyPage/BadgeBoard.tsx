@@ -125,7 +125,7 @@ const BadgeBoard = () => {
             <Header>
                 <span className="title">챌린지 달성 뱃지</span>
                 <span className="desc">
-                    00개의 챌린지를 성공적으로 마쳤어요. 성장하고 계시는군요!
+                    14개의 챌린지를 성공적으로 마쳤어요. 성장하고 계시는군요!
                 </span>
             </Header>
             <Body>
@@ -173,7 +173,7 @@ const BadgeSlide = styled.div`
         flex items-center gap-[50px]
     `}
     button {
-        z-index: 100;
+        z-index: 1;
     }
 `;
 

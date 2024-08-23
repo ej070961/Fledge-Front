@@ -1,22 +1,45 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import ContentHeader from "../Common/ContentHeader";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
 import ChallengeGrid from "./ChallengeGrid";
 
 type ChallengeListProps = {
     title: string;
     desc: string;
     imgSrc: string;
+    type: string;
+    categories?: string[];
+    noTag?: boolean;
+    mt?: string;
+    mb?: string;
+    ml?: string;
+    mr?: string;
 };
 
-const ChallengeList = ({ title, desc, imgSrc }: ChallengeListProps) => {
+const ChallengeList = ({
+    title,
+    desc,
+    imgSrc,
+    type,
+    categories,
+    noTag = true,
+    mt,
+    mb,
+    ml,
+    mr,
+}: ChallengeListProps) => {
     return (
         <Container>
-            <ContentHeader title={title} desc={desc} imgSrc={imgSrc} />
-            <ChallengeGrid />
+            <ContentHeader
+                title={title}
+                desc={desc}
+                imgSrc={imgSrc}
+                mt={mt}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+            />
+            <ChallengeGrid type={type} categories={categories} noTag={noTag} />
         </Container>
     );
 };

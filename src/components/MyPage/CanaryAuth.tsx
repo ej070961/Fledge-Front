@@ -1,8 +1,24 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import Button from "../Common/Button";
+import { getCanaryStatus } from "../../apis/canary";
+import useAuthStore from "../../storage/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
 
-const CanaryAuth = () => {
+type CanaryStatus = {
+    applyStatus: number;
+    onClick: () => void;
+};
+
+const CanaryAuth = ({
+    applyStatus,
+    onClick,
+    isLoading,
+}: CanaryStatus & { isLoading: boolean }) => {
+    const { userData, accessToken } = useAuthStore.getState();
+
+    if (isLoading) return <div></div>;
+
     return (
         <Container>
             <div className="canary-header">
@@ -12,7 +28,25 @@ const CanaryAuth = () => {
                     멘토링을 신청할 수 있어요.
                 </span>
             </div>
-            <Button title="자립준비청년 인증하기" small mainColor />
+            {applyStatus === 0 && (
+                <Button
+                    title="자립준비청년 인증하기"
+                    onClick={() => onClick()}
+                    small
+                    mainColor
+                />
+            )}
+            {applyStatus === 1 && (
+                <Button title="자립준비청년 인증대기" small />
+            )}
+            {applyStatus === 2 && (
+                <Button
+                    title="자립준비청년 인증완료"
+                    small
+                    mainColor
+                    background="white"
+                />
+            )}
         </Container>
     );
 };

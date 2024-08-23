@@ -3,30 +3,49 @@ import tw from "twin.macro";
 import { styled, keyframes } from "styled-components";
 import NoImg from "../../assets/images/no_img.png";
 import { SponsorBannerData } from "../../@types/sponsor";
+import { useNavigate } from "react-router-dom";
 
-function BannerItem(data: SponsorBannerData) {
-  console.log(data);
-  return (
-    <Card>
-      <Image
-        imageUrl={data.supportPostImageUrl ? data.supportPostImageUrl : NoImg}
-      />
-      <Background />
-      <Content remained={data.leftDays}>
-        <span className="d-day-text">D-{data.leftDays}</span>
-        <span className="title-text">{data.title}</span>
-        <div className="progress-wrapper">
-          <span className="progress-text">
-            진행률 {data.supportRecord.progress}%
-          </span>
-          <span className="progress-text">
-            {data.supportRecord.totalPrice}원
-          </span>
-        </div>
-        <ProgressBar progress={data.supportRecord.progress} />
-      </Content>
-    </Card>
-  );
+function BannerItem({
+    supportId,
+    supportPostImageUrl,
+    leftDays,
+    title,
+    supportRecord,
+    banner,
+}: SponsorBannerData) {
+    const navigate = useNavigate();
+    return (
+        <Card
+            onClick={() => {
+                navigate(`/sponsor-detail/${supportId}`);
+                window.scrollTo(0, 0);
+            }}
+            banner={banner}
+        >
+            <Image
+                imageUrl={supportPostImageUrl ? supportPostImageUrl : NoImg}
+            />
+            <Background />
+            {banner && <div className="banner"> {banner}</div>}
+            <Content remained={leftDays}>
+                <span className="d-day-text">
+                    {Number(leftDays) < 0 ? "후원 기간 만료" : `D-${leftDays}`}
+                </span>
+                <span className="title-text">
+                    <p>{title}</p>
+                </span>
+                <div className="progress-wrapper">
+                    <span className="progress-text">
+                        진행률 {supportRecord.progress}%
+                    </span>
+                    <span className="progress-text">
+                        {supportRecord.totalPrice}원
+                    </span>
+                </div>
+                <ProgressBar progress={supportRecord.progress} />
+            </Content>
+        </Card>
+    );
 }
 
 export default BannerItem;
@@ -34,9 +53,25 @@ export default BannerItem;
 type ImageProps = {
   imageUrl: string;
 };
-const Card = styled.div`
-  ${tw`w-[300px] h-[415px] [border-radius: 16px] flex flex-col overflow-hidden relative `}
-  flex: 0 0 auto; // 고정 너비를 유지
+
+type CardProps = {
+    banner?: string;
+};
+const Card = styled.div<CardProps>`
+    ${tw`w-[300px] h-[415px] [border-radius: 16px] flex flex-col overflow-hidden relative cursor-pointer`}
+    flex: 0 0 auto; // 고정 너비를 유지
+
+    .banner {
+        ${tw`absolute top-0 right-0 m-[21px] p-[8px 12px] rounded-full text-white font-bold text-bold-15`}
+
+        ${({ banner }) => {
+            if (banner === "인증하기") return tw`bg-subColor`;
+            if (banner === "진행중") return tw`bg-mainColor`;
+            if (banner === "인증완료") return tw`bg-fontColor2`;
+            if (banner === "인증실패") return tw`bg-[#EE5D5D]`;
+            return tw`bg-white`;
+        }}
+    }
 `;
 
 const Image = styled.div<ImageProps>`
@@ -48,12 +83,8 @@ const Image = styled.div<ImageProps>`
   }
 `;
 const Background = styled.div`
-  ${tw`absolute inset-0 [border-radius: 16px] flex flex-col`}
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 10.44%,
-    #000000 120.07%
-  );
+    ${tw`absolute inset-0 [border-radius: 16px] flex flex-col`}
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10.44%, rgba(0, 0, 0, 0.5) 120.07%);
 `;
 
 const Content = styled.div<{ remained: string }>`
@@ -75,6 +106,9 @@ const Content = styled.div<{ remained: string }>`
 
   .title-text {
     ${tw`font-sans text-bold-20 font-bold text-white`}
+    white-space: nowrap; // Prevents the text from wrapping to a new line
+    overflow: hidden; // Hides any overflow text
+    text-overflow: ellipsis; // Adds an ellipsis (...) if the text overflows
   }
 
   .progress-wrapper {

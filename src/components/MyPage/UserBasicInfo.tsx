@@ -4,16 +4,19 @@ import tw from "twin.macro";
 
 import Arrow from "../../assets/images/under-arrow-small.png";
 import Button from "../../components/Common/Button";
+import useAuthStore from "../../storage/useAuthStore";
+import DropDown from "../Common/DropDown";
 
 const UserBasicInfo = () => {
-    const [name, setName] = useState("홍길동");
-    const [email, setEmail] = useState("fledge@gmail.com");
-    const [type, setType] = useState("개인");
+    const userData = useAuthStore((state) => state.userData);
+    const [name, setName] = useState(userData.nickname);
+    const [email, setEmail] = useState(userData.email);
+    const [type, setType] = useState(userData.role);
 
     const USERTYPE = [
-        { value: "개인", name: "개인" },
+        { value: "USER", name: "개인" },
         { value: "기업", name: "기업" },
-        { value: "자립준비청년", name: "자립준비청년" },
+        { value: "CANARY", name: "자립준비청년" },
     ];
 
     return (
@@ -30,6 +33,7 @@ const UserBasicInfo = () => {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        readOnly
                     />
                 </div>
                 <div className="input">
@@ -38,16 +42,22 @@ const UserBasicInfo = () => {
                         className="input-text"
                         type="text"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        readOnly
                     />
                 </div>
-                <div className="input">
-                    <span className="sub-title">회원 구분</span>
-                    <div className="select">
-                        <span>{type}</span>
-                        <img src={Arrow} alt="화살표" />
-                    </div>
-                </div>
+                <DropDown
+                    hint="회원 구분"
+                    value={USERTYPE.find((item) => item.value === type)?.name}
+                    items={USERTYPE.map((item) => item.name)}
+                    onChange={(e) =>
+                        setType(
+                            USERTYPE.find(
+                                (item) => item.name === e.target.value
+                            )?.value
+                        )
+                    }
+                    readOnly
+                />
             </InfoInput>
         </Container>
     );

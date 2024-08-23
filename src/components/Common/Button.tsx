@@ -2,32 +2,50 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 interface ButtonProps {
-  title: string;
-  onClick?: () => void;
-  mainColor?: boolean;
-  small?: boolean;
+    title: string;
+    onClick?: () => void;
+    mainColor?: boolean;
+    gray?: boolean;
+    small?: boolean;
+    background?: string;
+    margin?: boolean;
 }
 
-const Button = ({ title, onClick, mainColor, small }: ButtonProps) => {
-  return (
-    <ButtonContainer
-      type="button"
-      onClick={onClick}
-      mainColor={mainColor}
-      small={small}
-    >
-      {title}
-    </ButtonContainer>
-  );
+const Button = ({
+    title,
+    onClick,
+    mainColor,
+    small,
+    background = "color",
+    margin = true,
+    gray = false,
+}: ButtonProps) => {
+    return (
+        <ButtonContainer
+            type="button"
+            onClick={onClick}
+            mainColor={mainColor}
+            small={small}
+            background={background}
+            margin={margin}
+            gray={gray}
+        >
+            {title}
+        </ButtonContainer>
+    );
 };
 
 interface ButtonContainerProps {
-  mainColor?: boolean;
-  small?: boolean;
+    mainColor?: boolean;
+    small?: boolean;
+    background?: string;
+    margin?: boolean;
+    gray?: boolean;
+    onClick?: () => void;
 }
 
 const ButtonContainer = styled.button<ButtonContainerProps>`
-  ${tw`
+    ${tw`
         p-[6.23px 16.2px]
         bg-subColor
         rounded-[37px]
@@ -36,19 +54,27 @@ const ButtonContainer = styled.button<ButtonContainerProps>`
         text-[white]
         font-sans
         text-nowrap
+        border-[3px]
+        border-subColor
     `}
-  ${({ mainColor }) => mainColor && tw`bg-mainColor`}
+    ${({ mainColor }) => mainColor && tw`bg-mainColor border-mainColor`}
     ${({ small }) =>
-    small &&
-    tw`
+        small &&
+        tw`
         p-[0 19px]
         text-bold-20
         font-bold
         rounded-[30px]
         h-[46px]
     `}
+    ${({ background }) => background === "white" && tw`bg-white text-subColor`}
+    ${({ background, mainColor }) =>
+        background === "white" && mainColor && tw`text-mainColor`}
 
-    margin-top: auto;
+    ${({ margin }) => margin && tw`mt-auto`}
+    ${({ gray }) => gray && tw`bg-fontColor2 border-fontColor2 text-white`}
+
+    ${({ onClick }) => !onClick && tw`cursor-default`}
 `;
 
 export default Button;

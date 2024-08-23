@@ -2,28 +2,43 @@ import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import tw from "twin.macro";
 import Polygon from "../../assets/icons/polygon";
+import { getProgressInfo } from "../../apis/sponsor";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 interface progressProps {
   modal?: boolean;
+  progress: number;
+  supportedPrice: number;
+  totalPrice: number;
 }
-function Progress({ modal }: progressProps) {
+function Progress({
+  modal,
+  progress,
+  supportedPrice,
+  totalPrice,
+}: progressProps) {
   return (
     <Container>
       <div className="relative">
         {!modal && (
-          <TagBox progress={70}>
+          <TagBox progress={progress}>
             <div className="upper">
-              <span>50,000,000원 달성!</span>
+              {supportedPrice !== 0 ? (
+                <span>{supportedPrice}원 달성!</span>
+              ) : (
+                <span>첫 후원자가 되어 주세요!</span>
+              )}
             </div>
             <Polygon color={"#EE5D5D"} />
           </TagBox>
         )}
 
-        <ProgressBar progress={70} modal={modal}></ProgressBar>
+        <ProgressBar progress={progress} modal={modal}></ProgressBar>
       </div>
       <RowBox>
-        <span className="medium-20">진행률 50%</span>
-        <span className="medium-20">₩ 10000000</span>
+        <span className="medium-20">진행률 {progress}%</span>
+        <span className="medium-20">₩ {totalPrice}</span>
       </RowBox>
     </Container>
   );
@@ -32,7 +47,7 @@ function Progress({ modal }: progressProps) {
 export default Progress;
 
 const Container = styled.div`
-  ${tw`w-full mt-24`}
+  ${tw`w-full mt-11`}
 
   .medium-20 {
     ${tw`font-medium text-fontColor3 text-medium-20`}

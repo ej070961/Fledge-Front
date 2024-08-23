@@ -13,7 +13,8 @@ import { getPagingPost } from "../../apis/sponsor";
 import useFilterStore from "../../storage/useFilterStore";
 import { SponsorBannerData } from "../../@types/sponsor";
 import useAuthStore from "../../storage/useAuthStore";
-
+import { sorts } from "../../@types/sponsor-category";
+import NoBanner from "../../assets/images/no_banner.png";
 function AllPostSection() {
   const { keyword, checkedCategories, status } = useFilterStore();
   const { userData } = useAuthStore();
@@ -36,13 +37,23 @@ function AllPostSection() {
   });
 
   const handleUserPermission = () => {
-    if (userData.role === "USER") {
-      alert("자립준비청년만 이용 가능한 기능입니다.");
+    if (Object.keys(userData).length !== 0) {
+      if (userData.role === "USER") {
+        alert("자립준비청년만 이용 가능한 기능입니다.");
+      } else {
+        navigate("/sponsor-register", {
+          state: { mode: "create" },
+        });
+        window.scrollTo(0, 0);
+      }
     } else {
-      navigate("/sponsor-register");
+      alert("로그인 후 이용 가능한 기능입니다.");
     }
   };
   console.log(PostData);
+
+  // status에 해당하는 label을 찾기
+  const sort = sorts.find((s) => s.id === status);
   return (
     <Wrapper>
       <div className="flex flex-row justify-between items-center w-full mt-7">
@@ -59,7 +70,7 @@ function AllPostSection() {
           <div className="flex flex-col w-3/4  items-end">
             <SortOption />
             <span className="font-sans font-medium text-fontColor3 text-bold-20 mt-3">
-              {PostData.totalPosts}개의 진행 중인 후원 목록이 있어요
+              {PostData.totalPosts}개의 {sort?.label}인 후원 목록이 있어요
             </span>
             <ItemBox>
               {PostData.supportPosts.length > 0 ? (
@@ -76,7 +87,10 @@ function AllPostSection() {
                   )
                 )
               ) : (
-                <div></div>
+                <NoPostWrapper>
+                  <span>작성된 게시물이 없어요.</span>
+                  <img src={NoBanner} alt="x-이미지" width={200} />
+                </NoPostWrapper>
               )}
             </ItemBox>
             <Pagination>
@@ -122,7 +136,7 @@ const ItemBox = styled.div`
 `;
 
 const Pagination = styled.div`
-  ${tw`flex mt-32 items-center justify-center mx-auto`}
+  ${tw`flex mt-32 items-center justify-center mx-auto mb-[300px]`}
 `;
 
 const PageNumber = styled.div<{ active: boolean }>`
@@ -139,5 +153,11 @@ const ArrowButton = styled.button`
   ${tw`flex items-center justify-center cursor-pointer mx-1 rounded-full`}
   &:disabled {
     ${tw`opacity-70 cursor-default`}
+  }
+`;
+const NoPostWrapper = styled.div`
+  ${tw`w-[960px] h-[415px] my-5 [border-radius: 16px] flex flex-col items-center justify-center bg-white`}
+  span {
+    ${tw`font-sans font-medium text-medium-20 text-fontColor2`}
   }
 `;

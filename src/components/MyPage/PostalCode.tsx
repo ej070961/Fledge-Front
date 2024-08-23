@@ -2,9 +2,8 @@ import styled from "styled-components";
 import Button from "../Common/Button";
 import tw from "twin.macro";
 import Input from "../Common/Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DaumPost from "../Common/DaumPost";
-import react, { useEffect } from "react";
 
 interface postCode {
   address: string;
@@ -13,31 +12,40 @@ interface postCode {
 }
 interface PostalCodeProps {
   initialAddress?: postCode;
+  sponsor?: boolean;
   onChange?: (data: postCode) => void;
 }
-const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
+
+const PostalCode = ({ initialAddress, onChange, sponsor }: PostalCodeProps) => {
   const [popup, setPopup] = useState(false);
 
-  const [form, setForm] = useState<postCode>({
-    address: "",
-    zonecode: "",
-  });
+  const [form, setForm] = useState<postCode>(
+    initialAddress
+      ? initialAddress
+      : { address: "", detailAddress: "", zonecode: "" }
+  );
 
   const handlePopup = () => {
     setPopup(!popup);
   };
 
   useEffect(() => {
-    if (initialAddress) {
+    if (sponsor && initialAddress) {
       setForm(initialAddress);
     }
-  }, [initialAddress]);
+  }, [sponsor, initialAddress]);
 
   useEffect(() => {
-    if (onChange) {
+    if (onChange && form.address !== initialAddress?.address) {
       onChange(form);
     }
-  }, [form, onChange]);
+  }, [form, initialAddress?.address]);
+
+  useEffect(() => {
+    if (onChange && form.detailAddress !== initialAddress?.detailAddress) {
+      onChange(form);
+    }
+  }, [form.detailAddress, initialAddress?.detailAddress]);
 
   const handleDetailAddressChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -64,12 +72,19 @@ const PostalCode = ({ initialAddress, onChange }: PostalCodeProps) => {
         <Input
           hint="우편번호"
           placeholder="12345"
-          width="102px"
+          width="104px"
           value={form.zonecode}
         />
         <Button title="우편번호 검색" mainColor onClick={handlePopup} />
         {popup && <DaumPost handlePopup={handlePopup} setAddress={setForm} />}
       </Container>
+      {popup && (
+        <Background
+          onClick={() => {
+            handlePopup();
+          }}
+        />
+      )}
     </>
   );
 };
@@ -80,4 +95,10 @@ const Container = styled.div`
   ${tw`
             flex gap-[23px] items-baseline relative
         `}
+`;
+
+const Background = styled.div`
+  ${tw`
+        absolute  w-[100dvw] h-[100dvh] z-40 top-0 left-0
+    `}
 `;

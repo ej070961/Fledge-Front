@@ -7,6 +7,7 @@ import MyPage from "./pages/MyPage";
 import SponsorRegister from "./pages/SponsorRegister";
 import Challenge from "./pages/Challenge";
 import SponsorDetail from "./pages/SponsorDetail";
+import ChallengeDetail from "./pages/ChallengeDetail";
 
 function App() {
     return (
@@ -15,14 +16,20 @@ function App() {
                 <Route path="/" element={<Main />} />
                 <Route path="/sponsor" element={<Sponsor />} />
                 <Route path="/challenge" element={<Challenge />} />
+                <Route
+                    path="/challenge/:challengeId"
+                    element={<ChallengeDetail />}
+                />
                 <Route path="/mentor-intro" element={<Mentor />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/sponsor-register" element={<SponsorRegister />} />
-                <Route path="/sponsor-detail" element={<SponsorDetail />} />
+                <Route
+                    path="/sponsor-detail/:supportId"
+                    element={<SponsorDetail />}
+                />
             </Routes>
         </BrowserRouter>
     );
-
 }
 
 export default App;

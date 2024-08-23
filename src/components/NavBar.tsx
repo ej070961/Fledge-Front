@@ -9,50 +9,76 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore, { UserData } from "../storage/useAuthStore";
 
 const NavBar = () => {
-  const [isLogin, setIsLogin] = useState(false);
-  const [userData, setUserData] = useState<UserData>({});
-  const navigate = useNavigate();
-  // 카카오 로그인 URL (백엔드)
-  const handleSign = () => {
-    window.location.href = "https://fledge.site/oauth2/authorization/kakao";
-  };
-  useEffect(() => {
-    const loginStatus = useAuthStore.getState().isLoggedIn;
-    setIsLogin(loginStatus);
-    setUserData(useAuthStore.getState().userData);
-  }, []);
-  return (
-    <Container>
-      <MenuContainer>
-        <Logo onClick={() => navigate("/")} />
-        <MenuItem onClick={() => navigate("/sponsor")}>후원하기</MenuItem>
-        <MenuItem onClick={() => navigate("/challenge")}>챌린지</MenuItem>
-        <MenuItem onClick={() => navigate("/mentor-intro")}>멘토링</MenuItem>
-        <MenuItem>정보공유</MenuItem>
-        <MenuItem>소개</MenuItem>
-      </MenuContainer>
-      {isLogin ? (
-        <User nickname={userData.nickname ?? ""} profile={userData.profile} />
-      ) : (
-        <LoginButton handleSign={handleSign} />
-      )}
-    </Container>
-  );
+    const { isLoggedIn, userData } = useAuthStore.getState();
+    const navigate = useNavigate();
+
+    // 카카오 로그인 URL (백엔드)
+    const handleSign = () => {
+        window.location.href = "https://fledge.site/oauth2/authorization/kakao";
+    };
+
+    return (
+        <>
+            <Container>
+                <div className="menus">
+                    <MenuContainer>
+                        <Logo onClick={() => navigate("/")} />
+                        <MenuItem onClick={() => navigate("/sponsor")}>
+                            후원하기
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate("/challenge")}>
+                            챌린지
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate("/mentor-intro")}>
+                            멘토링
+                        </MenuItem>
+                        <MenuItem>정보공유</MenuItem>
+                        <MenuItem>소개</MenuItem>
+                    </MenuContainer>
+                    {isLoggedIn ? (
+                        <User
+                            nickname={userData.nickname ?? ""}
+                            profile={userData.profile ?? Profile}
+                        />
+                    ) : (
+                        <LoginButton handleSign={handleSign} />
+                    )}
+                </div>
+            </Container>
+            <Spacer />
+        </>
+    );
 };
 
 export default NavBar;
 
-const Container = styled.div`
-  ${tw`
-        flex
-        justify-between
-        w-[1280px]
+const Spacer = styled.div`
+    ${tw`
+        w-full
         h-[85px]
     `}
 `;
 
+const Container = styled.div`
+    ${tw`
+        fixed
+        z-50
+        w-full
+        h-[85px]
+        bg-[#FAF8F5]/30
+        flex justify-center
+    `}
+    backdrop-filter: blur(18.4px); /* Adjust the blur value as needed */
+
+    .menus {
+        ${tw`
+            flex justify-between w-[1280px]
+        `}
+    }
+`;
+
 const MenuContainer = styled.div`
-  ${tw`
+    ${tw`
         flex
         justify-center
         items-center
@@ -61,7 +87,7 @@ const MenuContainer = styled.div`
 `;
 
 const MenuItem = styled.div`
-  ${tw`
+    ${tw`
         text-bold-20
         font-bold
         text-center

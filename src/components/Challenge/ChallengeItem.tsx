@@ -7,6 +7,9 @@ import BubbleOrganization from "../../assets/images/bubble-organization.png";
 import ProgressBar from "../Common/ProgressBar";
 import Heart from "../Common/Heart";
 import Benefit, { BenefitProps } from "./Benefit";
+import { challengeType } from "../../@types/challenge-category";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ChallengeItemProps {
     title: string;
@@ -16,6 +19,9 @@ interface ChallengeItemProps {
     description: string;
     successRate: number;
     participants: number;
+    isCategory?: boolean;
+    challengeId: string;
+    noTag: boolean;
 }
 
 const ChallengeItem = ({
@@ -26,30 +32,54 @@ const ChallengeItem = ({
     description,
     successRate,
     participants,
+    isCategory,
+    challengeId,
+    noTag,
 }: ChallengeItemProps) => {
+    const navigate = useNavigate();
     let BubbleType = null;
-    if (bubbleType) {
-        BubbleType = bubbleType === "hot" ? BubbleHot : BubbleNew;
-    }
+    if (!isCategory && !noTag) {
+        if (bubbleType) {
+            BubbleType = bubbleType === "popular" ? BubbleHot : BubbleNew;
+        }
+    } else bubbleType = undefined;
+    const [isLiked, setIsLiked] = useState(false);
     return (
         <Container>
             {bubbleType && <Bubble src={BubbleType} alt="bubble-hot" />}
             <Background>
                 <div>
                     <ChallengeHeader>
-                        <Title>{title}</Title>
-                        <Heart heartCount={heartCount} />
+                        <Title
+                            onClick={() => {
+                                navigate(`/challenge/${challengeId}`);
+                                window.scrollTo(0, 0);
+                            }}
+                        >
+                            {title}
+                        </Title>
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
-                            <ChallengeType key={index}>{type}</ChallengeType>
+                            <ChallengeType key={index}>
+                                {
+                                    challengeType.find(
+                                        (item) => item.id === type
+                                    )?.label
+                                }
+                            </ChallengeType>
                         ))}
                     </ChallengeTypeList>
                     <ChallengeDescription>{description}</ChallengeDescription>
                 </div>
                 <ChallengeParticipants>
                     <ParticipantText>
-                        <span>{successRate}% 성공!</span>
+                        <span>{successRate.toFixed(1)}% 성공!</span>
                         <span>{participants}명 참여</span>
                     </ParticipantText>
                     <ProgressBar rate={successRate} />
@@ -68,8 +98,9 @@ interface ChallengeLargeItemProps {
     description: string;
     successRate: number;
     participants: number;
-    benefits?: BenefitProps[];
-    date: string;
+    startDate: string;
+    endDate: string;
+    supportContent?: string;
 }
 
 const ChallengeItemLarge = ({
@@ -81,18 +112,54 @@ const ChallengeItemLarge = ({
     description,
     successRate,
     participants,
-    benefits,
-    date,
+    startDate,
+    endDate,
+    supportContent,
 }: ChallengeLargeItemProps) => {
     let BubbleType = null;
+    let supportTitle = "";
     if (bubbleType) {
         BubbleType =
-            bubbleType === "partnership"
+            bubbleType === "PARTNERSHIP"
                 ? BubblePartnership
                 : BubbleOrganization;
     }
 
+    const [isLiked, setIsLiked] = useState(false);
+
+    const formDate = useCallback((startDate: string, endDate: string) => {
+        const start = startDate.split("-");
+        const end = endDate.split("-");
+        return `${start[0]}년 ${start[1]}월 ${start[2]}일 - ${end[0]}년 ${end[1]}월 ${end[2]}일`;
+    }, []);
+
     const hasPartners = !!(partnerImages && partnerImages.length > 0);
+
+    const parseCampaignText = (text: string) => {
+        //text 내에 ,가 있는 경우,
+        if (text.includes(",")) {
+            const [title, rest] = text.split(",");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim(),
+                price,
+            };
+        } else {
+            //첫번쨰 지원이라는 단어 뒤에 쉼표 생성
+            const [title, rest] = text.split("지원");
+            const price = rest.replace("지원", "").trim();
+            return {
+                title: title.trim() + "지원",
+                price,
+            };
+        }
+    };
+
+    if (supportContent) {
+        const { title, price } = parseCampaignText(supportContent);
+        supportTitle = title;
+        supportContent = price;
+    }
 
     return (
         <Container>
@@ -107,14 +174,24 @@ const ChallengeItemLarge = ({
                                 alt="partner"
                             />
                         ))}
-                        <Heart heartCount={heartCount} />
+                        <Heart
+                            heartCount={heartCount + (isLiked ? 1 : 0)}
+                            fill={isLiked}
+                            onClick={() => setIsLiked(!isLiked)}
+                        />
                     </PartnerContainer>
                     <ChallengeHeader>
                         <Title>{title}</Title>
                     </ChallengeHeader>
                     <ChallengeTypeList>
                         {challengeTypes.map((type, index) => (
-                            <ChallengeType key={index}>{type}</ChallengeType>
+                            <ChallengeType key={index}>
+                                {
+                                    challengeType.find(
+                                        (item) => item.id === type
+                                    )?.label
+                                }
+                            </ChallengeType>
                         ))}
                     </ChallengeTypeList>
                 </div>
@@ -125,7 +202,7 @@ const ChallengeItemLarge = ({
                         </ChallengeDescriptionLarge>
                         <ChallengeParticipants>
                             <ParticipantText>
-                                <span>{successRate}% 성공!</span>
+                                <span>{successRate.toFixed(1)}% 성공!</span>
                                 <span>{participants}명 참여</span>
                             </ParticipantText>
                             <ProgressBar rate={successRate} />
@@ -133,15 +210,14 @@ const ChallengeItemLarge = ({
                     </LeftSection>
                     <RightSection>
                         <BenefitList>
-                            {benefits?.map((benefit, index) => (
+                            {supportContent && (
                                 <Benefit
-                                    key={index}
-                                    title={benefit.title}
-                                    price={benefit.price}
+                                    title={supportTitle}
+                                    price={supportContent}
                                 />
-                            ))}
+                            )}
                         </BenefitList>
-                        <Date>{date}</Date>
+                        <Date>{formDate(startDate, endDate)}</Date>
                     </RightSection>
                 </BodyContainer>
             </BackgroundLarge>
@@ -186,7 +262,7 @@ const ChallengeParticipants = styled.div`
     ${tw`
         flex
         flex-col
-        gap-[5px]
+        gap-[8px]
     `}
 `;
 
@@ -205,13 +281,16 @@ const Title = styled.span`
         text-bold-24
         font-bold
         text-fontColor1
+        break-keep
+        cursor-pointer
     `}
 `;
 
 const ChallengeType = styled.div`
     ${tw`
+        mt-[4px]
         text-medium-15
-        font-bold
+        font-medium
         text-[white]
         bg-mainColor
         rounded-[28px]

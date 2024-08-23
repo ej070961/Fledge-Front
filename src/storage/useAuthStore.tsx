@@ -34,6 +34,7 @@ const useAuthStore = create(
           isLoggedIn: false,
           userData: {},
           accessToken: "",
+          refreshToken: "",
         }),
       userData: {},
       setUserData: (userData) => set({ userData }),

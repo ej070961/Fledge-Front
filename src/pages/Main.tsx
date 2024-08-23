@@ -23,11 +23,19 @@ function Main() {
     const fetchUserInfo = async () => {
       const query = new URLSearchParams(location.search);
       let accessToken = useAuthStore.getState().accessToken;
-
-      if (!accessToken) {
+      let refreshToken = useAuthStore.getState().refreshToken;
+      if (!accessToken || !refreshToken) {
         const token = query.get("accessToken");
+        const refresh = query.get("refreshToken");
+
         if (token) {
           accessToken = token;
+          useAuthStore.setState({ accessToken: token });
+        }
+
+        if (refresh) {
+          refreshToken = refresh;
+          useAuthStore.setState({ refreshToken: refresh });
         }
       }
 

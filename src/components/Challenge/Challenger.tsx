@@ -1,14 +1,8 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 import CrownIcon from "../../assets/icons/crown-icon";
-
-type ChallengerProps = {
-    imgSrc: string;
-    name: string;
-    desc: string;
-    categoryList: string[];
-    rank: number;
-};
+import { challengeType } from "../../@types/challenge-category";
+import { ChallengerProps } from "../../@types/challenge";
 
 const Challenger = ({
     imgSrc = "https://via.placeholder.com/150",
@@ -27,9 +21,12 @@ const Challenger = ({
                     <p className="desc">{desc}</p>
                 </div>
                 <div className="category-list">
-                    {categoryList.map((category, index) => (
+                    {categoryList.map((item, index) => (
                         <div key={index} className="category">
-                            {category}
+                            {
+                                challengeType.find((type) => type.id === item)
+                                    ?.label
+                            }
                         </div>
                     ))}
                 </div>
@@ -60,7 +57,8 @@ const Container = styled.div`
         .category {
             ${tw`
                     px-[7px] bg-mainColor rounded-[28px]
-                    text-white text-medium-12 font-medium
+                    text-white text-medium-15 font-medium
+                    pb-[2px]
                 `}
         }
     }
@@ -78,5 +76,13 @@ const Container = styled.div`
                     text-medium-15 font-medium text-fontColor3
                 `}
         }
+    }
+    .profile {
+        ${tw`
+            flex
+            flex-col
+            items-center
+            gap-[7px]
+        `}
     }
 `;
